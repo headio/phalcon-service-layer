@@ -1,0 +1,9 @@
+actor: UnitTester
+modules:
+    enabled:
+        - Asserts
+        - \Helper\Unit
+        - \Helper\Application
+        - Phalcon:
+            bootstrap: tests/_boot/Boot.php
+    step_decorators: ~

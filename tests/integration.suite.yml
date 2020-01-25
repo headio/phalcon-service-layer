@@ -1,0 +1,8 @@
+actor: IntegrationTester
+modules:
+    enabled:
+        - Asserts
+        - \Helper\Integration
+        - \Helper\Application
+        - Phalcon:
+            bootstrap: tests/_boot/Boot.php

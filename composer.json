@@ -1,0 +1,55 @@
+{
+    "name": "headio/phalcon-domain-layer",
+    "description": "A domain layer implementation for Phalcon projects",
+    "type": "library",
+    "keywords": [
+        "Phalcon",
+        "Domain layer implementation",
+        "Business logic"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dominic Beck",
+            "email": "dominic@headcrumbs.io",
+            "homepage": "https://headcrumbs.io"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "7.2"
+        }
+    },
+    "require": {
+        "php": ">=7.2",
+        "ext-phalcon": ">=3.4.0 < 4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Headio\\Phalcon\\DomainLayer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Integration\\": "tests/integration/",
+            "Unit\\": "tests/unit/",
+            "Stub\\": "tests/_data/_stub/",
+            "Module\\": "tests/_support/Module/"
+        }
+    },
+    "require-dev": {
+        "codeception/codeception": "^4.0",
+        "codeception/module-asserts": "^1.1",
+        "codeception/module-phalcon": "^1.0",
+        "codeception/specify": "^1.2",
+        "codeception/verify": "^1.2",
+        "headio/phalcon-bootstrap": "dev-master",
+        "mockery/mockery": "^1.3",
+        "monolog/monolog": "^2.0",
+        "vlucas/phpdotenv": "^4.1"
+    }
+}

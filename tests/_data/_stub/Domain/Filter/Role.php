@@ -1,0 +1,52 @@
+<?php
+/*
+ * This source file is subject to the MIT License.
+ *
+ * (c) Dominic Beck <dominic@headcrumbs.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this package.
+ */
+declare(strict_types=1);
+
+namespace Stub\Domain\Filter;
+
+use Headio\Phalcon\DomainLayer\Filter\Filter;
+use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
+
+class Role extends Filter
+{
+    /**
+     * @var string
+     */
+    protected $keyword;
+
+    /**
+     * @var integer
+     */
+    protected $primaryKey;
+
+    public function getKeyword() : ?string
+    {
+        return $this->keyword;
+    }
+
+    public function setKeyword(string $val) : FilterInterface
+    {
+        $this->keyword = $val;
+
+        return $this->like('label', $val);
+    }
+
+    public function getPrimaryKey() : ?int
+    {
+        return $this->primaryKey;
+    }
+
+    public function setPrimaryKey(int $val) : FilterInterface
+    {
+        $this->primaryKey = $val;
+
+        return $this->eq('id', $val);
+    }
+}
