@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\DomainLayer\Filter\{ OrderBy, OrderByInterface };
+use Headio\Phalcon\ServiceLayer\Filter\{ OrderBy, OrderByInterface };
 use Mockery;
 use Module\UnitTest;
 

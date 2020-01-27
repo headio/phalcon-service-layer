@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Integration\Filter;
 
-use Headio\Phalcon\DomainLayer\Filter\{ ConditionInterface, FilterInterface };
+use Headio\Phalcon\ServiceLayer\Filter\{ ConditionInterface, FilterInterface };
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\Criteria;
 use Stub\Domain\Filter\Role as Filter;

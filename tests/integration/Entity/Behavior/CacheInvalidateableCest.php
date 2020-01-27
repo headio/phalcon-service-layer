@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Integration\Entity\Behavior;
 
-use Headio\Phalcon\DomainLayer\Entity\Behavior\CacheInvalidateable;
+use Headio\Phalcon\ServiceLayer\Entity\Behavior\CacheInvalidateable;
 use Stub\Domain\Entity\User as Entity;
 use Stub\Service\CacheManager;
 use Phalcon\Di\FactoryDefault;

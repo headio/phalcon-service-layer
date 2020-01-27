@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Repository;
+namespace Headio\Phalcon\ServiceLayer\Repository;
 
 interface FactoryInterface
 {

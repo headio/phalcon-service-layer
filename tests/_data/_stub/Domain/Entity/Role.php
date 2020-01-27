@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Entity;
 
-use Headio\Phalcon\DomainLayer\Entity\Behavior\CacheInvalidateable;
-use Headio\Phalcon\DomainLayer\Entity\Behavior\Timestampable;
-use Headio\Phalcon\DomainLayer\Entity\AbstractEntity;
-use Headio\Phalcon\DomainLayer\Entity\TimestampTrait;
+use Headio\Phalcon\ServiceLayer\Entity\Behavior\CacheInvalidateable;
+use Headio\Phalcon\ServiceLayer\Entity\Behavior\Timestampable;
+use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
+use Headio\Phalcon\ServiceLayer\Entity\TimestampTrait;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\StringLength;

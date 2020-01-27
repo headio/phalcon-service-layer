@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Unit\Repository;
 
-use Headio\Phalcon\DomainLayer\Repository\RepositoryInterface;
+use Headio\Phalcon\ServiceLayer\Repository\RepositoryInterface;
 use Stub\Domain\Entity\Role as Entity;
 use Stub\Domain\Filter\Role as Filter;
 use Stub\Domain\Repository\Role as Repository;

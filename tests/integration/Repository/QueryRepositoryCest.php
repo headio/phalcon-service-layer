@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace Integration\Repository;
 
-use Headio\Phalcon\DomainLayer\Entity\{ AbstractEntity, EntityInterface };
-use Headio\Phalcon\DomainLayer\Exception\NotFoundException;
-use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Entity\{ AbstractEntity, EntityInterface };
+use Headio\Phalcon\ServiceLayer\Exception\NotFoundException;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\{ CriteriaInterface, ResultsetInterface };
 use Phalcon\Mvc\Model\Resultset\Simple;

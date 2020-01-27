@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Helper;
+namespace Headio\Phalcon\ServiceLayer\Helper;
 
 use function strtolower;
 use function str_replace;

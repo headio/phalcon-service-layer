@@ -9,13 +9,13 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Repository;
+namespace Headio\Phalcon\ServiceLayer\Repository;
 
-use Headio\Phalcon\DomainLayer\Exception;
-use Headio\Phalcon\DomainLayer\Entity\EntityInterface;
-use Headio\Phalcon\DomainLayer\Filter\ConditionInterface;
-use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
-use Headio\Phalcon\DomainLayer\Helper\Inflector;
+use Headio\Phalcon\ServiceLayer\Exception;
+use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
+use Headio\Phalcon\ServiceLayer\Filter\ConditionInterface;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Helper\Inflector;
 use Phalcon\Mvc\Model\CriteriaInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Row;

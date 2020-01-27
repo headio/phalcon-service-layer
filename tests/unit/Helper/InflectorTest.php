@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Unit\Helper;
 
-use Headio\Phalcon\DomainLayer\Helper\Inflector;
+use Headio\Phalcon\ServiceLayer\Helper\Inflector;
 use Module\UnitTest;
 use Phalcon\Di;
 

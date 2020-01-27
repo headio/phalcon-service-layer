@@ -9,9 +9,9 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Entity;
+namespace Headio\Phalcon\ServiceLayer\Entity;
 
-use Headio\Phalcon\DomainLayer\Exception\OutOfRangeException;
+use Headio\Phalcon\ServiceLayer\Exception\OutOfRangeException;
 use Phalcon\Mvc\Model;
 use function sprintf;
 

@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Entity;
+namespace Headio\Phalcon\ServiceLayer\Entity;
 
 /**
  * Entity Interface

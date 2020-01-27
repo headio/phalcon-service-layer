@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Filter;
 
-use Headio\Phalcon\DomainLayer\Filter\Filter;
-use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Filter\Filter;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 
 class Role extends Filter
 {

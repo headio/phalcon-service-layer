@@ -1,10 +1,10 @@
 {
-    "name": "headio/phalcon-domain-layer",
-    "description": "A domain layer implementation for Phalcon projects",
+    "name": "headio/phalcon-service-layer",
+    "description": "A service layer implementation for Phalcon projects",
     "type": "library",
     "keywords": [
         "Phalcon",
-        "Domain layer implementation",
+        "Service layer",
         "Business logic"
     ],
     "license": "MIT",
@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Headio\\Phalcon\\DomainLayer\\": "src/"
+            "Headio\\Phalcon\\ServiceLayer\\": "src/"
         }
     },
     "autoload-dev": {

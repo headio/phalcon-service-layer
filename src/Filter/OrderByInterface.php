@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Filter;
+namespace Headio\Phalcon\ServiceLayer\Filter;
 
 interface OrderByInterface
 {

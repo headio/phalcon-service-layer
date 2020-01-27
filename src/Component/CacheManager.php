@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Component;
+namespace Headio\Phalcon\ServiceLayer\Component;
 
 use Phalcon\Di\Injectable;
 use function microtime;

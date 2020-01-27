@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Entity;
 
-use Headio\Phalcon\DomainLayer\Entity\AbstractEntity;
+use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
 
 /**
  * @Source("Role_User")

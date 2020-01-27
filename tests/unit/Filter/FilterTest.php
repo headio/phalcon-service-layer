@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\DomainLayer\Filter\{ 
+use Headio\Phalcon\ServiceLayer\Filter\{ 
     Filter, 
     FilterInterface,
     GroupBy,

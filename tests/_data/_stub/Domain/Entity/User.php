@@ -11,11 +11,11 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Entity;
 
-use Headio\Phalcon\DomainLayer\Entity\AbstractEntity;
-use Headio\Phalcon\DomainLayer\Entity\PublishingTrait;
-use Headio\Phalcon\DomainLayer\Entity\TimestampTrait;
-use Headio\Phalcon\DomainLayer\Entity\Behavior\Publishable;
-use Headio\Phalcon\DomainLayer\Entity\Behavior\Timestampable;
+use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
+use Headio\Phalcon\ServiceLayer\Entity\PublishingTrait;
+use Headio\Phalcon\ServiceLayer\Entity\TimestampTrait;
+use Headio\Phalcon\ServiceLayer\Entity\Behavior\Publishable;
+use Headio\Phalcon\ServiceLayer\Entity\Behavior\Timestampable;
 
 /**
  * @Source("User")

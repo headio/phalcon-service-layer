@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Integration\Entity\Behavior;
 
-use Headio\Phalcon\DomainLayer\Entity\Behavior\Publishable;
+use Headio\Phalcon\ServiceLayer\Entity\Behavior\Publishable;
 use Stub\Domain\Entity\User as Entity;
 use IntegrationTester;
 

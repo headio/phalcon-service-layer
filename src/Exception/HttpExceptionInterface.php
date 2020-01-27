@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Exception;
+namespace Headio\Phalcon\ServiceLayer\Exception;
 
 interface HttpExceptionInterface
 {

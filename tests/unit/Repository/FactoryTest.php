@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace Unit\Repository;
 
-use Headio\Phalcon\DomainLayer\Exception\InvalidArgumentException;
-use Headio\Phalcon\DomainLayer\Repository\RepositoryInterface;
-use Headio\Phalcon\DomainLayer\Repository\Factory;
-use Headio\Phalcon\DomainLayer\Repository\FactoryInterface;
+use Headio\Phalcon\ServiceLayer\Exception\InvalidArgumentException;
+use Headio\Phalcon\ServiceLayer\Repository\RepositoryInterface;
+use Headio\Phalcon\ServiceLayer\Repository\Factory;
+use Headio\Phalcon\ServiceLayer\Repository\FactoryInterface;
 use Stub\Domain\Repository\Role as Repository;
 use Mockery;
 use Module\UnitTest;

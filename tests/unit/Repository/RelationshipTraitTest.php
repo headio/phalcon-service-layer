@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace Unit\Repository;
 
-use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
-use Headio\Phalcon\DomainLayer\Repository\RepositoryInterface;
-use Headio\Phalcon\DomainLayer\Repository\RelationshipTrait;
-use Headio\Phalcon\DomainLayer\Repository\QueryRepository;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Repository\RepositoryInterface;
+use Headio\Phalcon\ServiceLayer\Repository\RelationshipTrait;
+use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
 use Stub\Domain\Filter\Role as QueryFilter;
 use Stub\Domain\Entity\Role as Entity;
 use Stub\Domain\Repository\Role as Repository;

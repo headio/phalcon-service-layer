@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Repository;
 
-use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
-use Headio\Phalcon\DomainLayer\Repository\RelationshipTrait;
-use Headio\Phalcon\DomainLayer\Repository\QueryRepository;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Repository\RelationshipTrait;
+use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
 use Stub\Domain\Filter\Role as Filter;
 use Stub\Domain\Repository\RoleInterface;
 

@@ -9,10 +9,10 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Repository;
+namespace Headio\Phalcon\ServiceLayer\Repository;
 
-use Headio\Phalcon\DomainLayer\Exception\InvalidArgumentException;
-use Headio\Phalcon\DomainLayer\Exception\RuntimeException;
+use Headio\Phalcon\ServiceLayer\Exception\InvalidArgumentException;
+use Headio\Phalcon\ServiceLayer\Exception\RuntimeException;
 use function class_exists;
 use function sprintf;
 use ReflectionClass;

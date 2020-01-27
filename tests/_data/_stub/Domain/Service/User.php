@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Service;
 
-use Headio\Phalcon\DomainLayer\Entity\EntityInterface;
-use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Di\Injectable;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Stub\Domain\Repository\RoleInterface;

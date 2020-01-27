@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Filter;
+namespace Headio\Phalcon\ServiceLayer\Filter;
 
 use function is_null;
 use function strcmp;

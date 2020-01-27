@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\DomainLayer\Entity\{ AbstractEntity, EntityInterface };
+use Headio\Phalcon\ServiceLayer\Entity\{ AbstractEntity, EntityInterface };
 use Phalcon\Db\Column;
 use Stub\Domain\Entity\Role as Entity;
 use Module\UnitTest;

@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\DomainLayer\Filter\{ Condition, ConditionInterface, FilterInterface };
+use Headio\Phalcon\ServiceLayer\Filter\{ Condition, ConditionInterface, FilterInterface };
 use Mockery;
 use Module\UnitTest;
 

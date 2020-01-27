@@ -9,11 +9,11 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\DomainLayer\Repository;
+namespace Headio\Phalcon\ServiceLayer\Repository;
 
-use Headio\Phalcon\DomainLayer\Entity\EntityInterface;
-use Headio\Phalcon\DomainLayer\Exception\OutOfRangeException;
-use Headio\Phalcon\DomainLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
+use Headio\Phalcon\ServiceLayer\Exception\OutOfRangeException;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\CriteriaInterface;
 use Phalcon\Mvc\Model\TransactionInterface;

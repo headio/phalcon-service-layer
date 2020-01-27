@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Stub\Service;
 
-use Headio\Phalcon\DomainLayer\Component\CacheManager as Service;
+use Headio\Phalcon\ServiceLayer\Component\CacheManager as Service;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\DiInterface;
 
