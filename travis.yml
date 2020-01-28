@@ -1,0 +1,50 @@
+language: php
+
+php:
+    - 7.2
+
+env:
+  global:
+    - PHALCON_VERSION="v3.4.5"
+    - DB_NAME="servicelayer_test"
+    - DB_PASSWD="%%travis%%"
+
+git:
+  depth: 1
+
+matrix:
+  fast_finish: true
+
+cache:
+  timeout: 604800
+  directories:
+    - $HOME/.composer/cache
+
+services:
+  - memcached
+  - mysql
+
+before_install:
+  - source ./tests/_ci/extensions.sh
+  - sudo mysql -e "USE mysql; UPDATE user SET authentication_string=PASSWORD('${DB_PASSWD}') WHERE user='root'; UPDATE user set plugin='mysql_native_password'; FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -p${DB_PASSWD}
+  - sudo service mysql restart
+
+install:
+  - git clone -q --depth=1 https://github.com/phalcon/cphalcon.git -b ${PHALCON_VERSION}
+  - '(cd cphalcon/build; bash install &>/dev/null && phpenv config-add ../tests/_ci/phalcon.ini &> /dev/null && cd ../..;)'
+  - travis_retry composer update --no-interaction --no-progress --no-ansi --no-suggest
+
+before_script:
+  - mysql -u root -p${DB_PASSWD} -e 'CREATE DATABASE IF NOT EXISTS ${DB_NAME} charset=utf8mb4 collate=utf8mb4_unicode_ci;'
+  - mysql -u root -p${DB_PASSWD} ${DB_NAME} < tests/_data/dump.sql
+  - cp .env.dist .env
+
+script:
+  - vendor/bin/codecept clean
+  - vendor/bin/codecept build --quiet
+  - vendor/bin/codecept run --coverage --coverage-text
+
+notifications:
+  email:
+    - dominic@headcrumbs.io
