@@ -2,6 +2,8 @@
 
 A simple service layer implementation for Phalcon projects
 
+[![Build Status](https://travis-ci.com/headio/phalcon-service-layer.svg?branch=master)](https://travis-ci.com/headio/phalcon-service-layer)
+
 ## Introduction
 
 This library provides a layered architecture promising easier unit and integration testing.
