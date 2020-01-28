@@ -21,8 +21,10 @@ cache:
 
 services:
   - mysql
+  - memcached
 
 before_install:
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - sudo mysql -e "USE mysql; UPDATE user SET authentication_string=PASSWORD('%%travis%%') WHERE user='root'; UPDATE user set plugin='mysql_native_password'; FLUSH PRIVILEGES;"
   - sudo mysql_upgrade -u root -p%%travis%%
   - sudo service mysql restart
