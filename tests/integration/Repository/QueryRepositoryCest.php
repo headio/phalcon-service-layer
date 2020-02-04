@@ -93,7 +93,7 @@ class QueryRepositoryCest
         $I->assertEquals($this->_data()['builderPhql'], $builder->getPhql());
     }
 
-    public function testCreateQueryFromBuilder(IntegrationTester $I)
+    public function canCreateQueryFromBuilder(IntegrationTester $I)
     {
         $I->wantToTest(
             'Query repository can apply filter to query criteria, create query from builder ' .
@@ -131,7 +131,7 @@ class QueryRepositoryCest
         expect($query->getBindTypes())->equals(['ID0' => Column::BIND_PARAM_INT]);
     }
 
-    public function testFind(IntegrationTester $I)
+    public function canFind(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can fetch records using filter interface');
 
@@ -141,7 +141,7 @@ class QueryRepositoryCest
         expect($result)->isInstanceOf(Simple::class);
     }
 
-    public function testFindByPk(IntegrationTester $I)
+    public function canFindByPk(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can fetch record by primary key');
 
@@ -152,7 +152,7 @@ class QueryRepositoryCest
         expect($result)->isInstanceOf(AbstractEntity::class);
     }
 
-    public function testFindByPkThrows404(IntegrationTester $I)
+    public function canFindByPkThrows404(IntegrationTester $I)
     {
         $I->wantToTest('Query repository cannot fetch record by primary key with invalid parameter');
         $I->expectThrowable(
@@ -163,7 +163,7 @@ class QueryRepositoryCest
         );
     }
 
-    public function testFindFirstByUrl(IntegrationTester $I)
+    public function canFindFirstByUrl(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can fetch first record by valid property name');
 
@@ -174,7 +174,7 @@ class QueryRepositoryCest
         expect($result)->isInstanceOf(AbstractEntity::class);
     }
 
-    public function testGetEntity(IntegrationTester $I)
+    public function canGetEntity(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can return the entity managed by the repository');
 
@@ -183,7 +183,7 @@ class QueryRepositoryCest
         expect($result)->equals(Entity::class);
     }
 
-    public function testGetQueryFilter(IntegrationTester $I)
+    public function canGetQueryFilter(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can return the query filter assigned to the repository');
 
@@ -193,7 +193,7 @@ class QueryRepositoryCest
         expect($result)->isInstanceOf(FilterInterface::class);
     }
 
-    public function testGetRelated(IntegrationTester $I)
+    public function canGetRelated(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can return the related models');
 
@@ -210,7 +210,7 @@ class QueryRepositoryCest
         expect($result)->isInstanceOf(ResultsetInterface::class);
     }
     
-    public function testGetUnrelated(IntegrationTester $I)
+    public function canGetUnrelated(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can return the unrelated models');
 

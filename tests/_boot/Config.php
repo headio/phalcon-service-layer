@@ -56,7 +56,6 @@ return [
         DIRECTORY_SEPARATOR . '_output' .
         DIRECTORY_SEPARATOR . 'Var' .
         DIRECTORY_SEPARATOR . 'Log' .
-        DIRECTORY_SEPARATOR . 'Web' .
         DIRECTORY_SEPARATOR,
     'metadata' => [
         'adapter' => 'Files',

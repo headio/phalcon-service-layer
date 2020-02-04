@@ -2,7 +2,7 @@
 
 A simple service layer implementation for Phalcon projects
 
-[![Build Status](https://travis-ci.com/headio/phalcon-service-layer.svg?branch=master)](https://travis-ci.com/headio/phalcon-service-layer)
+[![Build Status](https://travis-ci.com/headio/phalcon-service-layer.svg?branch=master)](https://travis-ci.com/headio/phalcon-service-layer) [![Coverage Status](https://coveralls.io/repos/github/headio/phalcon-service-layer/badge.svg?branch=master)](https://coveralls.io/github/headio/phalcon-service-layer?branch=master)
 
 ## Introduction
 
@@ -536,7 +536,7 @@ Validation can be implemented in the service layer or in models.
 To see the tests, run:
 
 ```bash
-php vendor/bin/codecept run -f --coverage --coverage-text
+php vendor/bin/codecept run -f --coverage --coverage-xml
 ```
 
 ## License

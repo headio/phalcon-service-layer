@@ -15,3 +15,9 @@ extensions:
         - Codeception\Extension\RunFailed
 params:
     - env
+coverage:
+    enabled: true
+    include:
+        - src/*
+    exclude:
+        - src/Exception/*
