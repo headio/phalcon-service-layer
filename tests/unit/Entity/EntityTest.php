@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Unit\Filter;
+namespace Unit\Entity;
 
 use Headio\Phalcon\ServiceLayer\Entity\{ AbstractEntity, EntityInterface };
 use Phalcon\Db\Column;
