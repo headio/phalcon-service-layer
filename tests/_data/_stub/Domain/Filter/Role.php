@@ -16,15 +16,9 @@ use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 
 class Role extends Filter
 {
-    /**
-     * @var string
-     */
-    protected $keyword;
+    private ?string $keyword = null;
 
-    /**
-     * @var integer
-     */
-    protected $primaryKey;
+    private ?int $primaryKey = null;
 
     public function getKeyword() : ?string
     {

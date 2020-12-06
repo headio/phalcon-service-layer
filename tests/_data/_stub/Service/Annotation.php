@@ -13,7 +13,7 @@ namespace Stub\Service;
 
 use Phalcon\Annotations\Adapter\Memory;
 use Phalcon\Di\ServiceProviderInterface;
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 
 class Annotation implements ServiceProviderInterface
 {

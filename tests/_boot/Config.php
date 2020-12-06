@@ -20,9 +20,10 @@ return [
         'modelCache' => [
             'apply' => false,
             'adapter' => 'Libmemcached',
-            'lifetime' => 3600 * 24 * 30,
             'options' => [
-                'statsKey' => '_PHCM',
+                'defaultSerializer' => 'Json',
+                'lifetime' => 3600 * 24 * 30,
+                'prefix' => getenv('MEMCACHED_PREFIX_KEY'),
                 'servers' => [
                     [
                         'host' => getenv('MEMCACHED_HOST'),
@@ -31,7 +32,7 @@ return [
                     ],
                 ],
                 'client' => [
-                    \Memcached::OPT_PREFIX_KEY => getenv('MEMCACHED_PREFIX_KEY'),
+                    \Memcached::OPT_CONNECT_TIMEOUT => 10,
                 ],
             ],
         ],
@@ -45,7 +46,7 @@ return [
         'dbname' => getenv('DB_NAME'),
         'charset' => getenv('DB_CHARSET'),
         'options' => [
-            \PDO::ATTR_STRINGIFY_FETCHES  => false,
+            \PDO::ATTR_STRINGIFY_FETCHES => false,
             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . getenv('DB_CHARSET')
         ],
     ],
@@ -72,6 +73,7 @@ return [
         'Stub\Service\ModelCache',
         'Stub\Service\ModelMetaData',
         'Stub\Service\ModelManager',
+        'Stub\Service\TransactionManager'
     ],
     'timezone' => 'Europe/London',
 ];

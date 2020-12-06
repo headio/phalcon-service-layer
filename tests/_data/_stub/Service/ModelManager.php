@@ -13,7 +13,7 @@ namespace Stub\Service;
 
 use Stub\Middleware\ModelAnnotation;
 use Phalcon\Di\ServiceProviderInterface;
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model\Manager as Service;
 
 class ModelManager implements ServiceProviderInterface

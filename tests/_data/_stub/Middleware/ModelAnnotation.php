@@ -14,12 +14,12 @@ namespace Stub\Middleware;
 use Phalcon\Events\EventInterface;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\ManagerInterface;
-use Phalcon\Mvc\User\Plugin;
+use Phalcon\Di\Injectable;
 
 /**
  * Middleware component to process entity relationships using annotations.
  */
-class ModelAnnotation extends Plugin
+class ModelAnnotation extends Injectable
 {
     /**
      * Process model annotations and pass to modal manager.

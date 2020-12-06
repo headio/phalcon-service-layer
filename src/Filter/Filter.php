@@ -16,40 +16,19 @@ use function abs;
 
 abstract class Filter implements FilterInterface
 {
-    /**
-     * @var string
-     */
-    protected $alias;
+    private ?string $alias = null;
 
-    /**
-     * @var array
-     */
-    protected $columns = [];
+    private array $columns = [];
 
-    /**
-     * @var array
-     */
-    protected $conditions = [];
+    private array $conditions = [];
 
-    /**
-     * @var array
-     */
-    protected $groupBy = [];
+    private array $groupBy = [];
 
-    /**
-     * @var integer
-     */
-    protected $limit;
+    private ?int $limit = null;
 
-    /**
-     * @var integer
-     */
-    protected $offset;
+    private ?int $offset = null;
 
-    /**
-     * @var array
-     */
-    protected $orderBy = [];
+    private array $orderBy = [];
 
     /**
      * {@inheritDoc}

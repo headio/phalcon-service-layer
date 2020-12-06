@@ -28,6 +28,6 @@ try {
     $di = (new DiFactory($config))->createDefaultMvc();
     $app = (new AppFactory($di))->createForMvc();
     return $app;
-} catch(\Throwable $e) {
+} catch (\Throwable $e) {
     echo $e->getMessage();
 }

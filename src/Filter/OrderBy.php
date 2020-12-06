@@ -17,15 +17,9 @@ use function strtoupper;
 
 class OrderBy implements OrderByInterface
 {
-    /**
-     * @var string
-     */
-    protected $column;
+    private string $column;
 
-    /**
-     * @var string|null
-     */
-    protected $direction;
+    private ?string $direction;
 
     public function __construct(string $column, ?string $direction = null)
     {

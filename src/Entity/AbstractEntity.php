@@ -73,9 +73,9 @@ class AbstractEntity extends Model implements EntityInterface
         if ($this->validationHasFailed()) {
             foreach ($this->getMessages() as $message) {
                 if (isset($errors[$message->getField()])) {
-                    $errors[$message->getField()] .= ' ' . $message->getmessage();
+                    $errors[$message->getField()] .= ' ' . $message->getMessage();
                 } else {
-                    $errors[$message->getField()] = $message->getmessage();
+                    $errors[$message->getField()] = $message->getMessage();
                 }
             }
         }

@@ -16,25 +16,16 @@ use function strcmp;
 
 class Condition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
-    protected $column;
+    private string $column;
 
-    /**
-     * @var string
-     */
-    protected $operator;
+    private string $operator;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    private string $type;
 
     /**
      * @var mixed
      */
-    protected $value;
+    private $value;
 
     public function __construct(string $column, $value, string $operator, string $type = ConditionInterface::AND)
     {

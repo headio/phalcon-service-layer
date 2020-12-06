@@ -16,6 +16,12 @@ use Headio\Phalcon\ServiceLayer\Entity\PublishingTrait;
 use Headio\Phalcon\ServiceLayer\Entity\TimestampTrait;
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Publishable;
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Timestampable;
+use Phalcon\Filter;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Email;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength;
+use Phalcon\Validation\Validator\Uniqueness;
 
 /**
  * @Source("User")
@@ -50,17 +56,17 @@ class User extends AbstractEntity
      * @Identity
      * @Column(type="integer", nullable=false, column="id", length="10")
      */
-    public $id;
+    protected $id;
 
     /**
      * @Column(type="string", nullable=false, column="name", length="64")
      */
-    public $name;
+    protected $name;
 
     /**
      * @Column(type="string", nullable=false, column="email", length="84")
      */
-    public $email;
+    protected $email;
 
     /**
      * Use trait for timestamp functionality.
@@ -78,6 +84,13 @@ class User extends AbstractEntity
     public function initialize() : void
     {
         parent::initialize();
+
+        self::setup(
+            [
+                'exceptionOnFailedSave' => true,
+            ]
+        );
+
         $this->addBehavior(new Timestampable());
         $this->addBehavior(new Publishable());
     }
@@ -92,8 +105,84 @@ class User extends AbstractEntity
         return $this->name;
     }
 
+    public function setName(string $val) : void
+    {
+        $this->name = $val;
+    }
+
     public function getEmail() : ?string
     {
         return $this->email;
+    }
+
+    public function setEmail(string $val) : void
+    {
+        $this->email = $val;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function validation() : bool
+    {
+        $validator = new Validation();
+
+        $validator->setFilters(
+            [
+                'name',
+                'email',
+            ],
+            [
+                Filter::FILTER_STRING
+            ]
+        );
+
+        $validator->setFilters(
+            'published',
+            FILTER::FILTER_BOOL
+        );
+
+        $validator->setFilters(
+            'email',
+            [
+                Filter::FILTER_EMAIL,
+                Filter::FILTER_STRIPTAGS
+            ]
+        );
+
+        $validator->add(
+            [
+                'name',
+                'email',
+            ],
+            new PresenceOf(
+                [
+                    'message' => [
+                        'name' => 'This field is required.',
+                        'email' => 'This field is required.',
+                    ]
+                ]
+            )
+        );
+
+        $validator->add(
+            'email',
+            new Email(
+                [
+                    'message' => 'The value is not a valid email address.'
+                ]
+            )
+        );
+
+        $validator->add(
+            'email',
+            new Uniqueness(
+                [
+                    'message' => 'The email already exists.'
+                ]
+            )
+        );
+
+        return $this->validate($validator);
     }
 }

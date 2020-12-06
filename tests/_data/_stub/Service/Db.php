@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Stub\Service;
 
 use Phalcon\Db\AdapterInterface;
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Events\EventInterface;
 

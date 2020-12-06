@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Stub\Service;
 
 use Phalcon\Di\ServiceProviderInterface;
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model\MetaData\Memory;
 use Phalcon\Mvc\Model\MetaData\Strategy\Annotations as Strategy;
 

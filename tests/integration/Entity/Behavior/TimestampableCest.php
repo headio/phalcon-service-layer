@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *

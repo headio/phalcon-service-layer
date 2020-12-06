@@ -15,7 +15,7 @@ interface ConditionInterface
 {
     /**
      * The condition types
-     * 
+     *
      * @var constants
      */
     public const AND = 'AND';

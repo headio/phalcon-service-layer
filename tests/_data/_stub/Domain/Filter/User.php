@@ -16,15 +16,9 @@ use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 
 class User extends Filter
 {
-    /**
-     * @var string
-     */
-    protected $email;
+    private ?string $email = null;
 
-    /**
-     * @var integer
-     */
-    protected $primaryKey;
+    private ?int $primaryKey = null;
 
     public function getEmail() : ?string
     {

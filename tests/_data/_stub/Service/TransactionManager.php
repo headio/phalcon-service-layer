@@ -11,11 +11,11 @@ declare(strict_types=1);
 
 namespace Stub\Service;
 
-use Headio\Phalcon\ServiceLayer\Component\CacheManager as Service;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
+use Phalcon\Mvc\Model\Transaction\Manager as Service;
 
-class CacheManager implements ServiceProviderInterface
+class TransactionManager implements ServiceProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -23,7 +23,7 @@ class CacheManager implements ServiceProviderInterface
     public function register(DiInterface $di) : void
     {
         $di->setShared(
-            'cacheManager',
+            'transactionManager',
             function () {
                 return new Service();
             }

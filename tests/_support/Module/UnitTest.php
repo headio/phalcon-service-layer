@@ -29,7 +29,7 @@ class UnitTest extends Unit
     protected $tester;
 
     /**
-     * @var Phalcon\DiInterface
+     * @var Phalcon\Di\DiInterface
      */
     protected $di;
 

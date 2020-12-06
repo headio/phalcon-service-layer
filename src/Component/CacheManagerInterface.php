@@ -37,33 +37,35 @@ interface CacheManagerInterface
 
     /**
      * Fetch data from cache or query storage (and cache).
-     * 
+     *
      * @return mixed
      */
     public function fetch(string $key, Closure $callback);
 
     /**
      * Get data from the cache store.
+     *
+     * @return mixed
      */
-    public function get(string $key) : ?string;
+    public function get(string $key);
 
     /**
-     * Is data in the cache store.
+     * Does data in the cache store exist for the key.
      */
     public function has(string $key) : bool;
 
     /**
      * Expire all cache keys for entities.
      *
-     * All cache keys are generated based on the query parameters 
-     * and prefixed with a microtime (stored in the cache 
+     * All cache keys are generated based on the query parameters
+     * and prefixed with a microtime (stored in the cache
      * against a key representing the entity class name), see
-     * fetchPrefix() for implementation. 
+     * fetchPrefix() for implementation.
      */
     public function expire(array $entities) : void;
 
     /**
-     * Store data in cache.
+     * Store data in the cache store.
      */
-    public function store(string $key, $data, ?int $lifetime = null) : void;
+    public function store(string $key, $data, ?int $lifetime = null) : bool;
 }

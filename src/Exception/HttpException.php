@@ -18,20 +18,20 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
     /**
      * @var integer
      */
-    private $statusCode;
+    private int $statusCode;
 
     /**
      * @var array
      */
-    private $headers;
+    private array $headers;
 
     public function __construct(
         int $statusCode,
         string $message = null,
         int $code = 0,
         Throwable $throwable = null,
-        array $headers = []) 
-    {
+        array $headers = []
+    ) {
         $this->statusCode = $statusCode;
         $this->headers = $headers;
 

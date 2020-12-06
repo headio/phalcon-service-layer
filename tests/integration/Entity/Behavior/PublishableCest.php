@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *
@@ -52,7 +52,7 @@ class PublishableCest
 
         expect_that(empty($result));
     }
-    
+
     public function behaviorHasEventHook(IntegrationTester $I)
     {
         $I->wantToTest('Behavior registers event hooks');

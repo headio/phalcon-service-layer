@@ -42,17 +42,13 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
 {
     /**
      * Am array representation of query criteria binding parameter types.
-     *
-     * @var array
      */
-    protected $bindTypes = [];
+    protected array $bindTypes = [];
 
     /**
      * Is the repository using caching across all queries.
-     *
-     * @var bool
      */
-    protected $cache;
+    protected bool $cache;
 
     public function __construct(bool $cache)
     {

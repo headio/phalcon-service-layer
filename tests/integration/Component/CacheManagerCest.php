@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *
@@ -26,7 +26,7 @@ class CacheManagerCest
 
     public function createCacheKey(IntegrationTester $I)
     {
-        $I->wantTo('Create a cache key using the cache manager');
+        $I->wantTo('Create a cache key via the cache manager');
 
         $entityName = get_class($this->entity);
         $service = $this->di->get('cacheManager');
@@ -38,7 +38,7 @@ class CacheManagerCest
 
     public function createCacheParameter(IntegrationTester $I)
     {
-        $I->wantTo('Create cache parameters using the cache manager');
+        $I->wantTo('Create cache parameters via the cache manager');
 
         $entityName = get_class($this->entity);
         $service = $this->di->get('cacheManager');
@@ -59,28 +59,85 @@ class CacheManagerCest
         expect($result)->hasKey('cache');
     }
 
-    public function storeCacheValue(IntegrationTester $I)
+    public function hasCacheValue(IntegrationTester $I)
     {
-        $I->wantTo('Store a data in the cache service via the cache manager');
+        $I->wantTo('Fetch cache key after storing data in the cache service');
 
         $service = $this->di->get('cacheManager');
         $entityName = get_class($this->entity);
         $key = $service->createKey($entityName, $this->_data()['criteria']);
-        $service->store($key, $this->_data()['cacheVal'], 60);
+
+        expect($service->store($key, $this->_data()['cacheVal'], 60))->true();
 
         expect($service->has($key))->true();
     }
 
     public function fetchCacheValue(IntegrationTester $I, $key)
     {
-        $I->wantTo('Fetch data from the cache store via the cache manager');
+        $I->wantTo('Fetch cache data after storing data in the cache service');
 
         $service = $this->di->get('cacheManager');
         $entityName = get_class($this->entity);
         $key = $service->createKey($entityName, $this->_data()['criteria']);
-        $service->store($key, $this->_data()['cacheVal'], 60);
+
+        expect($service->store($key, $this->_data()['cacheVal'], 60))->true();
 
         expect($service->get($key))->equals($this->_data()['cacheVal']);
+    }
+
+    public function fetchAndStoreCacheValue(IntegrationTester $I, $key)
+    {
+        $I->wantTo('Fetch and cache data in the cache store in one call');
+
+        $service = $this->di->get('cacheManager');
+        $entityName = get_class($this->entity);
+        $key = $service->createKey($entityName, $this->_data()['criteria']);
+        $data = function () {
+            return $this->_data()['cacheVal'];
+        };
+        $service->fetch($key, $data, 60);
+
+        expect($service->get($key))->equals($this->_data()['cacheVal']);
+    }
+
+    public function deleteCacheValue(IntegrationTester $I, $key)
+    {
+        $I->wantTo('Delete the cached data via the cache manager');
+
+        $service = $this->di->get('cacheManager');
+        $entityName = get_class($this->entity);
+        $key = $service->createKey($entityName, $this->_data()['criteria']);
+
+        expect($service->store($key, $this->_data()['cacheVal'], 60))->true();
+
+        expect($service->get($key))->equals($this->_data()['cacheVal']);
+
+        $service->delete($key);
+
+        expect($service->get($key))->null();
+    }
+
+    public function ExpireCacheKey(IntegrationTester $I, $key)
+    {
+        $I->wantTo('Expire the cache key via the cache manager');
+
+        $service = $this->di->get('cacheManager');
+        $entityName = get_class($this->entity);
+        $key = $service->createKey($entityName, $this->_data()['criteria']);
+        $data = function () {
+            return $this->_data()['cacheVal'];
+        };
+        $service->fetch($key, $data, 60);
+
+        expect($service->get($key))->equals($this->_data()['cacheVal']);
+
+        // Grab the existing key prefix for all data cached for the entity.
+        $prefix = $service->get($entityName);
+
+        // Increments the cache key prefix; does not delete the cached data.
+        $service->expire([$entityName]);
+
+        expect($service->get($entityName))->notEquals($prefix);
     }
 
     /**
@@ -94,4 +151,3 @@ class CacheManagerCest
         ];
     }
 }
-

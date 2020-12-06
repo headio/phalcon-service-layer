@@ -13,10 +13,7 @@ namespace Headio\Phalcon\ServiceLayer\Filter;
 
 class GroupBy implements GroupByInterface
 {
-    /**
-     * @var string
-     */
-    protected $column;
+    private string $column;
 
     public function __construct(string $column)
     {

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Headio\Phalcon\ServiceLayer\Component;
 
 use Phalcon\Di\Injectable;
+use Phalcon\Helper\Json;
 use function microtime;
 use function is_null;
 use function sha1;
@@ -54,13 +55,12 @@ class CacheManager extends Injectable implements CacheManagerInterface
      */
     public function createKey(string $entityName, array $params) : string
     {
-        $key = ['version' => $this->fetchPrefix($entityName)];
-
         if (isset($params['di'])) {
             unset($params['di']);
         }
 
-        $params = array_merge($key, $params);
+        $prefix = ['version' => $this->fetchPrefix($entityName)];
+        $params = array_merge($prefix, $params);
 
         return $this->encodeKey($params);
     }
@@ -86,7 +86,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
         if (!$data) {
             $data = $callback();
             $config = $this->config->cache->modelCache;
-            $this->modelsCache->save($key, $data, (int) $config->lifetime);
+            $this->modelsCache->set($key, $data, (int) $config->lifetime);
         }
 
         return $data;
@@ -95,7 +95,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $key) : ?string
+    public function get(string $key)
     {
         return $this->modelsCache->get($key);
     }
@@ -105,7 +105,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
      */
     public function has(string $key) : bool
     {
-        return (bool) $this->modelsCache->exists($key);
+        return (bool) $this->modelsCache->has($key);
     }
 
     /**
@@ -114,10 +114,10 @@ class CacheManager extends Injectable implements CacheManagerInterface
     public function expire(array $entities) : void
     {
         foreach ($entities as $entity) {
-            if ($this->modelsCache->exists($entity)) {
+            if ($this->modelsCache->has($entity)) {
                 $this->delete($entity);
                 $config = $this->config->cache->modelCache;
-                $this->modelsCache->save($entity, microtime(true), (int) $config->lifetime);
+                $this->modelsCache->set($entity, microtime(true), (int) $config->lifetime);
             }
         }
     }
@@ -125,13 +125,13 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function store(string $key, $data, ?int $lifetime = null) : void
+    public function store(string $key, $data, ?int $lifetime = null) : bool
     {
         if (is_null($lifetime)) {
             $lifetime = $this->config->cache->modelCache->lifetime;
         }
 
-        $this->modelsCache->save($key, $data, $lifetime);
+        return $this->modelsCache->set($key, $data, $lifetime);
     }
 
     /**
@@ -139,7 +139,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
      */
     private function encodeKey(array $params) : string
     {
-        $json = json_encode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $json = Json::encode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         return sha1($json);
     }
@@ -147,14 +147,14 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * Fetch or create a prefix for the cache key.
      *
-     * @return string|float
+     * @return mixed
      */
     private function fetchPrefix(string $entityName)
     {
-        if (!$this->modelsCache->exists($entityName)) {
+        if (!$this->modelsCache->has($entityName)) {
             /** @var Phalcon\Config */
             $config = $this->config->cache->modelCache;
-            $this->modelsCache->save($entityName, microtime(true), (int) $config->lifetime);
+            $this->modelsCache->set($entityName, microtime(true), (int) $config->lifetime);
         }
 
         return $this->modelsCache->get($entityName);

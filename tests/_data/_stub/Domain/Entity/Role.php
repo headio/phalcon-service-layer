@@ -54,12 +54,12 @@ class Role extends AbstractEntity
      * @Identity
      * @Column(type="integer", nullable=false, column="id", length="10")
      */
-    public $id;
+    protected $id;
 
     /**
      * @Column(type="string", nullable=false, column="label", length="64")
      */
-    public $label;
+    protected $label;
 
     /**
      * Use trait for timestamp functionality.
@@ -93,6 +93,11 @@ class Role extends AbstractEntity
     public function getLabel() : ?string
     {
         return $this->label;
+    }
+
+    public function setLabel(string $val) : void
+    {
+        $this->label = $val;
     }
 
     /**

@@ -15,7 +15,7 @@ interface OrderByInterface
 {
     /**
      * The sort order direction keywords
-     * 
+     *
      * @var constant
      */
     public const ASC = 'ASC';
