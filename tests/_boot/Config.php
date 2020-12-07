@@ -21,7 +21,7 @@ return [
         'modelCache' => [
             'adapter' => 'libmemcached',
             'options' => [
-                'defaultSerializer' => 'Igbinary',
+                'defaultSerializer' => getenv('MEMCACHED_SERIALIZER'),
                 'lifetime' => 3600 * 24 * 30,
                 'prefix' => getenv('MEMCACHED_PREFIX_KEY'),
                 'servers' => [

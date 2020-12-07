@@ -18,6 +18,12 @@ git:
 matrix:
   fast_finish: true
 
+addons:
+  apt:
+    packages:
+      - gdb
+      - libsodium-dev
+
 cache:
   timeout: 604800
   directories:
@@ -26,6 +32,7 @@ cache:
 services:
   - mysql
   - memcached
+  - redis
 
 before_install:
   # db
@@ -43,7 +50,7 @@ before_install:
 install:
   - .ci/install-extensions.sh
   - .ci/install-phalcon.sh
-  - travis_retry composer update --no-interaction --no-progress --no-ansi --no-suggest
+  - travis_retry composer update --no-interaction --no-progress --no-ansi --no-suggest --ignore-platform-reqs
 
 before_script:
   - phpenv config-rm xdebug.ini
