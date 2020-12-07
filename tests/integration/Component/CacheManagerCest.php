@@ -31,7 +31,6 @@ class CacheManagerCest
         $entityName = get_class($this->entity);
         $service = $this->di->get('cacheManager');
         $result = $service->createKey($entityName, $this->_data()['criteria']);
-
         expect(is_string($result))->true();
         expect(strlen($result))->equals(40);
     }
@@ -127,17 +126,22 @@ class CacheManagerCest
         $data = function () {
             return $this->_data()['cacheVal'];
         };
+
+        // cached
         $service->fetch($key, $data, 60);
 
-        expect($service->get($key))->equals($this->_data()['cacheVal']);
+        expect($service->get($key))->equals($data());
+        
+        // Increments the cache key prefix for the entity; 
+        // does not delete the cached data.
+        $service->expire(
+            [
+                $entityName
+            ]
+        );
 
-        // Grab the existing key prefix for all data cached for the entity.
-        $prefix = $service->get($entityName);
-
-        // Increments the cache key prefix; does not delete the cached data.
-        $service->expire([$entityName]);
-
-        expect($service->get($entityName))->notEquals($prefix);
+        // expired on fetch
+        expect($service->get($this->_data()['versionPrefix']))->notSame($data());
     }
 
     /**
@@ -148,6 +152,7 @@ class CacheManagerCest
         return [
             'criteria' => ['label = :label:', 'order' => 'label', 'limit' => 10],
             'cacheVal' => 'Hello',
+            'versionPrefix' => 'StubDomainEntityUser'
         ];
     }
 }

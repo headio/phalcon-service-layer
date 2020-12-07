@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Stub\Service;
 
 use Phalcon\Annotations\Adapter\Memory;
+use Phalcon\Annotations\AnnotationsFactory;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
 
@@ -30,8 +31,8 @@ class Annotation implements ServiceProviderInterface
                 if ($config->debug) {
                     $service = new Memory();
                 } else {
-                    $adapter = 'Phalcon\\Annotations\\Adapter\\' . $config->annotations->adapter;
-                    $service = new $adapter($config->annotations->options->toArray());
+                    $factory = new AdapterFactory();
+                    $service = $factory->load($config->annotations);
                 }
 
                 return $service;

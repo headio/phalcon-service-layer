@@ -50,7 +50,7 @@ interface CacheManagerInterface
     public function get(string $key);
 
     /**
-     * Does data in the cache store exist for the key.
+     * Does data exist in the cache for the given key.
      */
     public function has(string $key) : bool;
 
@@ -65,7 +65,7 @@ interface CacheManagerInterface
     public function expire(array $entities) : void;
 
     /**
-     * Store data in the cache store.
+     * Store data in the cache.
      */
-    public function store(string $key, $data, ?int $lifetime = null) : bool;
+    public function store(string $key, $data, int $lifetime) : bool;
 }

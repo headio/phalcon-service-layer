@@ -11,11 +11,13 @@ declare(strict_types=1);
 
 namespace Stub\Service;
 
+use Phalcon\Cache\AdapterFactory;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model\MetaData\Memory;
+use Phalcon\Mvc\Model\MetaData\Stream;
 use Phalcon\Mvc\Model\MetaData\Strategy\Annotations as Strategy;
-
+use Phalcon\Storage\SerializerFactory;
 class ModelMetaData implements ServiceProviderInterface
 {
     /**
@@ -27,12 +29,18 @@ class ModelMetaData implements ServiceProviderInterface
             'modelsMetadata',
             function () {
                 $config = $this->get('config');
+                $serializerFactory = new SerializerFactory();
+                $adapterFactory = new AdapterFactory($serializerFactory);
 
                 if (!isset($config->metadata) || $config->debug) {
                     $service = new Memory();
                 } else {
                     $adapter = 'Phalcon\\Mvc\\Model\\MetaData\\' . $config->metadata->adapter;
-                    $service = new $adapter($config->metadata->options->toArray());
+                    $options = $config->metadata->options->toArray();
+                    $service = new $adapter(
+                        $adapterFactory,
+                        $options
+                    );
                 }
 
                 $service->setStrategy(new Strategy());

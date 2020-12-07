@@ -10,18 +10,18 @@
 
 return [
     'annotations' => [
-        'adapter' => 'Files',
+        'adapter' => 'stream',
         'options' => [
             'annotationsDir' => TEST_OUTPUT_DIR . 'Cache/Annotation/',
         ],
     ],
     'applicationPath' => 'src' . DIRECTORY_SEPARATOR,
     'cache' => [
+        'apply' => false,
         'modelCache' => [
-            'apply' => false,
-            'adapter' => 'Libmemcached',
+            'adapter' => 'libmemcached',
             'options' => [
-                'defaultSerializer' => 'Json',
+                'defaultSerializer' => 'Igbinary',
                 'lifetime' => 3600 * 24 * 30,
                 'prefix' => getenv('MEMCACHED_PREFIX_KEY'),
                 'servers' => [
@@ -59,7 +59,7 @@ return [
         DIRECTORY_SEPARATOR . 'Log' .
         DIRECTORY_SEPARATOR,
     'metadata' => [
-        'adapter' => 'Files',
+        'adapter' => 'Stream',
         'options' => [
             'metaDataDir' => TEST_OUTPUT_DIR . 'Cache/Metadata/',
         ],

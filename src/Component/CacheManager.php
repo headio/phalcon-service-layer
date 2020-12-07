@@ -44,8 +44,11 @@ class CacheManager extends Injectable implements CacheManagerInterface
      */
     public function createCacheParameters(string $entityName, array $params) : array
     {
+        /** @var Phalcon\Config */
+        $config = $this->config->cache->modelCache;
+
         return [
-            'lifetime' => (int) $this->config->cache->modelCache->lifetime,
+            'lifetime' => (int) $config->options->lifetime,
             'key' => $this->createKey($entityName, $params)
         ];
     }
@@ -59,7 +62,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
             unset($params['di']);
         }
 
-        $prefix = ['version' => $this->fetchPrefix($entityName)];
+        $prefix = ['version' => $this->fetchVersion($entityName)];
         $params = array_merge($prefix, $params);
 
         return $this->encodeKey($params);
@@ -86,7 +89,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
         if (!$data) {
             $data = $callback();
             $config = $this->config->cache->modelCache;
-            $this->modelsCache->set($key, $data, (int) $config->lifetime);
+            $this->modelsCache->set($key, $data, (int) $config->options->lifetime);
         }
 
         return $data;
@@ -105,19 +108,29 @@ class CacheManager extends Injectable implements CacheManagerInterface
      */
     public function has(string $key) : bool
     {
-        return (bool) $this->modelsCache->has($key);
+        return $this->modelsCache->has($key);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function expire(array $entities) : void
+    public function expire(array $collection) : void
     {
-        foreach ($entities as $entity) {
-            if ($this->modelsCache->has($entity)) {
-                $this->delete($entity);
+        foreach ($collection as $item) {
+            /** @var string */
+            $key = $this->normalizeKey($item);
+
+            if ($this->modelsCache->has($key)) {
+                /** @var bool */
+                $result = $this->delete($key);
                 $config = $this->config->cache->modelCache;
-                $this->modelsCache->set($entity, microtime(true), (int) $config->lifetime);
+                /** @var bool */
+                $result = $this->store(
+                    $key,
+                    microtime(true),
+                    (int) $config->options->lifetime
+                );
+                unset($key);
             }
         }
     }
@@ -125,12 +138,8 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function store(string $key, $data, ?int $lifetime = null) : bool
+    public function store(string $key, $data, int $lifetime) : bool
     {
-        if (is_null($lifetime)) {
-            $lifetime = $this->config->cache->modelCache->lifetime;
-        }
-
         return $this->modelsCache->set($key, $data, $lifetime);
     }
 
@@ -145,18 +154,38 @@ class CacheManager extends Injectable implements CacheManagerInterface
     }
 
     /**
-     * Fetch or create a prefix for the cache key.
+     * Fetch or create a cache key version prefix for the entity.
      *
      * @return mixed
      */
-    private function fetchPrefix(string $entityName)
+    private function fetchVersion(string $entityName)
     {
-        if (!$this->modelsCache->has($entityName)) {
+        /** @var string */
+        $key = $this->normalizeKey($entityName);
+
+        if (!$this->modelsCache->has($key)) {
             /** @var Phalcon\Config */
             $config = $this->config->cache->modelCache;
-            $this->modelsCache->set($entityName, microtime(true), (int) $config->lifetime);
+            $this->store(
+                $key,
+                microtime(true),
+                (int) $config->options->lifetime
+            );
         }
 
-        return $this->modelsCache->get($entityName);
+        return $this->modelsCache->get($key);
+    }
+
+    /**
+     * Normalize the key version prefix for the entity 
+     * to satisify Phalcon's cache implementation.
+     */
+    private function normalizeKey(string $key) : string
+    {
+        if (false !== strpos($key, '\\')) {
+            $key = preg_replace('/[^a-zA-Z0-9=\s—–-]+/u', '', $key);
+        }
+
+        return $key;
     }
 }

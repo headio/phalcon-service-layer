@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Stub\Service;
 
+use Phalcon\Cache\CacheFactory;
+use Phalcon\Cache\AdapterFactory;
 use Phalcon\Storage\SerializerFactory;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
@@ -25,11 +27,19 @@ class ModelCache implements ServiceProviderInterface
         $di->set(
             'modelsCache',
             function () {
-                $config = $this->get('config');
+
+                $config = $this->get('config')->cache->modelCache;
                 $serializerFactory = new SerializerFactory();
-                $adapter = 'Phalcon\\Cache\\Adapter\\' . $config->cache->modelCache->adapter;
-                $options = $config->cache->modelCache->options->toArray();
-                $service = new $adapter($serializerFactory, $options);
+                $adapterFactory = new AdapterFactory(
+                    $serializerFactory,
+                    [
+                        'defaultSerializer' => $config->options->defaultSerializer,
+                        'lifetime' => $config->options->optionslifetime
+                    ]
+                );
+                $cacheFactory = new CacheFactory($adapterFactory);
+                /** @var Psr\SimpleCache\CacheInterface */
+                $service = $cacheFactory->load($config);
 
                 return $service;
             }
