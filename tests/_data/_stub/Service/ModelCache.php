@@ -34,7 +34,7 @@ class ModelCache implements ServiceProviderInterface
                     $serializerFactory,
                     [
                         'defaultSerializer' => $config->options->defaultSerializer,
-                        'lifetime' => $config->options->optionslifetime
+                        'lifetime' => $config->options->lifetime
                     ]
                 );
                 $cacheFactory = new CacheFactory($adapterFactory);

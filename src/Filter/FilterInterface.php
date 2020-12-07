@@ -189,7 +189,7 @@ interface FilterInterface
     public function lte(string $column, $value, string $type = Condition::AND) : FilterInterface;
 
     /**
-     * Append a nagation equality condition to the filter criteria.
+     * Append a negation equality condition to the filter criteria.
      */
     public function notEq(string $column, $value, string $type = Condition::AND) : FilterInterface;
 

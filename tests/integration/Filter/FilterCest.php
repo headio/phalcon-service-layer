@@ -160,7 +160,7 @@ class FilterCest
 
     public function canAppendANotEqualCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a nagation equality condition to the filter criteria');
+        $I->wantToTest('Appending a negation equality condition to the filter criteria');
 
         $filter = new Filter();
         $filter->notEq(
