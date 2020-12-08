@@ -36,7 +36,7 @@ before_install:
 
 install:
   - git clone -q --depth=1 https://github.com/phalcon/cphalcon.git -b ${PHALCON_VERSION}
-  - '(cd cphalcon/build; bash install &>/dev/null && phpenv config-add ../.ci/10-phalcon.ini &> /dev/null && cd ../..;)'
+  - '(cd cphalcon/build; bash install &>/dev/null && phpenv config-add ../../.ci/10-phalcon.ini &> /dev/null && cd ../..;)'
   - travis_retry composer update --no-interaction --no-progress --no-ansi --no-suggest
 
 before_script:
