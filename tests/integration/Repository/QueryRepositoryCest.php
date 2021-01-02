@@ -16,7 +16,6 @@ use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Headio\Phalcon\ServiceLayer\Exception\NotFoundException;
 use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Db\Column;
-use Phalcon\Mvc\Model\CriteriaInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Resultset\Simple;
 use Phalcon\Mvc\Model\Query\Builder;
@@ -120,7 +119,7 @@ class QueryRepositoryCest
         );
 
         $filter = $this->repository->getQueryFilter()
-            ->offset($this->_data()['offsetId'])
+            ->offset($this->_data()['offsetId'], FilterInterface::GREATER_THAN)
             ->groupBy(['label'])
             ->orderBy('id', 'ASC');
         $criteria = $this->repository->createCriteria();
@@ -230,7 +229,7 @@ class QueryRepositoryCest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'alias' => 'roles',

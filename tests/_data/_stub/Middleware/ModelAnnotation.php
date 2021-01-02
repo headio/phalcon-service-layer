@@ -24,7 +24,7 @@ class ModelAnnotation extends Injectable
     /**
      * Process model annotations and pass to modal manager.
      */
-    public function afterInitialize(EventInterface $event, ManagerInterface $manager, ModelInterface $model) : string
+    public function afterInitialize(EventInterface $event, ManagerInterface $manager, ModelInterface $model): string
     {
         $reflector = $this->annotations->get($model);
         $annotations = $reflector->getClassAnnotations();

@@ -28,9 +28,9 @@ class Integration extends Module
     }
 
     /**
- 	 * Get inaccessible class property
- 	 */
-    public function getClassProperty(string $class, string $name) : ?ReflectionProperty
+     * Get inaccessible class property
+     */
+    public function getClassProperty(string $class, string $name): ?ReflectionProperty
     {
         $rc = new ReflectionClass($class);
 
@@ -39,21 +39,21 @@ class Integration extends Module
         }
 
         if ($rc->hasProperty($name)) {
-            $prop = $rc->getProperty($name);	
+            $prop = $rc->getProperty($name);
             $prop->setAccessible(true);
             return $prop;
         }
 
         return null;
     }
-  
+
     /**
      * Get inaccessible class method
-     * 
+     *
      * @param object
      * @param string
      */
-    public function getClassMethod($class, string $method) : ?ReflectionMethod
+    public function getClassMethod($class, string $method): ?ReflectionMethod
     {
         $rc = new ReflectionClass($class);
 

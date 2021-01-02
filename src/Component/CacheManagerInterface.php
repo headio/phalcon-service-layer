@@ -18,22 +18,22 @@ interface CacheManagerInterface
     /**
      * Append cache parameter to the existing query criteria.
      */
-    public function appendCacheParameter(string $entityName, array $params) : array;
+    public function appendCacheParameter(string $entityName, array $params): array;
 
     /**
      * Create the cache parameters.
      */
-    public function createCacheParameters(string $entityName, array $params) : array;
+    public function createCacheParameters(string $entityName, array $params): array;
 
     /**
      * Create a cache key based on the entity name and query parameters.
      */
-    public function createKey(string $entityName, array $params) : string;
+    public function createKey(string $entityName, array $params): string;
 
     /**
      * Deletes a value from the cache by its key.
      */
-    public function delete(string $key) : bool;
+    public function delete(string $key): bool;
 
     /**
      * Fetch data from cache or query storage (and cache).
@@ -52,7 +52,7 @@ interface CacheManagerInterface
     /**
      * Does data exist in the cache for the given key.
      */
-    public function has(string $key) : bool;
+    public function has(string $key): bool;
 
     /**
      * Expire all cache keys for entities.
@@ -62,10 +62,10 @@ interface CacheManagerInterface
      * against a key representing the entity class name), see
      * fetchPrefix() for implementation.
      */
-    public function expire(array $entities) : void;
+    public function expire(array $entities): void;
 
     /**
      * Store data in the cache.
      */
-    public function store(string $key, $data, int $lifetime) : bool;
+    public function store(string $key, $data, int $lifetime): bool;
 }

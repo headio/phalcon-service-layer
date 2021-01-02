@@ -14,7 +14,6 @@ namespace Integration\Filter;
 use Headio\Phalcon\ServiceLayer\Filter\ConditionInterface;
 use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Db\Column;
-use Phalcon\Mvc\Model\Criteria;
 use Stub\Domain\Filter\Role as Filter;
 use Stub\Domain\Repository\Role as Repository;
 use ArrayIterator;
@@ -324,7 +323,7 @@ class FilterCest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'cond' => [

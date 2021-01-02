@@ -33,7 +33,7 @@ class User extends Injectable implements ServiceInterface
         $this->repository = $userRepository;
     }
 
-    public function findFirstByEmail(string $email) : EntityInterface
+    public function findFirstByEmail(string $email): EntityInterface
     {
         $filter = $this->repository->getQueryFilter()->setEmail($email);
 
@@ -43,26 +43,26 @@ class User extends Injectable implements ServiceInterface
     /**
      * Fetch an entity by primary key
      */
-    public function getEntity(int $id) : EntityInterface
+    public function getEntity(int $id): EntityInterface
     {
         return $this->repository->findByPk($id);
     }
 
-    public function addModel(array $data) : bool
+    public function addModel(array $data): bool
     {
         $entityName = $this->repository->getEntity();
-        $entity = new $entityName;
+        $entity = new $entityName();
         $entity->assign($data);
 
         return $this->insert($entity);
     }
 
-    public function deleteModel(EntityInterface $entity) : bool
+    public function deleteModel(EntityInterface $entity): bool
     {
         return $this->delete($entity);
     }
 
-    public function updateModel(EntityInterface $entity) : bool
+    public function updateModel(EntityInterface $entity): bool
     {
         return $this->update($entity);
     }
@@ -70,7 +70,7 @@ class User extends Injectable implements ServiceInterface
     /**
      * Return the related roles for a given entity
      */
-    public function getRoles(EntityInterface $entity) : ResultsetInterface
+    public function getRoles(EntityInterface $entity): ResultsetInterface
     {
         $filter = $this->roleRepository->getQueryFilter();
 
@@ -82,7 +82,7 @@ class User extends Injectable implements ServiceInterface
      *
      * @throws Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function synchronizeRoles(EntityInterface $entity, array $keys) : bool
+    public function synchronizeRoles(EntityInterface $entity, array $keys): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);
@@ -105,7 +105,7 @@ class User extends Injectable implements ServiceInterface
      *
      * @throws Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function linkRoles(EntityInterface $entity, array $keys) : bool
+    public function linkRoles(EntityInterface $entity, array $keys): bool
     {
         if ($this->roleRepository->link('roles', $entity, $keys)) {
             return $this->update($entity);
@@ -119,7 +119,7 @@ class User extends Injectable implements ServiceInterface
      *
      * @throws Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function unlinkRoles(EntityInterface $entity, array $keys) : bool
+    public function unlinkRoles(EntityInterface $entity, array $keys): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);

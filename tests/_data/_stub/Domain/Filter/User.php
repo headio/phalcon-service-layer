@@ -20,24 +20,24 @@ class User extends Filter
 
     private ?int $primaryKey = null;
 
-    public function getEmail() : ?string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $val) : FilterInterface
+    public function setEmail(string $val): FilterInterface
     {
         $this->email = $val;
 
         return $this->eq('email', $val);
     }
 
-    public function getPrimaryKey() : ?int
+    public function getPrimaryKey(): ?int
     {
         return $this->primaryKey;
     }
 
-    public function setPrimaryKey(int $val) : FilterInterface
+    public function setPrimaryKey(int $val): FilterInterface
     {
         $this->primaryKey = $val;
 

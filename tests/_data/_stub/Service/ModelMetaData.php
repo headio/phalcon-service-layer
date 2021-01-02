@@ -18,12 +18,13 @@ use Phalcon\Mvc\Model\MetaData\Memory;
 use Phalcon\Mvc\Model\MetaData\Stream;
 use Phalcon\Mvc\Model\MetaData\Strategy\Annotations as Strategy;
 use Phalcon\Storage\SerializerFactory;
+
 class ModelMetaData implements ServiceProviderInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function register(DiInterface $di) : void
+    public function register(DiInterface $di): void
     {
         $di->setShared(
             'modelsMetadata',

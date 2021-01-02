@@ -16,5 +16,5 @@ interface GroupByInterface
     /**
      * Return the group by column constraint
      */
-    public function getColumn() : string;
+    public function getColumn(): string;
 }

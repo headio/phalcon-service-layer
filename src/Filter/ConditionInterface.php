@@ -19,22 +19,23 @@ interface ConditionInterface
      * @var constants
      */
     public const AND = 'AND';
+
     public const OR = 'OR';
 
     /**
      * Return the condition column
      */
-    public function getColumn() : string;
+    public function getColumn(): string;
 
     /**
      * Return the condition operator
      */
-    public function getOperator() : string;
+    public function getOperator(): string;
 
     /**
      * Return the condition type
      */
-    public function getType() : string;
+    public function getType(): string;
 
     /**
      * Return the condition value

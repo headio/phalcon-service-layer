@@ -11,7 +11,8 @@ declare(strict_types=1);
 
 namespace Unit\Entity;
 
-use Headio\Phalcon\ServiceLayer\Entity\{ AbstractEntity, EntityInterface };
+use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
+use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Phalcon\Db\Column;
 use Stub\Domain\Entity\Role as Entity;
 use Module\UnitTest;
@@ -20,36 +21,36 @@ class EntityTest extends UnitTest
 {
     private $entity;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
         $this->entity = new Entity();
     }
 
-    protected function after() : void
+    protected function after(): void
     {
         parent::after();
     }
 
-    public function testInheritance() : void
+    public function testInheritance(): void
     {
         $this->specify(
-            'Entity should inherit expected abstract entity', 
-            function() {
+            'Entity should inherit expected abstract entity',
+            function () {
                 expect($this->entity)->isInstanceOf(AbstractEntity::class);
             }
         );
 
         $this->specify(
-            'Entity should implement expected interface', 
-            function() {
+            'Entity should implement expected interface',
+            function () {
                 expect($this->entity)->isInstanceOf(EntityInterface::class);
             }
         );
     }
 
-    public function testGetPrimarykey() : void
+    public function testGetPrimarykey(): void
     {
         $this->specify(
             'Entity should return expected primary key attribute',
@@ -59,7 +60,7 @@ class EntityTest extends UnitTest
         );
     }
 
-    public function testGetPropertyBindType() : void
+    public function testGetPropertyBindType(): void
     {
         $this->specify(
             'Entity should return expected attribute bind type',
@@ -72,7 +73,7 @@ class EntityTest extends UnitTest
     /**
      * Return test data
      */
-    protected function _data() : array
+    protected function _data(): array
     {
         return [
             'pk' => 'id',

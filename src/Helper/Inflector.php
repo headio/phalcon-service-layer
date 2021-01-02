@@ -21,7 +21,7 @@ class Inflector
     /**
      * Return a camelized syntax string.
      */
-    public static function camelize(string $str) : string
+    public static function camelize(string $str): string
     {
         return str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $str)));
     }
@@ -30,7 +30,7 @@ class Inflector
      * Return a variablized syntax string; similiar to a camelized string,
      * but returns the first letter in lowercase.
      */
-    public static function variablize(string $str) : string
+    public static function variablize(string $str): string
     {
         $str = ucwords(static::camelize($str));
 

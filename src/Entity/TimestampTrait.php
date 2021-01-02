@@ -31,7 +31,7 @@ trait TimestampTrait
     /**
      * Get created
      */
-    public function getCreated() : DateTime
+    public function getCreated(): DateTime
     {
         return new DateTime("@{$this->created}");
     }
@@ -39,7 +39,7 @@ trait TimestampTrait
     /**
      * Get last modified
      */
-    public function getModified()  : DateTime
+    public function getModified(): DateTime
     {
         return new DateTime("@{$this->modified}");
     }
@@ -47,7 +47,7 @@ trait TimestampTrait
     /**
      * Set created
      */
-    public function setCreated(DateTime $input) : void
+    public function setCreated(DateTime $input): void
     {
         $this->created = $input->getTimestamp();
     }
@@ -55,7 +55,7 @@ trait TimestampTrait
     /**
      * Set modified
      */
-    public function setModified(DateTime $input) : void
+    public function setModified(DateTime $input): void
     {
         $this->modified = $input->getTimestamp();
     }

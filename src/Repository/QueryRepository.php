@@ -11,8 +11,11 @@ declare(strict_types=1);
 
 namespace Headio\Phalcon\ServiceLayer\Repository;
 
-use Headio\Phalcon\ServiceLayer\Exception;
 use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
+use Headio\Phalcon\ServiceLayer\Exception\BadMethodCallException;
+use Headio\Phalcon\ServiceLayer\Exception\NotFoundException;
+use Headio\Phalcon\ServiceLayer\Exception\OutOfRangeException;
+use Headio\Phalcon\ServiceLayer\Exception\InvalidArgumentException;
 use Headio\Phalcon\ServiceLayer\Filter\ConditionInterface;
 use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Headio\Phalcon\ServiceLayer\Helper\Inflector;
@@ -21,10 +24,7 @@ use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
-use Phalcon\Db\Column;
 use Phalcon\Di\Injectable;
-use function array_key_exists;
-use function array_flip;
 use function class_exists;
 use function current;
 use function get_class;
@@ -41,7 +41,7 @@ use function substr;
 abstract class QueryRepository extends Injectable implements RepositoryInterface
 {
     /**
-     * Am array representation of query criteria binding parameter types.
+     * An array representation of query criteria binding parameter types.
      */
     protected array $bindTypes = [];
 
@@ -60,7 +60,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
      * inaccessible methods and possible eventual delegation.
      *
      * @return mixed
-     * @throws Exception\BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function __call(string $method, array $args)
     {
@@ -74,7 +74,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 return $this->getRelated($prop, ...$args);
                 break;
             default:
-                throw new Exception\BadMethodCallException(
+                throw new BadMethodCallException(
                     sprintf('Repository method %s not implemented.', $method),
                     405
                 );
@@ -85,7 +85,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function applyCache(QueryInterface $query, CriteriaInterface $criteria) : void
+    public function applyCache(QueryInterface $query, CriteriaInterface $criteria): void
     {
         $cacheParams = $this->cacheManager->createCacheParameters(
             $this->getEntity(),
@@ -97,7 +97,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function applyFilter(CriteriaInterface $criteria, FilterInterface $filter) : void
+    public function applyFilter(CriteriaInterface $criteria, FilterInterface $filter): void
     {
         $entityName = $this->getEntity();
 
@@ -108,9 +108,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         if ($filter->hasOffset()) {
             $filter->addCondition(
                 (new $entityName())->getPrimaryKey(),
-                $filter->getOffset(),
-                FilterInterface::GREATER_THAN,
-                ConditionInterface::AND
+                ...$filter->getOffset()
             );
         }
 
@@ -129,7 +127,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 $criteria->{$callable}($expression);
                 if (!is_null($collection->current()->getValue())) {
                     $criteria->bind([$placeholder => $collection->current()->getValue()], true);
-                    $this->bindTypes[$placeholder] = (new $entityName)->getPropertyBindType($collection->current()->getColumn());
+                    $this->bindTypes[$placeholder] = (new $entityName())->getPropertyBindType($collection->current()->getColumn());
                 }
                 $collection->next();
             }
@@ -175,7 +173,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function count(FilterInterface $filter) : int
+    public function count(FilterInterface $filter): int
     {
         $criteria = $this
             ->createCriteria()
@@ -188,7 +186,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createCriteria() : CriteriaInterface
+    public function createCriteria(): CriteriaInterface
     {
         $entity = $this->getEntity();
 
@@ -198,7 +196,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createQuery(array $params = null, ?string $alias = null) : BuilderInterface
+    public function createQuery(array $params = null, ?string $alias = null): BuilderInterface
     {
         $queryBuilder = $this->modelsManager->createBuilder($params);
 
@@ -240,7 +238,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function find(FilterInterface $filter) : ResultsetInterface
+    public function find(FilterInterface $filter): ResultsetInterface
     {
         $criteria = $this->createCriteria();
         $this->applyFilter($criteria, $filter);
@@ -256,10 +254,10 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function findByPk(int $id) : EntityInterface
+    public function findByPk(int $id): EntityInterface
     {
         $entity = $this->getEntity();
-        $filter = $this->getQueryFilter()->eq((new $entity)->getPrimaryKey(), $id);
+        $filter = $this->getQueryFilter()->eq((new $entity())->getPrimaryKey(), $id);
 
         return $this->findFirst($filter);
     }
@@ -267,9 +265,9 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      *
-     * @throws Exception\NotFoundException
+     * @throws NotFoundException
      */
-    public function findFirst(FilterInterface $filter) : EntityInterface
+    public function findFirst(FilterInterface $filter): EntityInterface
     {
         $criteria = $this->createCriteria();
         $this->applyFilter($criteria, $filter);
@@ -282,7 +280,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         $model = $query->execute();
 
         if (!$model instanceof EntityInterface) {
-            throw new Exception\NotFoundException('404 Not Found');
+            throw new NotFoundException('404 Not Found');
         }
 
         return $model;
@@ -291,7 +289,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function findFirstBy(string $property, $value) : EntityInterface
+    public function findFirstBy(string $property, $value): EntityInterface
     {
         $filter = $this->getQueryFilter()->eq($property, $value);
 
@@ -301,14 +299,14 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function getEntity(bool $unqualified = false) : string
+    public function getEntity(bool $unqualified = false): string
     {
         $fqcn = $this->getEntityName();
 
         if (!class_exists($fqcn)) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Entity %s does not exist.', $fqcn)
             );
         }
@@ -323,16 +321,16 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      *
-     * @throws Exception\OutOfRangeException
+     * @throws OutOfRangeException
      */
-    public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter) : ResultsetInterface
+    public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter): ResultsetInterface
     {
         $entityName = get_class($entity);
         /**
          * Stop execution if the alias is unknown.
          */
         if (false === $this->modelsManager->getRelationByAlias($entityName, $alias)) {
-            throw new Exception\OutOfRangeException(
+            throw new OutOfRangeException(
                 sprintf(
                     "Missing alias '%s' in '%s' entity relationship definition.",
                     $alias,
@@ -362,7 +360,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getUnrelated(ResultsetInterface $resultset, FilterInterface $filter) : ResultsetInterface
+    public function getUnrelated(ResultsetInterface $resultset, FilterInterface $filter): ResultsetInterface
     {
         if ($resultset->count() <> 0) {
             $keys = [];
@@ -373,7 +371,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
             }
 
             $entityName = $this->getEntityName();
-            $filter->notIn((new $entityName)->getPrimaryKey(), $keys);
+            $filter->notIn((new $entityName())->getPrimaryKey(), $keys);
         }
 
         return $this->find($filter);
@@ -382,7 +380,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * Return a condition expression in phalcon's `phql` syntax.
      */
-    private function buildConditionExpression(ConditionInterface $condition, string $placeholder, ?string $alias = null) : string
+    private function buildConditionExpression(ConditionInterface $condition, string $placeholder, ?string $alias = null): string
     {
         $useAlias = !empty($alias) ?? false;
 
@@ -441,10 +439,10 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * Return the fully qualified class name for the entity managed by the repository.
      */
-    abstract protected function getEntityName() : string;
+    abstract protected function getEntityName(): string;
 
     /**
      * Return the query filter to be used with the repository.
      */
-    abstract public function getQueryFilter() : FilterInterface;
+    abstract public function getQueryFilter(): FilterInterface;
 }

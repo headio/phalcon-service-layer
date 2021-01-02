@@ -36,7 +36,7 @@ trait PublishingTrait
     /**
      * Get published
      */
-    public function getPublished() : bool
+    public function getPublished(): bool
     {
         return (bool) $this->published;
     }
@@ -44,7 +44,7 @@ trait PublishingTrait
     /**
      * Get publish from
      */
-    public function getPublishFrom() : ?DateTime
+    public function getPublishFrom(): ?DateTime
     {
         if (!empty($this->publish_from)) {
             return new DateTime("@{$this->publish_from}");
@@ -56,7 +56,7 @@ trait PublishingTrait
     /**
      * Get publish to
      */
-    public function getPublishTo() : ?DateTime
+    public function getPublishTo(): ?DateTime
     {
         if (!empty($this->publish_to)) {
             return new DateTime("@{$this->publish_to}");
@@ -68,7 +68,7 @@ trait PublishingTrait
     /**
      * Check whether the model is published.
      */
-    public function isPublished() : bool
+    public function isPublished(): bool
     {
         if (!$this->getPublished()) {
             return false;
@@ -88,7 +88,7 @@ trait PublishingTrait
     /**
      * Set published
      */
-    public function setPublished(bool $input) : void
+    public function setPublished(bool $input): void
     {
         $this->published = $input;
     }
@@ -98,7 +98,7 @@ trait PublishingTrait
      *
      * @param DateTime|string
      */
-    public function setPublishFrom($input) : void
+    public function setPublishFrom($input): void
     {
         if ($input instanceof DateTime) {
             $this->publish_from = $input->getTimestamp();
@@ -117,7 +117,7 @@ trait PublishingTrait
      *
      * @param DateTime|string
      */
-    public function setPublishTo($input) : void
+    public function setPublishTo($input): void
     {
         if ($input instanceof DateTime) {
             $this->publish_to = $input->getTimestamp();

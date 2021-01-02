@@ -11,23 +11,24 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\ServiceLayer\Filter\{ OrderBy, OrderByInterface };
+use Headio\Phalcon\ServiceLayer\Filter\OrderBy;
+use Headio\Phalcon\ServiceLayer\Filter\OrderByInterface;
 use Mockery;
 use Module\UnitTest;
 
 class OrderByTest extends UnitTest
 {
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateOrderByConstraintUsingDefaultDirection() : void
+    public function testCanCreateOrderByConstraintUsingDefaultDirection(): void
     {
         $this->specify(
             'Can create an order by constraint using the default direction',
@@ -52,7 +53,7 @@ class OrderByTest extends UnitTest
         );
     }
 
-    public function testCanCreateOrderByConstraintUsingDirection() : void
+    public function testCanCreateOrderByConstraintUsingDirection(): void
     {
         $this->specify(
             'Can create an order by constraint using explicit direction',
@@ -61,7 +62,7 @@ class OrderByTest extends UnitTest
                     OrderBy::class,
                     OrderByInterface::class,
                     [
-                        $this->_data()['column'], 
+                        $this->_data()['column'],
                         OrderByInterface::DESC
                     ]
                 );
@@ -80,7 +81,7 @@ class OrderByTest extends UnitTest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'column' => 'name',

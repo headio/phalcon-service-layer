@@ -11,33 +11,35 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\ServiceLayer\Filter\{ Condition, ConditionInterface, FilterInterface };
+use Headio\Phalcon\ServiceLayer\Filter\Condition;
+use Headio\Phalcon\ServiceLayer\Filter\ConditionInterface;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Mockery;
 use Module\UnitTest;
 
 class ConditionTest extends UnitTest
 {
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateConditionWithoutConditionOperator() : void
+    public function testCanCreateConditionUsingDefaultConditionType(): void
     {
         $this->specify(
-            'Can create a condition using default condition operator',
+            'Can create a condition using the default condition type',
             function () {
                 $mock = Mockery::mock(
                     Condition::class,
                     ConditionInterface::class,
                     [
-                        $this->_data()['attribute'], 
-                        $this->_data()['value'], 
+                        $this->_data()['attribute'],
+                        $this->_data()['value'],
                         FilterInterface::EQUAL
                     ]
                 );
@@ -54,18 +56,46 @@ class ConditionTest extends UnitTest
         );
     }
 
-    public function testCanCreateConditionWithOrOperator() : void
+    public function testCanCreateConditionUsingAndConditionType(): void
     {
         $this->specify(
-            'Can create a condition using an explicit condition operator',
+            'Can create a condition using the "AND" condition type',
             function () {
                 $mock = Mockery::mock(
                     Condition::class,
                     ConditionInterface::class,
                     [
-                        $this->_data()['attribute'], 
-                        $this->_data()['value'], 
-                        FilterInterface::EQUAL, 
+                        $this->_data()['attribute'],
+                        $this->_data()['value'],
+                        FilterInterface::EQUAL,
+                        ConditionInterface::AND
+                    ]
+                );
+
+                $mock->allows()->getColumn()->andReturn($this->_data()['attribute']);
+                $mock->allows()->getValue()->andReturn($this->_data()['value']);
+                $mock->allows()->getOperator()->andReturn(FilterInterface::EQUAL);
+                $mock->allows()->getType()->andReturn(ConditionInterface::AND);
+
+                expect($mock->getColumn())->equals($this->_data()['attribute']);
+                expect($mock->getOperator())->equals($this->_data()['filterOp']);
+                expect($mock->getType())->equals($this->_data()['condAndOp']);
+            }
+        );
+    }
+
+    public function testCanCreateConditionUsingOrConditionType(): void
+    {
+        $this->specify(
+            'Can create a condition using the "OR" condition type',
+            function () {
+                $mock = Mockery::mock(
+                    Condition::class,
+                    ConditionInterface::class,
+                    [
+                        $this->_data()['attribute'],
+                        $this->_data()['value'],
+                        FilterInterface::EQUAL,
                         ConditionInterface::OR
                     ]
                 );
@@ -82,19 +112,19 @@ class ConditionTest extends UnitTest
         );
     }
 
-    public function testCanCreateConditionWithInvalidConditionOperator() : void
+    public function testCanCreateConditionWithInvalidConditionType(): void
     {
         $this->specify(
-            'Can create a condition with an invalid condition operator',
+            'Can create a condition with an invalid condition type',
             function () {
                 $operator = FilterInterface::EQUAL;
                 $mock = Mockery::mock(
                     Condition::class,
                     ConditionInterface::class,
                     [
-                        $this->_data()['attribute'], 
-                        $this->_data()['value'],  
-                        FilterInterface::EQUAL, 
+                        $this->_data()['attribute'],
+                        $this->_data()['value'],
+                        FilterInterface::EQUAL,
                         'bla'
                     ]
                 );
@@ -114,7 +144,7 @@ class ConditionTest extends UnitTest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'attribute' => 'name',

@@ -11,23 +11,24 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\ServiceLayer\Filter\{ GroupBy, GroupByInterface };
+use Headio\Phalcon\ServiceLayer\Filter\GroupBy;
+use Headio\Phalcon\ServiceLayer\Filter\GroupByInterface;
 use Mockery;
 use Module\UnitTest;
 
 class GroupByTest extends UnitTest
 {
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateGroupByConstraint() : void
+    public function testCanCreateGroupByConstraint(): void
     {
         $this->specify(
             'Can create a group by query constraint',
@@ -50,7 +51,7 @@ class GroupByTest extends UnitTest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'attribute' => 'name',

@@ -22,12 +22,11 @@ class ModelCache implements ServiceProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function register(DiInterface $di) : void
+    public function register(DiInterface $di): void
     {
         $di->set(
             'modelsCache',
             function () {
-
                 $config = $this->get('config')->cache->modelCache;
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory(

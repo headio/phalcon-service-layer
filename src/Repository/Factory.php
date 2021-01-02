@@ -27,7 +27,7 @@ class Factory implements FactoryInterface
      *
      * @throws InvalidArgumentException|RuntimeException
      */
-    public static function create(string $class, bool $cache) : RepositoryInterface
+    public static function create(string $class, bool $cache): RepositoryInterface
     {
         if (!class_exists($class)) {
             throw new InvalidArgumentException(

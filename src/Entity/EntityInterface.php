@@ -19,15 +19,15 @@ interface EntityInterface
     /**
      * Return the entity primary key attribute.
      */
-    public function getPrimaryKey() : string;
+    public function getPrimaryKey(): string;
 
     /**
      * Return the property binding type for a given property.
      */
-    public function getPropertyBindType(string $property) : int;
+    public function getPropertyBindType(string $property): int;
 
     /**
      * Return the model validation errors as an array representation.
      */
-    public function getValidationErrors() : array;
+    public function getValidationErrors(): array;
 }

@@ -20,12 +20,12 @@ class User extends QueryRepository implements UserInterface
 {
     use RelationshipTrait;
 
-    public function getEntityName() : string
+    public function getEntityName(): string
     {
         return 'Stub\\Domain\\Entity\\User';
     }
 
-    public function getQueryFilter() : FilterInterface
+    public function getQueryFilter(): FilterInterface
     {
         return new Filter();
     }

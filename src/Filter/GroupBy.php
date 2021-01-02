@@ -23,7 +23,7 @@ class GroupBy implements GroupByInterface
     /**
      * {@inheritDoc}
      */
-    public function getColumn() : string
+    public function getColumn(): string
     {
         return $this->column;
     }

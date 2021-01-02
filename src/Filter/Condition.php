@@ -42,7 +42,7 @@ class Condition implements ConditionInterface
     /**
      * {@inheritDoc}
      */
-    public function getColumn() : string
+    public function getColumn(): string
     {
         return $this->column;
     }
@@ -50,7 +50,7 @@ class Condition implements ConditionInterface
     /**
      * {@inheritDoc}
      */
-    public function getOperator() : string
+    public function getOperator(): string
     {
         return $this->operator;
     }
@@ -58,7 +58,7 @@ class Condition implements ConditionInterface
     /**
      * {@inheritDoc}
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }

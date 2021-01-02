@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *
@@ -32,19 +32,19 @@ class EntityCest
         $I->wantTo('Return the entity validation errors.');
 
         $entityName = $this->repository->getEntity();
-        $entity = new $entityName;
+        $entity = new $entityName();
         $entity->assign(
             $this->getData()
         );
 
         try {
             $this->insert($entity);
-        } catch(ValidationFailed $e) {
+        } catch (ValidationFailed $e) {
             $result = $entity->getValidationErrors();
 
             expect_that(is_array($result));
 
-            expect($result)->hasKey('email');           
+            expect($result)->hasKey('email');
         }
     }
 
@@ -54,7 +54,7 @@ class EntityCest
      *
      * @throws TransactionFailed
      */
-    private function insert(EntityInterface $entity) : bool
+    private function insert(EntityInterface $entity): bool
     {
         $transaction = $this->di->get('transactionManager')->get();
         $entity->setTransaction($transaction);

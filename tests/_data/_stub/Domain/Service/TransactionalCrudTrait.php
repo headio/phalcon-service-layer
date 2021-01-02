@@ -29,7 +29,7 @@ trait TransactionalCrudTrait
      *
      * @throws TransactionFailed
      */
-    protected function delete(EntityInterface $entity) : bool
+    protected function delete(EntityInterface $entity): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);
@@ -49,7 +49,7 @@ trait TransactionalCrudTrait
      *
      * @throws TransactionFailed
      */
-    protected function insert(EntityInterface $entity) : bool
+    protected function insert(EntityInterface $entity): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);
@@ -69,7 +69,7 @@ trait TransactionalCrudTrait
      *
      * @throws TransactionFailed
      */
-    protected function update(EntityInterface $entity) : bool
+    protected function update(EntityInterface $entity): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);

@@ -19,20 +19,21 @@ interface OrderByInterface
      * @var constant
      */
     public const ASC = 'ASC';
+
     public const DESC = 'DESC';
 
     /**
      * Return the order by column constraint
      */
-    public function getColumn() : string;
+    public function getColumn(): string;
 
     /**
      * Return the order by direction constraint
      */
-    public function getDirection() : ?string;
+    public function getDirection(): ?string;
 
     /**
      * Has an order by direction constraint
      */
-    public function hasDirection() : bool;
+    public function hasDirection(): bool;
 }

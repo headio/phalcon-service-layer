@@ -69,7 +69,7 @@ class Role extends AbstractEntity
     /**
      * {@inheritDoc}
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         parent::initialize();
         $this->addBehavior(new Timestampable());
@@ -85,17 +85,17 @@ class Role extends AbstractEntity
         );
     }
 
-    public function getId() : int
+    public function getId(): int
     {
         return (int) $this->id;
     }
 
-    public function getLabel() : ?string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
 
-    public function setLabel(string $val) : void
+    public function setLabel(string $val): void
     {
         $this->label = $val;
     }
@@ -103,7 +103,7 @@ class Role extends AbstractEntity
     /**
      * {@inheritDoc}
      */
-    public function validation() : bool
+    public function validation(): bool
     {
         $validator = new Validation();
         $validator->add(

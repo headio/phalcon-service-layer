@@ -14,7 +14,6 @@ namespace Headio\Phalcon\ServiceLayer\Component;
 use Phalcon\Di\Injectable;
 use Phalcon\Helper\Json;
 use function microtime;
-use function is_null;
 use function sha1;
 use Closure;
 use JSON_UNESCAPED_SLASHES;
@@ -28,7 +27,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function appendCacheParameter(string $entityName, array $params) : array
+    public function appendCacheParameter(string $entityName, array $params): array
     {
         if (isset($params['cache'])) {
             return $params;
@@ -42,7 +41,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function createCacheParameters(string $entityName, array $params) : array
+    public function createCacheParameters(string $entityName, array $params): array
     {
         /** @var Phalcon\Config */
         $config = $this->config->cache->modelCache;
@@ -56,7 +55,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function createKey(string $entityName, array $params) : string
+    public function createKey(string $entityName, array $params): string
     {
         if (isset($params['di'])) {
             unset($params['di']);
@@ -71,7 +70,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function delete(string $key) : bool
+    public function delete(string $key): bool
     {
         return $this->modelsCache->delete($key);
     }
@@ -106,7 +105,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function has(string $key) : bool
+    public function has(string $key): bool
     {
         return $this->modelsCache->has($key);
     }
@@ -114,7 +113,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function expire(array $collection) : void
+    public function expire(array $collection): void
     {
         foreach ($collection as $item) {
             /** @var string */
@@ -138,7 +137,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function store(string $key, $data, int $lifetime) : bool
+    public function store(string $key, $data, int $lifetime): bool
     {
         return $this->modelsCache->set($key, $data, $lifetime);
     }
@@ -146,7 +145,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * Encode the cache key.
      */
-    private function encodeKey(array $params) : string
+    private function encodeKey(array $params): string
     {
         $json = Json::encode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
@@ -177,10 +176,10 @@ class CacheManager extends Injectable implements CacheManagerInterface
     }
 
     /**
-     * Normalize the key version prefix for the entity 
+     * Normalize the key version prefix for the entity
      * to satisify Phalcon's cache implementation.
      */
-    private function normalizeKey(string $key) : string
+    private function normalizeKey(string $key): string
     {
         if (false !== strpos($key, '\\')) {
             $key = preg_replace('/[^a-zA-Z0-9=\s—–-]+/u', '', $key);

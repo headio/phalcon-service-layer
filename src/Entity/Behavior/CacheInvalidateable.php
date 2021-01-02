@@ -28,7 +28,7 @@ class CacheInvalidateable extends Behavior implements BehaviorInterface
     /**
      * {@inheritDoc}
      */
-    public function notify($eventType, ModelInterface $model) : void
+    public function notify($eventType, ModelInterface $model): void
     {
         $items = $this->getOptions($eventType)['invalidate'] ?? $this->getOptions()['invalidate'] ?? [];
 

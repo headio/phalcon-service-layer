@@ -16,21 +16,21 @@ use Phalcon\Mvc\Model\ResultsetInterface;
 
 interface UserInterface
 {
-    public function findFirstByEmail(string $email) : EntityInterface;
+    public function findFirstByEmail(string $email): EntityInterface;
 
-    public function getEntity(int $id) : EntityInterface;
+    public function getEntity(int $id): EntityInterface;
 
-    public function addModel(array $data) : bool;
+    public function addModel(array $data): bool;
 
-    public function deleteModel(EntityInterface $entity) : bool;
+    public function deleteModel(EntityInterface $entity): bool;
 
-    public function updateModel(EntityInterface $entity) : bool;
+    public function updateModel(EntityInterface $entity): bool;
 
-    public function getRoles(EntityInterface $entity) : ResultsetInterface;
+    public function getRoles(EntityInterface $entity): ResultsetInterface;
 
-    public function synchronizeRoles(EntityInterface $entity, array $keys) : bool;
+    public function synchronizeRoles(EntityInterface $entity, array $keys): bool;
 
-    public function linkRoles(EntityInterface $entity, array $keys) : bool;
+    public function linkRoles(EntityInterface $entity, array $keys): bool;
 
-    public function unlinkRoles(EntityInterface $entity, array $keys) : bool;
+    public function unlinkRoles(EntityInterface $entity, array $keys): bool;
 }

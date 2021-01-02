@@ -15,14 +15,8 @@ use Throwable;
 
 class HttpException extends RuntimeException implements ExceptionInterface, HttpExceptionInterface
 {
-    /**
-     * @var integer
-     */
     private int $statusCode;
 
-    /**
-     * @var array
-     */
     private array $headers;
 
     public function __construct(
@@ -41,7 +35,7 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
     /**
      * {@inheritDoc}
      */
-    public function getHeaders() : array
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -49,7 +43,7 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
     /**
      * {@inheritDoc}
      */
-    public function setHeaders(array $headers) : HttpExceptionInterface
+    public function setHeaders(array $headers): HttpExceptionInterface
     {
         $this->headers = $headers;
 
@@ -59,7 +53,7 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
     /**
      * {@inheritDoc}
      */
-    public function getStatusCode() : int
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }

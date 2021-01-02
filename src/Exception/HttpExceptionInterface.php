@@ -16,15 +16,15 @@ interface HttpExceptionInterface
     /**
      * Return the response headers
      */
-    public function getHeaders() : array;
+    public function getHeaders(): array;
 
     /**
      * Set the response headers
      */
-    public function setHeaders(array $headers) : HttpExceptionInterface;
+    public function setHeaders(array $headers): HttpExceptionInterface;
 
     /**
      * Return the http status code
      */
-    public function getStatusCode() : int;
+    public function getStatusCode(): int;
 }

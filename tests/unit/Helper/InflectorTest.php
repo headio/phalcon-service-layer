@@ -22,19 +22,19 @@ class InflectorTest extends UnitTest
      */
     private $service;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
         $this->service = new Inflector();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateACamelizedString() : void
+    public function testCanCreateACamelizedString(): void
     {
         $this->specify(
             'Can create a camelized syntax string',
@@ -46,7 +46,7 @@ class InflectorTest extends UnitTest
         );
     }
 
-    public function testCanCreateAVariablizedString() : void
+    public function testCanCreateAVariablizedString(): void
     {
         $this->specify(
             'Can create a variabilized string',
@@ -61,7 +61,7 @@ class InflectorTest extends UnitTest
     /**
      * Return test data
      */
-    protected function _data() : array
+    protected function _data(): array
     {
         return [
             'camelize' => 'This would - make_A nice-camel_case',

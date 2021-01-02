@@ -44,7 +44,7 @@ trait RelationshipTrait
         string $aliasHasMany,
         EntityInterface $entity,
         array $keys
-    ) : bool {
+    ): bool {
         $entityName = get_class($entity);
 
         /**
@@ -161,7 +161,7 @@ trait RelationshipTrait
      *
      * @throws OutOfRangeException
      */
-    public function link(string $alias, EntityInterface $entity, array $keys) : bool
+    public function link(string $alias, EntityInterface $entity, array $keys): bool
     {
         $entityName = get_class($entity);
         /**
@@ -208,7 +208,7 @@ trait RelationshipTrait
      *
      * @throws OutOfRangeException
      */
-    public function unlink(string $alias, EntityInterface $entity, array $keys, ?TransactionInterface $transaction = null) : bool
+    public function unlink(string $alias, EntityInterface $entity, array $keys, ?TransactionInterface $transaction = null): bool
     {
         /**
          * Nothing to process continue!
@@ -271,10 +271,10 @@ EX;
      * Return an instance of the query criteria pre-populated
      * with the entity managed by this repository.
      */
-    abstract public function createCriteria() : CriteriaInterface;
+    abstract public function createCriteria(): CriteriaInterface;
 
     /**
      * Return the related models from cache or storage.
      */
-    abstract public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter) : ResultsetInterface;
+    abstract public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter): ResultsetInterface;
 }

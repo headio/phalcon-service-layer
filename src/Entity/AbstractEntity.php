@@ -20,7 +20,7 @@ class AbstractEntity extends Model implements EntityInterface
     /**
      * {@inheritDoc}
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         self::setup(
             [
@@ -33,7 +33,7 @@ class AbstractEntity extends Model implements EntityInterface
     /**
      * {@inheritDoc}
      */
-    public function getPrimaryKey() : string
+    public function getPrimaryKey(): string
     {
         return $this->getDI()->get('modelsMetadata')->getIdentityField($this);
     }
@@ -43,7 +43,7 @@ class AbstractEntity extends Model implements EntityInterface
      *
      * @throws OutOfRangeException
      */
-    public function getPropertyBindType(string $property) : int
+    public function getPropertyBindType(string $property): int
     {
         static $metaData = null;
 
@@ -66,7 +66,7 @@ class AbstractEntity extends Model implements EntityInterface
      * Return the model validation errors as an array representation,
      * consolidating individual field validation errors.
      */
-    public function getValidationErrors() : array
+    public function getValidationErrors(): array
     {
         $errors = [];
 

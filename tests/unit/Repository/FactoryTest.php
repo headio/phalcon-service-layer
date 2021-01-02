@@ -26,7 +26,7 @@ class FactoryTest extends UnitTest
      */
     private $mock;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
@@ -49,12 +49,12 @@ class FactoryTest extends UnitTest
             });
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testFactoryInstantiationWithValidRepository() : void
+    public function testFactoryInstantiationWithValidRepository(): void
     {
         $this->specify(
             'Repository manager can instantiate requested repository',
@@ -71,7 +71,7 @@ class FactoryTest extends UnitTest
         );
     }
 
-    public function testFactoryInstantiationWithInvalidRepository() : void
+    public function testFactoryInstantiationWithInvalidRepository(): void
     {
         $this->specify(
             'Exception is thrown instantiating unknown repository',
@@ -86,6 +86,5 @@ class FactoryTest extends UnitTest
                 );
             }
         );
-        
     }
 }

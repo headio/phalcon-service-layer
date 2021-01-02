@@ -20,7 +20,6 @@ use Phalcon\Filter;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength;
 use Phalcon\Validation\Validator\Uniqueness;
 
 /**
@@ -81,7 +80,7 @@ class User extends AbstractEntity
     /**
      * {@inheritDoc}
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -95,27 +94,27 @@ class User extends AbstractEntity
         $this->addBehavior(new Publishable());
     }
 
-    public function getId() : int
+    public function getId(): int
     {
         return (int) $this->id;
     }
 
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $val) : void
+    public function setName(string $val): void
     {
         $this->name = $val;
     }
 
-    public function getEmail() : ?string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $val) : void
+    public function setEmail(string $val): void
     {
         $this->email = $val;
     }
@@ -123,7 +122,7 @@ class User extends AbstractEntity
     /**
      * {@inheritDoc}
      */
-    public function validation() : bool
+    public function validation(): bool
     {
         $validator = new Validation();
 

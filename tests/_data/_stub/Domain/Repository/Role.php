@@ -15,18 +15,17 @@ use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Headio\Phalcon\ServiceLayer\Repository\RelationshipTrait;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
 use Stub\Domain\Filter\Role as Filter;
-use Stub\Domain\Repository\RoleInterface;
 
 class Role extends QueryRepository implements RoleInterface
 {
     use RelationshipTrait;
 
-    public function getEntityName() : string
+    public function getEntityName(): string
     {
         return 'Stub\\Domain\\Entity\\Role';
     }
 
-    public function getQueryFilter() : FilterInterface
+    public function getQueryFilter(): FilterInterface
     {
         return new Filter();
     }

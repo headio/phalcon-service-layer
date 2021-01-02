@@ -38,7 +38,7 @@ class OrderBy implements OrderByInterface
     /**
      * {@inheritDoc}
      */
-    public function getColumn() : string
+    public function getColumn(): string
     {
         return $this->column;
     }
@@ -46,7 +46,7 @@ class OrderBy implements OrderByInterface
     /**
      * {@inheritDoc}
      */
-    public function getDirection() : ?string
+    public function getDirection(): ?string
     {
         return $this->direction;
     }
@@ -54,7 +54,7 @@ class OrderBy implements OrderByInterface
     /**
      * {@inheritDoc}
      */
-    public function hasDirection() : bool
+    public function hasDirection(): bool
     {
         return !empty($this->direction);
     }

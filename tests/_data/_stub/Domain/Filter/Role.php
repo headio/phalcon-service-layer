@@ -20,24 +20,24 @@ class Role extends Filter
 
     private ?int $primaryKey = null;
 
-    public function getKeyword() : ?string
+    public function getKeyword(): ?string
     {
         return $this->keyword;
     }
 
-    public function setKeyword(string $val) : FilterInterface
+    public function setKeyword(string $val): FilterInterface
     {
         $this->keyword = $val;
 
         return $this->like('label', $val);
     }
 
-    public function getPrimaryKey() : ?int
+    public function getPrimaryKey(): ?int
     {
         return $this->primaryKey;
     }
 
-    public function setPrimaryKey(int $val) : FilterInterface
+    public function setPrimaryKey(int $val): FilterInterface
     {
         $this->primaryKey = $val;
 

@@ -131,8 +131,8 @@ class CacheManagerCest
         $service->fetch($key, $data, 60);
 
         expect($service->get($key))->equals($data());
-        
-        // Increments the cache key prefix for the entity; 
+
+        // Increments the cache key prefix for the entity;
         // does not delete the cached data.
         $service->expire(
             [
@@ -147,7 +147,7 @@ class CacheManagerCest
     /**
      * Return test data
      */
-    protected function _data() : array
+    protected function _data(): array
     {
         return [
             'criteria' => ['label = :label:', 'order' => 'label', 'limit' => 10],

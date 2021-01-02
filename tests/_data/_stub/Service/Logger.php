@@ -23,7 +23,7 @@ class Logger implements ServiceProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function register(DiInterface $di) : void
+    public function register(DiInterface $di): void
     {
         $di->setShared(
             'logger',

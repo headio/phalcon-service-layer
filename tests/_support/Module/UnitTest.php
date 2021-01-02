@@ -36,7 +36,7 @@ class UnitTest extends Unit
     /**
      * {@inheritDoc}
      */
-    protected function _before() : void 
+    protected function _before(): void
     {
         $this->di = $this->tester->getApplication()->getDi();
     }
@@ -57,9 +57,9 @@ class UnitTest extends Unit
     }
 
     /**
- 	 * Get inaccessible class property
- 	 */
-    protected function getClassProperty(string $class, string $name) : ?ReflectionProperty
+     * Get inaccessible class property
+     */
+    protected function getClassProperty(string $class, string $name): ?ReflectionProperty
     {
         $rc = new ReflectionClass($class);
 
@@ -68,7 +68,7 @@ class UnitTest extends Unit
         }
 
         if ($rc->hasProperty($name)) {
-            $prop = $rc->getProperty($name);	
+            $prop = $rc->getProperty($name);
             $prop->setAccessible(true);
             return $prop;
         }
@@ -78,11 +78,11 @@ class UnitTest extends Unit
 
     /**
      * Get inaccessible class method
-     * 
+     *
      * @param object
      * @param string
      */
-    protected function getClassMethod($class, string $method) : ?ReflectionMethod
+    protected function getClassMethod($class, string $method): ?ReflectionMethod
     {
         $rc = new ReflectionClass($class);
 
