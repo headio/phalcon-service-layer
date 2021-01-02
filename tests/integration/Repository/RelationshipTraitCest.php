@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *
@@ -33,7 +33,7 @@ class RelationshipTraitCest
         $I->wantTo('Synchronize a model relationship');
 
         $entity = $this->service->getEntity(1);
-        $result = $this->service->synchronizeRoles($entity, [2,3]);
+        $result = $this->service->synchronizeRoles($entity, [2, 3]);
 
         expect($result)->true();
 
@@ -47,7 +47,7 @@ class RelationshipTraitCest
         $I->wantToTest('Associating a collection of models');
 
         $entity = $this->service->getEntity(1);
-        $result = $this->service->linkRoles($entity, [2,3,4]);
+        $result = $this->service->linkRoles($entity, [2, 3, 4]);
 
         expect($result)->true();
     }

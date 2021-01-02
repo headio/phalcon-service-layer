@@ -35,7 +35,6 @@ class RepositoryTest extends UnitTest
 
         $this->mock->allows()->getEntity()->andReturn(Entity::class);
         $this->mock->allows()->getQueryFilter()->andReturn(new Filter());
-
     }
 
     protected function _after() : void

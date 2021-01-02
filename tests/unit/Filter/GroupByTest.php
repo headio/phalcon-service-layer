@@ -11,7 +11,8 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\ServiceLayer\Filter\{ GroupBy, GroupByInterface };
+use Headio\Phalcon\ServiceLayer\Filter\GroupBy;
+use Headio\Phalcon\ServiceLayer\Filter\GroupByInterface;
 use Mockery;
 use Module\UnitTest;
 

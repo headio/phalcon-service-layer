@@ -21,10 +21,7 @@ use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
-use Phalcon\Db\Column;
 use Phalcon\Di\Injectable;
-use function array_key_exists;
-use function array_flip;
 use function class_exists;
 use function current;
 use function get_class;
@@ -41,7 +38,7 @@ use function substr;
 abstract class QueryRepository extends Injectable implements RepositoryInterface
 {
     /**
-     * Am array representation of query criteria binding parameter types.
+     * An array representation of query criteria binding parameter types.
      *
      * @var array
      */
@@ -112,9 +109,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         if ($filter->hasOffset()) {
             $filter->addCondition(
                 (new $entityName())->getPrimaryKey(),
-                $filter->getOffset(),
-                FilterInterface::GREATER_THAN,
-                ConditionInterface::AND
+                ...$filter->getOffset()
             );
         }
 

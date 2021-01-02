@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace Integration\Filter;
 
-use Headio\Phalcon\ServiceLayer\Filter\{ ConditionInterface, FilterInterface };
+use Headio\Phalcon\ServiceLayer\Filter\ConditionInterface;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Db\Column;
-use Phalcon\Mvc\Model\Criteria;
 use Stub\Domain\Filter\Role as Filter;
 use Stub\Domain\Repository\Role as Repository;
 use ArrayIterator;
@@ -62,7 +62,7 @@ class FilterCest
             $this->_data()['gt']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -83,7 +83,7 @@ class FilterCest
             $this->_data()['gte']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -104,7 +104,7 @@ class FilterCest
             $this->_data()['lt']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -125,7 +125,7 @@ class FilterCest
             $this->_data()['lte']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -146,7 +146,7 @@ class FilterCest
             $this->_data()['eq']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -167,7 +167,7 @@ class FilterCest
             $this->_data()['eq']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -188,7 +188,7 @@ class FilterCest
             $this->_data()['in']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -201,7 +201,7 @@ class FilterCest
 
     public function canAppendANotInCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a negation inclusion comparison condition to the filter criteria'); 
+        $I->wantToTest('Appending a negation inclusion comparison condition to the filter criteria');
 
         $filter = new Filter();
         $filter->notIn(
@@ -209,7 +209,7 @@ class FilterCest
             $this->_data()['in']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -229,7 +229,7 @@ class FilterCest
             $this->_data()['isNull']['column']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
 
@@ -238,14 +238,14 @@ class FilterCest
 
     public function canAppendIsNotNullCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a not null value condition to the filter criteria'); 
+        $I->wantToTest('Appending a not null value condition to the filter criteria');
 
         $filter = new Filter();
         $filter->isNotNull(
             $this->_data()['isNotNull']['column']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
 
@@ -262,7 +262,7 @@ class FilterCest
             $this->_data()['like']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -283,7 +283,7 @@ class FilterCest
             $this->_data()['like']['value']
         );
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $bind = $criteria->getParams()['bind'];
@@ -311,7 +311,7 @@ class FilterCest
         ->limit(50);
 
         $repository = new Repository(false);
-        $criteria = $repository->createCriteria(); 
+        $criteria = $repository->createCriteria();
         $repository->applyFilter($criteria, $filter);
         $conditions = $criteria->getConditions();
         $phql = $criteria->createBuilder()->getPhql();
@@ -319,6 +319,7 @@ class FilterCest
         expect($conditions)->equals($this->_data()['multiCond']);
         expect($phql)->equals($this->_data()['multiPhql']);
     }
+
     /**
      * Return test data
      */
@@ -343,15 +344,15 @@ class FilterCest
             'gteBind' => ['ID0' => 10],
             'gteBindType' => ['ID0' => Column::BIND_PARAM_INT],
             'gteCond' => 'id >= :ID0:',
-            'in' => ['column' => 'id', 'value' => [3,5,7,8,9]],
-            'inBind' => ['ID0' => [3,5,7,8,9]],
+            'in' => ['column' => 'id', 'value' => [3, 5, 7, 8, 9]],
+            'inBind' => ['ID0' => [3, 5, 7, 8, 9]],
             'inBindType' => ['ID0' => Column::BIND_PARAM_INT],
             'inCond' => 'id IN ({ID0:array})',
             'isNull' => ['column' => 'name'],
             'isNullCond' => 'name IS NULL',
             'isNotNull' => ['column' => 'name'],
             'isNotNullCond' => 'name IS NOT NULL',
-            'notInBind' => ['ID0' => [3,5,7,8,9]],
+            'notInBind' => ['ID0' => [3, 5, 7, 8, 9]],
             'notInBindType' => ['ID0' => Column::BIND_PARAM_INT],
             'notInCond' => 'id NOT IN ({ID0:array})',
             'lt' => ['column' => 'id', 'value' => 10],
@@ -362,12 +363,12 @@ class FilterCest
             'lteBind' => ['ID0' => 10],
             'lteBindType' => ['ID0' => Column::BIND_PARAM_INT],
             'lteCond' => 'id <= :ID0:',
-            'like' => ['column' => 'label','value' => 'foo'],
+            'like' => ['column' => 'label', 'value' => 'foo'],
             'likeBind' => ['LABEL0' => '%foo%'],
             'likeBindType' => ['LABEL0' => Column::BIND_PARAM_STR],
             'likeCond' => 'label LIKE LOWER(:LABEL0:)',
             'multiCond' => '(label = :LABEL0:) AND (id IN ({ID1:array}))',
-            'multiPhql' => 'SELECT [Stub\Domain\Entity\Role].* FROM [Stub\Domain\Entity\Role] WHERE' . 
+            'multiPhql' => 'SELECT [Stub\Domain\Entity\Role].* FROM [Stub\Domain\Entity\Role] WHERE' .
                            ' (label = :LABEL0:) AND (id IN ({ID1:array})) ORDER BY label LIMIT :APL0:',
             'notLikeBind' => ['LABEL0' => '%foo%'],
             'notLikeBindType' => ['LABEL0' => Column::BIND_PARAM_STR],

@@ -49,12 +49,12 @@ interface FilterInterface
     public function alias(string $alias) : FilterInterface;
 
     /**
-     * Return the columns public constraint
+     * Return the columns constraint
      */
     public function getColumns() : array;
 
     /**
-     * Has a columns public constraint
+     * Has a columns constraint
      */
     public function hasColumns() : bool;
 
@@ -64,64 +64,64 @@ interface FilterInterface
     public function columns(array $columns) : FilterInterface;
 
     /**
-     * Return the limit public constraint
+     * Return the limit constraint
      */
     public function getLimit() : ?int;
 
     /**
-     * Has a limit public constraint
+     * Has a limit constraint
      */
     public function hasLimit() : bool;
 
     /**
-     * Add a limit public constraint to the filter criteria.
+     * Add a limit constraint to the filter criteria.
      */
     public function limit(int $limit) : FilterInterface;
 
     /**
-     * Return the group by public constraint
+     * Return the group by constraint
      */
     public function getGroupBy() : array;
 
     /**
-     * Has a group by public constraint
+     * Has a group by constraint
      */
     public function hasGroupBy() : bool;
 
     /**
-     * Add a group by public constraint to the filter criteria.
+     * Add a group by constraint to the filter criteria.
      */
     public function groupBy(array $groupBy) : FilterInterface;
 
     /**
-     * Return the order by public constraint
+     * Return the order by constraint
      */
     public function getOrderBy() : array;
 
     /**
-     * Has an order by public constraint
+     * Has an order by constraint
      */
     public function hasOrderBy() : bool;
 
     /**
-     * Add an order by public constraint to the filter criteria.
+     * Add an order by constraint to the filter criteria.
      */
     public function orderBy(string $column, ?string $direction = null) : FilterInterface;
 
     /**
-     * Return the offset public constraint
+     * Return the offset constraint
      */
-    public function getOffset() : ?int;
+    public function getOffset() : array;
 
     /**
-     * Has an offset public constraint
+     * Has an offset constraint
      */
     public function hasOffset() : bool;
 
     /**
-     * Add an offset condition public constraint to the filter criteria.
+     * Add an offset condition constraint to the filter criteria.
      */
-    public function offset(int $offset)  : FilterInterface;
+    public function offset(int $offset, string $direction, string $type = Condition::AND)  : FilterInterface;
 
     /**
      * Append a condition to the filter criteria.
@@ -129,17 +129,17 @@ interface FilterInterface
     public function addCondition(string $column, $value, string $operator, string $type) : void;
 
     /**
-     * Return the conditions public constraint
+     * Return the conditions constraint
      */
     public function getConditions() : ArrayIterator;
 
     /**
-     * Has a conditions public constraint
+     * Has a conditions constraint
      */
     public function hasConditions(): bool;
 
     /**
-     * Clear the conditions public constraint
+     * Clear the conditions constraint
      */
     public function clearConditions(): FilterInterface;
 

@@ -11,7 +11,8 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\ServiceLayer\Filter\{ OrderBy, OrderByInterface };
+use Headio\Phalcon\ServiceLayer\Filter\OrderBy;
+use Headio\Phalcon\ServiceLayer\Filter\OrderByInterface;
 use Mockery;
 use Module\UnitTest;
 
@@ -61,7 +62,7 @@ class OrderByTest extends UnitTest
                     OrderBy::class,
                     OrderByInterface::class,
                     [
-                        $this->_data()['column'], 
+                        $this->_data()['column'],
                         OrderByInterface::DESC
                     ]
                 );

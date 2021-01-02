@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *
@@ -13,8 +13,6 @@ namespace Integration\Entity\Behavior;
 
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\CacheInvalidateable;
 use Stub\Domain\Entity\User as Entity;
-use Stub\Service\CacheManager;
-use Phalcon\Di\FactoryDefault;
 use IntegrationTester;
 
 class CacheInvalidateableCest

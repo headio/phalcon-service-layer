@@ -42,9 +42,9 @@ abstract class Filter implements FilterInterface
     protected $limit;
 
     /**
-     * @var integer
+     * @var array
      */
-    protected $offset;
+    protected $offset = [];
 
     /**
      * @var array
@@ -186,7 +186,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getOffset() : ?int
+    public function getOffset() : array
     {
         return $this->offset;
     }
@@ -196,25 +196,40 @@ abstract class Filter implements FilterInterface
      */
     public function hasOffset() : bool
     {
-        return $this->offset > 0;
+        return !empty($this->offset);
     }
 
     /**
      * {@inheritDoc}
      *
      * <code>
-     *   $filter->offset(5);
+     *   $filter->offset(5, Filter::LESS_THAN, Condition::AND);
      * </code>
      *
-     * The above expression creates the following condition:
+     * The above expression creates the following condition to the filter criteria.
      *
      * <code>
-     *   (id > :ID:)
+     *   (id < :ID:)
      * </code>
      */
-    public function offset(int $offset)  : FilterInterface
+    public function offset(int $offset, string $direction, string $type = Condition::AND) : FilterInterface
     {
-        $this->offset = abs($offset);
+        $whitelist = [
+            Filter::LESS_THAN,
+            Filter::LESS_THAN_OR_EQUAL,
+            Filter::GREATER_THAN,
+            Filter::GREATER_THAN_OR_EQUAL
+        ];
+
+        if (!in_array($direction, $whitelist)) {
+            $direction = Filter::LESS_THAN;
+        }
+
+        $this->offset = [
+            abs($offset),
+            $direction,
+            $type
+        ];
 
         return $this;
     }

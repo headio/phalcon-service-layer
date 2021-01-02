@@ -11,18 +11,16 @@ declare(strict_types=1);
 
 namespace Unit\Filter;
 
-use Headio\Phalcon\ServiceLayer\Filter\{ 
-    Filter, 
-    FilterInterface,
-    GroupBy,
-    GroupByInterface,
-    OrderBy,
-    OrderByInterface 
-};
+use Headio\Phalcon\ServiceLayer\Filter\Condition;
+use Headio\Phalcon\ServiceLayer\Filter\Filter;
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Filter\GroupBy;
+use Headio\Phalcon\ServiceLayer\Filter\GroupByInterface;
+use Headio\Phalcon\ServiceLayer\Filter\OrderBy;
+use Headio\Phalcon\ServiceLayer\Filter\OrderByInterface;
 use Stub\Domain\Filter\Role as StubFilter;
 use Mockery;
 use Module\UnitTest;
-use ArrayIterator;
 
 class FilterTest extends UnitTest
 {
@@ -80,24 +78,106 @@ class FilterTest extends UnitTest
         );
     }
 
-    public function testCanCreateAnOffsetCondition()
+    public function testCanCreateOffsetConditions()
     {
         $this->specify(
-            'Can create an offset condition constraint',
+            'Can create offset condition constraints',
             function () {
                 $mock = Mockery::mock(
                     Filter::class,
                     FilterInterface::class
                 );
-                $mock->allows()->getOffset()->andReturn($this->_data()['offsetId']);
                 $mock->allows()->hasOffset()->andReturn(true);
-                $mock->allows()->offset()->with(Mockery::type('integer'))->andReturn(new StubFilter());
+                $mock->allows()->offset()->with(
+                    Mockery::type('integer'),
+                    Mockery::type('string')
+                )->andReturn(new StubFilter());
+                $mock->allows()->getOffset()->andReturn([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::GREATER_THAN,
+                    2 => Condition::AND
+                ]);
 
-                $mock->offset($this->_data()['offsetId']);
-
+                $mock->offset($this->_data()['offsetId'], Filter::GREATER_THAN);
                 expect($mock->hasOffset())->true();
-                expect($mock->getOffset())->equals($this->_data()['offsetId']);
-                expect_that(is_int($mock->getOffset()));
+                expect($mock->getOffset())->equals([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::GREATER_THAN,
+                    2 => Condition::AND
+                ]);
+                expect_that(is_array($mock->getOffset()));
+
+                $mock = Mockery::mock(
+                    Filter::class,
+                    FilterInterface::class
+                );
+                $mock->allows()->hasOffset()->andReturn(true);
+                $mock->allows()->offset()->with(
+                    Mockery::type('integer'),
+                    Mockery::type('string')
+                )->andReturn(new StubFilter());
+                $mock->allows()->getOffset()->andReturn([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::GREATER_THAN_OR_EQUAL,
+                    2 => Condition::AND
+                ]);
+
+                $mock->offset($this->_data()['offsetId'], Filter::GREATER_THAN_OR_EQUAL);
+                expect($mock->hasOffset())->true();
+                expect($mock->getOffset())->equals([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::GREATER_THAN_OR_EQUAL,
+                    2 => Condition::AND
+                ]);
+                expect_that(is_array($mock->getOffset()));
+
+                $mock = Mockery::mock(
+                    Filter::class,
+                    FilterInterface::class
+                );
+                $mock->allows()->hasOffset()->andReturn(true);
+                $mock->allows()->offset()->with(
+                    Mockery::type('integer'),
+                    Mockery::type('string')
+                )->andReturn(new StubFilter());
+                $mock->allows()->getOffset()->andReturn([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::LESS_THAN,
+                    2 => Condition::AND
+                ]);
+
+                $mock->offset($this->_data()['offsetId'], Filter::LESS_THAN);
+                expect($mock->hasOffset())->true();
+                expect($mock->getOffset())->equals([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::LESS_THAN,
+                    2 => Condition::AND
+                ]);
+                expect_that(is_array($mock->getOffset()));
+
+                $mock = Mockery::mock(
+                    Filter::class,
+                    FilterInterface::class
+                );
+                $mock->allows()->hasOffset()->andReturn(true);
+                $mock->allows()->offset()->with(
+                    Mockery::type('integer'),
+                    Mockery::type('string')
+                )->andReturn(new StubFilter());
+                $mock->allows()->getOffset()->andReturn([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::LESS_THAN_OR_EQUAL,
+                    2 => Condition::AND
+                ]);
+
+                $mock->offset($this->_data()['offsetId'], Filter::LESS_THAN_OR_EQUAL);
+                expect($mock->hasOffset())->true();
+                expect($mock->getOffset())->equals([
+                    0 => $this->_data()['offsetId'],
+                    1 => Filter::LESS_THAN_OR_EQUAL,
+                    2 => Condition::AND
+                ]);
+                expect_that(is_array($mock->getOffset()));
             }
         );
     }

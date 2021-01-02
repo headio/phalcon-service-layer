@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * This source file is subject to the MIT License.
  *
@@ -11,17 +11,18 @@ declare(strict_types=1);
 
 namespace Integration\Repository;
 
-use Headio\Phalcon\ServiceLayer\Entity\{ AbstractEntity, EntityInterface };
+use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
+use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Headio\Phalcon\ServiceLayer\Exception\NotFoundException;
 use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Db\Column;
-use Phalcon\Mvc\Model\{ CriteriaInterface, ResultsetInterface };
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Resultset\Simple;
-use Phalcon\Mvc\Model\Query\{ Builder, BuilderInterface };
+use Phalcon\Mvc\Model\Query\Builder;
+use Phalcon\Mvc\Model\Query\BuilderInterface;
 use Stub\Domain\Entity\User as Entity;
 use Stub\Domain\Filter\User as Filter;
 use Stub\Domain\Repository\User as Repository;
-
 use IntegrationTester;
 
 class QueryRepositoryCest
@@ -51,7 +52,7 @@ class QueryRepositoryCest
             'with the entity managed by the repository.'
         );
 
-        $criteria = $this->repository->createCriteria();    
+        $criteria = $this->repository->createCriteria();
 
         expect($criteria->getModelName())->equals(Entity::class);
     }
@@ -118,7 +119,7 @@ class QueryRepositoryCest
         );
 
         $filter = $this->repository->getQueryFilter()
-            ->offset($this->_data()['offsetId'])
+            ->offset($this->_data()['offsetId'], FilterInterface::GREATER_THAN)
             ->groupBy(['label'])
             ->orderBy('id', 'ASC');
         $criteria = $this->repository->createCriteria();
@@ -209,7 +210,7 @@ class QueryRepositoryCest
 
         expect($result)->isInstanceOf(ResultsetInterface::class);
     }
-    
+
     public function canGetUnrelated(IntegrationTester $I)
     {
         $I->wantToTest('Query repository can return the unrelated models');
@@ -237,9 +238,10 @@ class QueryRepositoryCest
             'email' => 'john.doe@headcrumbs.io',
             'keyword' => 'admin.resource.read',
             'keywordCondition' => 'label LIKE LOWER(:LABEL0:)',
-            'ids' => [2,3,4,5,6],
+            'ids' => [2, 3, 4, 5, 6],
             'offsetId' => 25,
             'offsetIdCondition' => 'id > :ID0:',
+
             'primaryKey' => 10,
             'primaryKeyCondition' => 'id = :ID0:',
             'queryBuilderPhql' => 'SELECT [Stub\Domain\Entity\User].* FROM [Stub\Domain\Entity\User] WHERE id > :ID0: GROUP BY [label] ORDER BY id'
