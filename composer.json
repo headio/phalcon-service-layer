@@ -11,18 +11,23 @@
     "authors": [
         {
             "name": "Dominic Beck",
-            "email": "dominic@headcrumbs.io",
-            "homepage": "https://headcrumbs.io"
+            "email": "dominic.beck360@gmail.com"
         }
     ],
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        }
+    },
     "require": {
         "php": ">=7.4 <8.0",
-        "ext-phalcon": ">= 4.0",
+        "ext-phalcon": ">= 4.1.0",
         "ext-mbstring": "*",
         "headio/phalcon-bootstrap": "4.x-dev"
     },
     "require-dev": {
-        "ext-memcached": "*",
         "codeception/codeception": "^4.0",
         "codeception/module-asserts": "^1.1",
         "codeception/module-phalcon": "^1.0",
@@ -31,7 +36,7 @@
         "friendsofphp/php-cs-fixer": "^2.17",
         "mockery/mockery": "^1.3",
         "monolog/monolog": "^2.1.0",
-        "vlucas/phpdotenv": "^4.1"
+        "vlucas/phpdotenv": "^5.1"
     },
     "autoload": {
         "psr-4": {
@@ -48,11 +53,8 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "config": {
-        "optimize-autoloader": true,
-        "sort-packages": true,
-        "platform": {
-            "php": "7.4"
-        }
-    }
+    "suggest": {
+        "ext-memcached": "Required when the cache manager is configured to use libmemcached.",
+        "ext-redis": "Required when the cache manager is configured to use the redis cache."
+      }
 }

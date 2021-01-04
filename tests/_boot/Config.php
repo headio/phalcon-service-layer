@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 
 return [
@@ -21,14 +19,14 @@ return [
         'modelCache' => [
             'adapter' => 'libmemcached',
             'options' => [
-                'defaultSerializer' => getenv('MEMCACHED_SERIALIZER'),
+                'defaultSerializer' => $_ENV['MEMCACHED_SERIALIZER'],
                 'lifetime' => 3600 * 24 * 30,
-                'prefix' => getenv('MEMCACHED_PREFIX_KEY'),
+                'prefix' => $_ENV['MEMCACHED_PREFIX_KEY'],
                 'servers' => [
                     [
-                        'host' => getenv('MEMCACHED_HOST'),
-                        'port' => getenv('MEMCACHED_PORT'),
-                        'weight' => getenv('MEMCACHED_WEIGHT')
+                        'host' => $_ENV['MEMCACHED_HOST'],
+                        'port' => (int) $_ENV['MEMCACHED_PORT'],
+                        'weight' => (int) $_ENV['MEMCACHED_WEIGHT']
                     ],
                 ],
                 'client' => [
@@ -38,16 +36,16 @@ return [
         ],
     ],
     'database' => [
-        'adapter' => getenv('DB_ADAPTER'),
-        'host' => getenv('DB_HOST'),
-        'port' => getenv('DB_PORT'),
-        'username' => getenv('DB_USER'),
-        'password' => getenv('DB_PASSWD'),
-        'dbname' => getenv('DB_NAME'),
-        'charset' => getenv('DB_CHARSET'),
+        'adapter' => $_ENV['DB_ADAPTER'],
+        'host' => $_ENV['DB_HOST'],
+        'port' => (int) $_ENV['DB_PORT'],
+        'username' => $_ENV['DB_USER'],
+        'password' => $_ENV['DB_PASSWD'],
+        'dbname' => $_ENV['DB_NAME'],
+        'charset' => $_ENV['DB_CHARSET'],
         'options' => [
             \PDO::ATTR_STRINGIFY_FETCHES => false,
-            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . getenv('DB_CHARSET')
+            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $_ENV['DB_CHARSET']
         ],
     ],
     'debug' => true,
