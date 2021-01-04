@@ -24,8 +24,10 @@ try {
         require 'tests/_boot/Config.php'
     );
     $di = (new DiFactory($config))->createDefaultMvc();
+    /** @var Phalcon\Mvc\Application */
     $app = (new AppFactory($di))->createForMvc();
     return $app;
 } catch (\Throwable $e) {
     echo $e->getMessage();
+    echo '<pre>' . $e->getTraceAsString() . '</pre>';
 }

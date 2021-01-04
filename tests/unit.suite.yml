@@ -4,6 +4,7 @@ modules:
         - Asserts
         - \Helper\Unit
         - \Helper\Application
-        - Phalcon:
+        - Phalcon4:
             bootstrap: tests/_boot/Boot.php
-    step_decorators: ~
+            cleanup: true
+            savepoints: true

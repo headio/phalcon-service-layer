@@ -14,7 +14,7 @@ extensions:
     enabled:
         - Codeception\Extension\RunFailed
 params:
-    - env
+    - .env
 coverage:
     enabled: true
     include:

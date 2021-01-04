@@ -36,7 +36,7 @@ class UnitTest extends Unit
      */
     protected function _before(): void
     {
-        $this->di = $this->tester->getApplication()->getDi();
+        $this->di = $this->tester->getApplication()->getDI();
     }
 
     /**

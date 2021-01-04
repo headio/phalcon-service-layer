@@ -18,7 +18,7 @@ class Application extends Module
      */
     public function getApplication()
     {
-        $service = $this->getModule('Phalcon');
+        $service = $this->getModule('Phalcon4');
 
         return $service->getApplication();
     }

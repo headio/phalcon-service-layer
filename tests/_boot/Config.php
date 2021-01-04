@@ -19,14 +19,14 @@ return [
         'modelCache' => [
             'adapter' => 'libmemcached',
             'options' => [
-                'defaultSerializer' => $_ENV['MEMCACHED_SERIALIZER'],
+                'defaultSerializer' => $_SERVER['MEMCACHED_SERIALIZER'],
                 'lifetime' => 3600 * 24 * 30,
-                'prefix' => $_ENV['MEMCACHED_PREFIX_KEY'],
+                'prefix' => $_SERVER['MEMCACHED_PREFIX_KEY'],
                 'servers' => [
                     [
-                        'host' => $_ENV['MEMCACHED_HOST'],
-                        'port' => (int) $_ENV['MEMCACHED_PORT'],
-                        'weight' => (int) $_ENV['MEMCACHED_WEIGHT']
+                        'host' => $_SERVER['MEMCACHED_HOST'],
+                        'port' => (int) $_SERVER['MEMCACHED_PORT'],
+                        'weight' => (int) $_SERVER['MEMCACHED_WEIGHT']
                     ],
                 ],
                 'client' => [
@@ -36,16 +36,16 @@ return [
         ],
     ],
     'database' => [
-        'adapter' => $_ENV['DB_ADAPTER'],
-        'host' => $_ENV['DB_HOST'],
-        'port' => (int) $_ENV['DB_PORT'],
-        'username' => $_ENV['DB_USER'],
-        'password' => $_ENV['DB_PASSWD'],
-        'dbname' => $_ENV['DB_NAME'],
-        'charset' => $_ENV['DB_CHARSET'],
+        'adapter' => $_SERVER['DB_ADAPTER'],
+        'host' => $_SERVER['DB_HOST'],
+        'port' => (int) $_SERVER['DB_PORT'],
+        'username' => $_SERVER['DB_USER'],
+        'password' => $_SERVER['DB_PASSWD'],
+        'dbname' => $_SERVER['DB_NAME'],
+        'charset' => $_SERVER['DB_CHARSET'],
         'options' => [
             \PDO::ATTR_STRINGIFY_FETCHES => false,
-            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $_ENV['DB_CHARSET']
+            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . $_SERVER['DB_CHARSET']
         ],
     ],
     'debug' => true,
