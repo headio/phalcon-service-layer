@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -54,7 +52,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getAlias() : ?string
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -62,7 +60,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function hasAlias() : bool
+    public function hasAlias(): bool
     {
         return !empty($this->alias);
     }
@@ -70,7 +68,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function alias(string $alias) : FilterInterface
+    public function alias(string $alias): FilterInterface
     {
         $this->alias = $alias;
 
@@ -80,7 +78,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getColumns() : array
+    public function getColumns(): array
     {
         return $this->columns;
     }
@@ -88,7 +86,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function hasColumns() : bool
+    public function hasColumns(): bool
     {
         return !empty($this->columns);
     }
@@ -96,7 +94,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function columns(array $columns) : FilterInterface
+    public function columns(array $columns): FilterInterface
     {
         $this->columns = $columns;
 
@@ -106,7 +104,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getLimit() : ?int
+    public function getLimit(): ?int
     {
         return $this->limit;
     }
@@ -114,7 +112,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function hasLimit() : bool
+    public function hasLimit(): bool
     {
         return $this->limit > 0;
     }
@@ -122,7 +120,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function limit(int $limit) : FilterInterface
+    public function limit(int $limit): FilterInterface
     {
         $this->limit = abs($limit);
 
@@ -132,7 +130,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getGroupBy() : array
+    public function getGroupBy(): array
     {
         return $this->groupBy;
     }
@@ -140,7 +138,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function hasGroupBy() : bool
+    public function hasGroupBy(): bool
     {
         return !empty($this->groupBy);
     }
@@ -148,7 +146,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function groupBy(array $groupBy) : FilterInterface
+    public function groupBy(array $groupBy): FilterInterface
     {
         foreach ($groupBy as $g) {
             $this->groupBy[] = new GroupBy($g);
@@ -160,7 +158,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getOrderBy() : array
+    public function getOrderBy(): array
     {
         return $this->orderBy;
     }
@@ -168,7 +166,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function hasOrderBy() : bool
+    public function hasOrderBy(): bool
     {
         return !empty($this->orderBy);
     }
@@ -176,7 +174,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function orderBy(string $column, ?string $direction = null) : FilterInterface
+    public function orderBy(string $column, ?string $direction = null): FilterInterface
     {
         $this->orderBy[] = new OrderBy($column, $direction);
 
@@ -186,7 +184,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getOffset() : array
+    public function getOffset(): array
     {
         return $this->offset;
     }
@@ -194,7 +192,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function hasOffset() : bool
+    public function hasOffset(): bool
     {
         return !empty($this->offset);
     }
@@ -212,7 +210,7 @@ abstract class Filter implements FilterInterface
      *   (id < :ID:)
      * </code>
      */
-    public function offset(int $offset, string $direction, string $type = Condition::AND) : FilterInterface
+    public function offset(int $offset, string $direction, string $type = Condition::AND): FilterInterface
     {
         $whitelist = [
             Filter::LESS_THAN,
@@ -237,7 +235,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function addCondition(string $column, $value, string $operator, string $type) : void
+    public function addCondition(string $column, $value, string $operator, string $type): void
     {
         $this->conditions[] = new Condition($column, $value, $operator, $type);
     }
@@ -245,7 +243,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getConditions() : ArrayIterator
+    public function getConditions(): ArrayIterator
     {
         return new ArrayIterator($this->conditions);
     }
@@ -273,7 +271,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function eq(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function eq(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::EQUAL, $type);
 
@@ -283,7 +281,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function gt(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function gt(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::GREATER_THAN, $type);
 
@@ -293,7 +291,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function gte(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function gte(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::GREATER_THAN_OR_EQUAL, $type);
 
@@ -303,7 +301,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function in(string $column, array $value, string $type = Condition::AND) : FilterInterface
+    public function in(string $column, array $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::IN, $type);
 
@@ -313,7 +311,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function isNull(string $column, string $type = Condition::AND) : FilterInterface
+    public function isNull(string $column, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, null, Filter::IS_NULL, $type);
 
@@ -323,7 +321,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function isNotNull(string $column, string $type = Condition::AND) : FilterInterface
+    public function isNotNull(string $column, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, null, Filter::IS_NOT_NULL, $type);
 
@@ -333,7 +331,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function like(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function like(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, '%' . $value . '%', Filter::LIKE, $type);
 
@@ -343,7 +341,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function lt(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function lt(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::LESS_THAN, $type);
 
@@ -353,7 +351,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function lte(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function lte(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::LESS_THAN_OR_EQUAL, $type);
 
@@ -363,7 +361,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function notEq(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function notEq(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::NOT_EQUAL, $type);
 
@@ -373,7 +371,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function notLike(string $column, $value, string $type = Condition::AND) : FilterInterface
+    public function notLike(string $column, $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, '%' . $value . '%', Filter::NOT_LIKE, $type);
 
@@ -383,7 +381,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function notIn(string $column, array $value, string $type = Condition::AND) : FilterInterface
+    public function notIn(string $column, array $value, string $type = Condition::AND): FilterInterface
     {
         $this->addCondition($column, $value, Filter::NOT_IN, $type);
 

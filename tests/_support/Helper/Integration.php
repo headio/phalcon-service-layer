@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -28,9 +26,9 @@ class Integration extends Module
     }
 
     /**
- 	 * Get inaccessible class property
- 	 */
-    public function getClassProperty(string $class, string $name) : ?ReflectionProperty
+     * Get inaccessible class property
+     */
+    public function getClassProperty(string $class, string $name): ?ReflectionProperty
     {
         $rc = new ReflectionClass($class);
 
@@ -39,21 +37,21 @@ class Integration extends Module
         }
 
         if ($rc->hasProperty($name)) {
-            $prop = $rc->getProperty($name);	
+            $prop = $rc->getProperty($name);
             $prop->setAccessible(true);
             return $prop;
         }
 
         return null;
     }
-  
+
     /**
      * Get inaccessible class method
-     * 
+     *
      * @param object
      * @param string
      */
-    public function getClassMethod($class, string $method) : ?ReflectionMethod
+    public function getClassMethod($class, string $method): ?ReflectionMethod
     {
         $rc = new ReflectionClass($class);
 

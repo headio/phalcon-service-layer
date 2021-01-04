@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -27,7 +25,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function appendCacheParameter(string $entityName, array $params) : array
+    public function appendCacheParameter(string $entityName, array $params): array
     {
         if (isset($params['cache'])) {
             return $params;
@@ -41,7 +39,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function createCacheParameters(string $entityName, array $params) : array
+    public function createCacheParameters(string $entityName, array $params): array
     {
         return [
             'lifetime' => (int) $this->config->cache->modelCache->lifetime,
@@ -52,7 +50,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function createKey(string $entityName, array $params) : string
+    public function createKey(string $entityName, array $params): string
     {
         $key = ['version' => $this->fetchPrefix($entityName)];
 
@@ -68,7 +66,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function delete(string $key) : bool
+    public function delete(string $key): bool
     {
         return $this->modelsCache->delete($key);
     }
@@ -95,7 +93,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $key) : ?string
+    public function get(string $key): ?string
     {
         return $this->modelsCache->get($key);
     }
@@ -103,7 +101,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function has(string $key) : bool
+    public function has(string $key): bool
     {
         return (bool) $this->modelsCache->exists($key);
     }
@@ -111,7 +109,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function expire(array $entities) : void
+    public function expire(array $entities): void
     {
         foreach ($entities as $entity) {
             if ($this->modelsCache->exists($entity)) {
@@ -125,7 +123,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function store(string $key, $data, ?int $lifetime = null) : void
+    public function store(string $key, $data, ?int $lifetime = null): void
     {
         if (is_null($lifetime)) {
             $lifetime = $this->config->cache->modelCache->lifetime;
@@ -137,7 +135,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     /**
      * Encode the cache key.
      */
-    private function encodeKey(array $params) : string
+    private function encodeKey(array $params): string
     {
         $json = json_encode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 

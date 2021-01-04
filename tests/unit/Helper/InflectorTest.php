@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -22,19 +20,19 @@ class InflectorTest extends UnitTest
      */
     private $service;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
         $this->service = new Inflector();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateACamelizedString() : void
+    public function testCanCreateACamelizedString(): void
     {
         $this->specify(
             'Can create a camelized syntax string',
@@ -46,7 +44,7 @@ class InflectorTest extends UnitTest
         );
     }
 
-    public function testCanCreateAVariablizedString() : void
+    public function testCanCreateAVariablizedString(): void
     {
         $this->specify(
             'Can create a variabilized string',
@@ -61,7 +59,7 @@ class InflectorTest extends UnitTest
     /**
      * Return test data
      */
-    protected function _data() : array
+    protected function _data(): array
     {
         return [
             'camelize' => 'This would - make_A nice-camel_case',

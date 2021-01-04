@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -31,7 +29,7 @@ trait TimestampTrait
     /**
      * Get created
      */
-    public function getCreated() : DateTime
+    public function getCreated(): DateTime
     {
         return new DateTime("@{$this->created}");
     }
@@ -39,7 +37,7 @@ trait TimestampTrait
     /**
      * Get last modified
      */
-    public function getModified()  : DateTime
+    public function getModified(): DateTime
     {
         return new DateTime("@{$this->modified}");
     }
@@ -47,7 +45,7 @@ trait TimestampTrait
     /**
      * Set created
      */
-    public function setCreated(DateTime $input) : void
+    public function setCreated(DateTime $input): void
     {
         $this->created = $input->getTimestamp();
     }
@@ -55,7 +53,7 @@ trait TimestampTrait
     /**
      * Set modified
      */
-    public function setModified(DateTime $input) : void
+    public function setModified(DateTime $input): void
     {
         $this->modified = $input->getTimestamp();
     }

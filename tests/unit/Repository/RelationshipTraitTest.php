@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -26,7 +24,7 @@ class RelationshipTraitTest extends UnitTest
      */
     private $mock;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
@@ -65,30 +63,30 @@ class RelationshipTraitTest extends UnitTest
             ->andReturn(true);
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
     public function testLinkModel(): void
     {
-        $result = $this->mock->link('users', new Entity, [1, 2, 3, 4, 5, 6]);
+        $result = $this->mock->link('users', new Entity(), [1, 2, 3, 4, 5, 6]);
 
         expect_that(is_bool($result));
     }
 
     public function testUnlinkModel(): void
     {
-        $result = $this->mock->unlink('users', new Entity, [1, 2, 3, 4, 5, 6], null);
+        $result = $this->mock->unlink('users', new Entity(), [1, 2, 3, 4, 5, 6], null);
 
         expect_that(is_bool($result));
     }
 
     public function testUnlinkModelWithTransaction(): void
     {
-        $manager = new Manager;
+        $manager = new Manager();
         $transaction = $manager->get();
-        $result = $this->mock->link('users', new Entity, [1, 2, 3, 4, 5, 6], $transaction);
+        $result = $this->mock->link('users', new Entity(), [1, 2, 3, 4, 5, 6], $transaction);
 
         expect_that(is_bool($result));
     }
@@ -98,7 +96,7 @@ class RelationshipTraitTest extends UnitTest
         $result = $this->mock->synchronize(
             'users',
             'roleUsers',
-            new Entity,
+            new Entity(),
             [1, 2, 3, 4, 5, 6],
             null
         );
@@ -108,12 +106,12 @@ class RelationshipTraitTest extends UnitTest
 
     public function testSynchronizeRelationshipWithTransaction(): void
     {
-        $manager = new Manager;
+        $manager = new Manager();
         $transaction = $manager->get();
         $result = $this->mock->synchronize(
             'users',
             'roleUsers',
-            new Entity,
+            new Entity(),
             [1, 2, 3, 4, 5, 6],
             $transaction
         );

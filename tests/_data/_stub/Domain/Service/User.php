@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -33,7 +31,7 @@ class User extends Injectable
     /**
      * Fetch an entity by primary key
      */
-    public function getEntity(int $id) : EntityInterface
+    public function getEntity(int $id): EntityInterface
     {
         return $this->repository->findByPk($id);
     }
@@ -41,7 +39,7 @@ class User extends Injectable
     /**
      * Return the related roles for a given entity
      */
-    public function getRoles(EntityInterface $entity) : ResultsetInterface
+    public function getRoles(EntityInterface $entity): ResultsetInterface
     {
         $filter = $this->roleRepository->getQueryFilter();
 
@@ -53,7 +51,7 @@ class User extends Injectable
      *
      * @throws Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function synchronizeRoles(EntityInterface $entity, array $keys) : bool
+    public function synchronizeRoles(EntityInterface $entity, array $keys): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);
@@ -74,7 +72,7 @@ class User extends Injectable
     /**
      * Associate a collection of role entities
      */
-    public function linkRoles(EntityInterface $entity, array $keys) : bool
+    public function linkRoles(EntityInterface $entity, array $keys): bool
     {
         if ($this->roleRepository->link('roles', $entity, $keys)) {
             return $this->update($entity);
@@ -88,7 +86,7 @@ class User extends Injectable
      *
      * @throws Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function unlinkRoles(EntityInterface $entity, array $keys) : bool
+    public function unlinkRoles(EntityInterface $entity, array $keys): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);
@@ -111,7 +109,7 @@ class User extends Injectable
      *
      * @throws Phalcon\Mvc\Model\Transaction\Failed
      */
-    private function update(EntityInterface $entity) : bool
+    private function update(EntityInterface $entity): bool
     {
         $transaction = $this->transactionManager->get();
         $entity->setTransaction($transaction);

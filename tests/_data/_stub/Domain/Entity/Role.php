@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -69,7 +67,7 @@ class Role extends AbstractEntity
     /**
      * {@inheritDoc}
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         parent::initialize();
         $this->addBehavior(new Timestampable());
@@ -85,12 +83,12 @@ class Role extends AbstractEntity
         );
     }
 
-    public function getId() : int
+    public function getId(): int
     {
         return (int) $this->id;
     }
 
-    public function getLabel() : ?string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -98,7 +96,7 @@ class Role extends AbstractEntity
     /**
      * {@inheritDoc}
      */
-    public function validation() : bool
+    public function validation(): bool
     {
         $validator = new Validation();
         $validator->add(

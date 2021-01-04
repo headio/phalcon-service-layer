@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -26,24 +24,24 @@ class Role extends Filter
      */
     protected $primaryKey;
 
-    public function getKeyword() : ?string
+    public function getKeyword(): ?string
     {
         return $this->keyword;
     }
 
-    public function setKeyword(string $val) : FilterInterface
+    public function setKeyword(string $val): FilterInterface
     {
         $this->keyword = $val;
 
         return $this->like('label', $val);
     }
 
-    public function getPrimaryKey() : ?int
+    public function getPrimaryKey(): ?int
     {
         return $this->primaryKey;
     }
 
-    public function setPrimaryKey(int $val) : FilterInterface
+    public function setPrimaryKey(int $val): FilterInterface
     {
         $this->primaryKey = $val;
 

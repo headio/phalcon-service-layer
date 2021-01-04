@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -30,7 +28,8 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
         string $message = null,
         int $code = 0,
         Throwable $throwable = null,
-        array $headers = []) 
+        array $headers = []
+    )
     {
         $this->statusCode = $statusCode;
         $this->headers = $headers;
@@ -41,7 +40,7 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
     /**
      * {@inheritDoc}
      */
-    public function getHeaders() : array
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -49,7 +48,7 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
     /**
      * {@inheritDoc}
      */
-    public function setHeaders(array $headers) : HttpExceptionInterface
+    public function setHeaders(array $headers): HttpExceptionInterface
     {
         $this->headers = $headers;
 
@@ -59,7 +58,7 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
     /**
      * {@inheritDoc}
      */
-    public function getStatusCode() : int
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }

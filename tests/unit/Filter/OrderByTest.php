@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -18,17 +16,17 @@ use Module\UnitTest;
 
 class OrderByTest extends UnitTest
 {
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateOrderByConstraintUsingDefaultDirection() : void
+    public function testCanCreateOrderByConstraintUsingDefaultDirection(): void
     {
         $this->specify(
             'Can create an order by constraint using the default direction',
@@ -53,7 +51,7 @@ class OrderByTest extends UnitTest
         );
     }
 
-    public function testCanCreateOrderByConstraintUsingDirection() : void
+    public function testCanCreateOrderByConstraintUsingDirection(): void
     {
         $this->specify(
             'Can create an order by constraint using explicit direction',
@@ -81,7 +79,7 @@ class OrderByTest extends UnitTest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'column' => 'name',

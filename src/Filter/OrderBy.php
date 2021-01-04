@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -44,7 +42,7 @@ class OrderBy implements OrderByInterface
     /**
      * {@inheritDoc}
      */
-    public function getColumn() : string
+    public function getColumn(): string
     {
         return $this->column;
     }
@@ -52,7 +50,7 @@ class OrderBy implements OrderByInterface
     /**
      * {@inheritDoc}
      */
-    public function getDirection() : ?string
+    public function getDirection(): ?string
     {
         return $this->direction;
     }
@@ -60,7 +58,7 @@ class OrderBy implements OrderByInterface
     /**
      * {@inheritDoc}
      */
-    public function hasDirection() : bool
+    public function hasDirection(): bool
     {
         return !empty($this->direction);
     }

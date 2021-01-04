@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -18,17 +16,17 @@ use Module\UnitTest;
 
 class GroupByTest extends UnitTest
 {
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateGroupByConstraint() : void
+    public function testCanCreateGroupByConstraint(): void
     {
         $this->specify(
             'Can create a group by query constraint',
@@ -51,7 +49,7 @@ class GroupByTest extends UnitTest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'attribute' => 'name',

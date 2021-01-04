@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -19,17 +17,17 @@ use Module\UnitTest;
 
 class ConditionTest extends UnitTest
 {
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testCanCreateConditionUsingDefaultConditionType() : void
+    public function testCanCreateConditionUsingDefaultConditionType(): void
     {
         $this->specify(
             'Can create a condition using the default condition type',
@@ -56,7 +54,7 @@ class ConditionTest extends UnitTest
         );
     }
 
-    public function testCanCreateConditionUsingAndConditionType() : void
+    public function testCanCreateConditionUsingAndConditionType(): void
     {
         $this->specify(
             'Can create a condition using the "AND" condition type',
@@ -84,7 +82,7 @@ class ConditionTest extends UnitTest
         );
     }
 
-    public function testCanCreateConditionUsingOrConditionType() : void
+    public function testCanCreateConditionUsingOrConditionType(): void
     {
         $this->specify(
             'Can create a condition using the "OR" condition type',
@@ -112,7 +110,7 @@ class ConditionTest extends UnitTest
         );
     }
 
-    public function testCanCreateConditionWithInvalidConditionType() : void
+    public function testCanCreateConditionWithInvalidConditionType(): void
     {
         $this->specify(
             'Can create a condition with an invalid condition type',
@@ -144,7 +142,7 @@ class ConditionTest extends UnitTest
     /**
      * Return test data
      */
-    public function _data() : array
+    public function _data(): array
     {
         return [
             'attribute' => 'name',

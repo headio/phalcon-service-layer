@@ -18,8 +18,8 @@ Naturally, you can avoid this paradigm by integrating a data mapper (Doctrine, A
 
 ## Dependencies
 
-* PHP7.2+
-* Phalcon3.4+ < 4.0
+* PHP 7.2+
+* Phalcon 3.4+ < 4.0
 
 ## Installation
 

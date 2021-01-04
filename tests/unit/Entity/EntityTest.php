@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -21,19 +19,19 @@ class EntityTest extends UnitTest
 {
     private $entity;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
         $this->entity = new Entity();
     }
 
-    protected function after() : void
+    protected function after(): void
     {
         parent::after();
     }
 
-    public function testInheritance() : void
+    public function testInheritance(): void
     {
         $this->specify(
             'Entity should inherit expected abstract entity',
@@ -50,7 +48,7 @@ class EntityTest extends UnitTest
         );
     }
 
-    public function testGetPrimarykey() : void
+    public function testGetPrimarykey(): void
     {
         $this->specify(
             'Entity should return expected primary key attribute',
@@ -60,7 +58,7 @@ class EntityTest extends UnitTest
         );
     }
 
-    public function testGetPropertyBindType() : void
+    public function testGetPropertyBindType(): void
     {
         $this->specify(
             'Entity should return expected attribute bind type',
@@ -73,7 +71,7 @@ class EntityTest extends UnitTest
     /**
      * Return test data
      */
-    protected function _data() : array
+    protected function _data(): array
     {
         return [
             'pk' => 'id',

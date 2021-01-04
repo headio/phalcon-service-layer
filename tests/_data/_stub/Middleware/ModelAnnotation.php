@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -24,7 +22,7 @@ class ModelAnnotation extends Plugin
     /**
      * Process model annotations and pass to modal manager.
      */
-    public function afterInitialize(EventInterface $event, ManagerInterface $manager, ModelInterface $model) : string
+    public function afterInitialize(EventInterface $event, ManagerInterface $manager, ModelInterface $model): string
     {
         $reflector = $this->annotations->get($model);
         $annotations = $reflector->getClassAnnotations();

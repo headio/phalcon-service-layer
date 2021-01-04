@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -51,7 +49,7 @@ class Condition implements ConditionInterface
     /**
      * {@inheritDoc}
      */
-    public function getColumn() : string
+    public function getColumn(): string
     {
         return $this->column;
     }
@@ -59,7 +57,7 @@ class Condition implements ConditionInterface
     /**
      * {@inheritDoc}
      */
-    public function getOperator() : string
+    public function getOperator(): string
     {
         return $this->operator;
     }
@@ -67,7 +65,7 @@ class Condition implements ConditionInterface
     /**
      * {@inheritDoc}
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }

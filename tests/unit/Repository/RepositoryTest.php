@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -22,7 +20,7 @@ class RepositoryTest extends UnitTest
 {
     private $mock;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
@@ -37,12 +35,12 @@ class RepositoryTest extends UnitTest
         $this->mock->allows()->getQueryFilter()->andReturn(new Filter());
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testNoCache() : void
+    public function testNoCache(): void
     {
         $this->specify(
             'Query repository is configured not to utilize caching',
@@ -54,7 +52,7 @@ class RepositoryTest extends UnitTest
         );
     }
 
-    public function testUsingCache() : void
+    public function testUsingCache(): void
     {
         $this->specify(
             'Query repository is configured to utilize caching',
@@ -73,7 +71,7 @@ class RepositoryTest extends UnitTest
         );
     }
 
-    public function testGetEntity() : void
+    public function testGetEntity(): void
     {
         $this->specify(
             'Return the entity managed by the repository',
@@ -84,7 +82,7 @@ class RepositoryTest extends UnitTest
         );
     }
 
-    public function testGetQueryFilter() : void
+    public function testGetQueryFilter(): void
     {
         $this->specify(
             'Return the query filter assigned to the repository',

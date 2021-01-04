@@ -1,11 +1,9 @@
 <?php
-/*
+/**
  * This source file is subject to the MIT License.
  *
- * (c) Dominic Beck <dominic@headcrumbs.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this package.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this package.
  */
 declare(strict_types=1);
 
@@ -26,7 +24,7 @@ class FactoryTest extends UnitTest
      */
     private $mock;
 
-    protected function _before() : void
+    protected function _before(): void
     {
         parent::_before();
 
@@ -49,12 +47,12 @@ class FactoryTest extends UnitTest
             });
     }
 
-    protected function _after() : void
+    protected function _after(): void
     {
         parent::_after();
     }
 
-    public function testFactoryInstantiationWithValidRepository() : void
+    public function testFactoryInstantiationWithValidRepository(): void
     {
         $this->specify(
             'Repository manager can instantiate requested repository',
@@ -71,7 +69,7 @@ class FactoryTest extends UnitTest
         );
     }
 
-    public function testFactoryInstantiationWithInvalidRepository() : void
+    public function testFactoryInstantiationWithInvalidRepository(): void
     {
         $this->specify(
             'Exception is thrown instantiating unknown repository',
