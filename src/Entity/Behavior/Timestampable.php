@@ -19,14 +19,6 @@ class Timestampable extends Behavior implements BehaviorInterface
     /**
      * {@inheritDoc}
      */
-    public function __construct(array $options = [])
-    {
-        parent::__construct($options);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function notify($eventType, ModelInterface $model)
     {
         $dt = new DateTime('now');

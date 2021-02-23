@@ -12,6 +12,7 @@ namespace Integration\Entity\Behavior;
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Publishable;
 use Stub\Domain\Entity\User as Entity;
 use IntegrationTester;
+use DateTime;
 
 class PublishableCest
 {
@@ -49,6 +50,62 @@ class PublishableCest
         $result = $method->invoke($behavior);
 
         expect_that(empty($result));
+    }
+
+    public function behaviorHasExpiryOption(IntegrationTester $I)
+    {
+        $I->wantToTest('Behavior has expiry option');
+
+        $behavior = new Publishable(['expiry' => '+3 months']);
+        $method = $I->getClassMethod($behavior, 'getOptions');
+        $result = $method->invoke($behavior);
+        expect_that(!empty($result));
+    }
+
+    public function behaviorGetExpiryOption(IntegrationTester $I)
+    {
+        $I->wantToTest('Behavior returns expiry option');
+        $definition = ['expiry' => '+3 months'];
+        $behavior = new Publishable($definition);
+        $method = $I->getClassMethod($behavior, 'getOptions');
+        $result = $method->invoke($behavior);
+        expect($result['expiry'])->equals($definition['expiry']);
+    }
+
+    public function behaviorHandlesCustomExpiryOption(IntegrationTester $I)
+    {
+        $I->wantToTest('Behavior handles custom expiry option');
+        $now = new DateTime('now');
+        $behavior = new Publishable(['expiry' => '+3 months']);
+        $this->entity->setPublished(true);
+        $behavior->notify('beforeSave', $this->entity);
+
+        expect($this->entity->getPublishFrom())->isInstanceOf('DateTime');
+        expect($this->entity->getPublishTo())->isInstanceOf('DateTime');
+        expect(
+            $now->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+        )->true();
+        expect(
+            $now->modify('+4 months')->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+        )->false();
+    }
+
+    public function behaviorHandlesDefaultExpiryOption(IntegrationTester $I)
+    {
+        $I->wantToTest('Behavior handles default expiry option');
+        $now = new DateTime('now');
+        $behavior = new Publishable();
+        $this->entity->setPublished(true);
+        $behavior->notify('beforeSave', $this->entity);
+
+        expect($this->entity->getPublishFrom())->isInstanceOf('DateTime');
+        expect($this->entity->getPublishTo())->isInstanceOf('DateTime');
+        expect(
+            $now->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+        )->true();
+        expect(
+            $now->modify('+11 years')->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+        )->false();
     }
 
     public function behaviorHasEventHook(IntegrationTester $I)

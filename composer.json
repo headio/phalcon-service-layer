@@ -23,8 +23,8 @@
     },
     "require": {
         "php": ">=7.4 <8.0",
-        "ext-phalcon": ">= 4.1.0",
         "ext-mbstring": "*",
+        "ext-phalcon": ">= 4.1.0",
         "headio/phalcon-bootstrap": "4.x-dev"
     },
     "require-dev": {

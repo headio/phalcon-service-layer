@@ -19,26 +19,22 @@ class Publishable extends Behavior implements BehaviorInterface
     /**
      * {@inheritDoc}
      */
-    public function __construct(array $options = [])
-    {
-        parent::__construct($options);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function notify($eventType, ModelInterface $model)
     {
         $dt = new DateTime('now');
+        $expiry = '+10 years';
 
         if ($eventType === 'beforeSave') {
+            if (isset($this->getOptions()['expiry'])) {
+                $expiry = $this->getOptions()['expiry'];
+            }
             if ($model->getPublished()) {
                 if (!$model->getPublishFrom() instanceof DateTime) {
                     $model->setPublishFrom($dt);
                 }
 
                 if (!$model->getPublishTo() instanceof DateTime) {
-                    $model->setPublishTo($dt->modify('+10 years'));
+                    $model->setPublishTo($dt->modify($expiry));
                 }
             } else {
                 $model->setPublishFrom(null);
