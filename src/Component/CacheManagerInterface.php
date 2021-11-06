@@ -60,7 +60,7 @@ interface CacheManagerInterface
      * against a key representing the entity class name), see
      * fetchPrefix() for implementation.
      */
-    public function expire(array $entities): void;
+    public function expire(array $collection): void;
 
     /**
      * Store data in the cache.

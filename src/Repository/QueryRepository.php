@@ -35,6 +35,8 @@ use function substr;
 
 /**
  * A generic abstract query repository class.
+ * 
+ * @property \Headio\Phalcon\ServiceLayer\Component\CacheManager $cacheManager
  */
 abstract class QueryRepository extends Injectable implements RepositoryInterface
 {
@@ -65,17 +67,22 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         switch (true) {
             case (0 === strpos($method, 'findFirstBy')):
                 $prop = strtolower(substr($method, 11));
+
                 return $this->findFirstBy($prop, ...$args);
+
                 break;
             case (0 === strpos($method, 'getRelated')):
                 $prop = Inflector::variablize(substr($method, 10));
+
                 return $this->getRelated($prop, ...$args);
+
                 break;
             default:
                 throw new BadMethodCallException(
                     sprintf('Repository method %s not implemented.', $method),
                     405
                 );
+
                 break;
         }
     }
@@ -347,7 +354,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         return $this->cacheManager->fetch(
             $this->cacheManager->createKey(
                 $entityName,
-                ['id' => $entity->id, 'rel' => $alias] + $criteria->getParams()
+                ['id' => $entity->getId(), 'rel' => $alias] + $criteria->getParams()
             ),
             function () use ($entity, $alias, $criteria) {
                 return $entity->getRelated($alias, $criteria->getParams());
@@ -388,42 +395,49 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 if ($useAlias) {
                     $format = '[%1$s].[%2$s] LIKE LOWER(:%3$s:)';
                 }
+
                 break;
             case FilterInterface::IN:
                 $format = '%1$s IN ({%2$s:array})';
                 if ($useAlias) {
                     $format = '[%1$s].[%2$s] IN ({%3$s:array})';
                 }
+
                 break;
             case FilterInterface::NOT_IN:
                 $format = '%1$s NOT IN ({%2$s:array})';
                 if ($useAlias) {
                     $format = '[%1$s].[%2$s] NOT IN ({%3$s:array})';
                 }
+
                 break;
             case FilterInterface::NOT_LIKE:
                 $format = '%1$s NOT LIKE LOWER(:%2$s:)';
                 if ($useAlias) {
                     $format = '[%1$s].[%2$s] NOT LIKE LOWER(:%3$s:)';
                 }
+
                 break;
             case FilterInterface::IS_NULL:
                 $format = '%1$s IS NULL';
                 if ($useAlias) {
                     $format = '[%1$s].[%2$s] IS NULL';
                 }
+
                 break;
             case FilterInterface::IS_NOT_NULL:
                 $format = '%1$s IS NOT NULL';
                 if ($useAlias) {
                     $format = '[%1$s].[%2$s] IS NOT NULL';
                 }
+
                 break;
             default:
                 $format = '%1$s ' . $operator . ' :%2$s:';
                 if ($useAlias) {
                     $format = '[%1$s].[%2$s] ' . $operator . ' :%3$s:';
                 }
+
                 break;
         }
 

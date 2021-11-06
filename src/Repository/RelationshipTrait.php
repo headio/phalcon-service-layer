@@ -124,6 +124,7 @@ trait RelationshipTrait
                         )) {
                             return true;
                         }
+
                         return false;
                     }
                 );

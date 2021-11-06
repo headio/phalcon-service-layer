@@ -11,19 +11,25 @@ namespace Headio\Phalcon\ServiceLayer\Component;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Helper\Json;
-use function microtime;
-use function sha1;
 use Closure;
 use JSON_UNESCAPED_SLASHES;
 use JSON_UNESCAPED_UNICODE;
+use function microtime;
+use function sha1;
 
 /**
  * Cache management component for the query repository.
+ * 
+ * @property \Phalcon\Config $config
+ * @property \Psr\SimpleCache\CacheInterface $modelsCache
  */
 class CacheManager extends Injectable implements CacheManagerInterface
 {
     /**
      * {@inheritDoc}
+     * 
+     * @param array<mixed> $params
+     * @return array<mixed>
      */
     public function appendCacheParameter(string $entityName, array $params): array
     {
@@ -38,10 +44,13 @@ class CacheManager extends Injectable implements CacheManagerInterface
 
     /**
      * {@inheritDoc}
+     * 
+     * @param array<mixed> $params
+     * @return array<string,mixed>
      */
     public function createCacheParameters(string $entityName, array $params): array
     {
-        /** @var Phalcon\Config */
+        /** @var \Phalcon\Config $config */
         $config = $this->config->cache->modelCache;
 
         return [
@@ -161,7 +170,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
         $key = $this->normalizeKey($entityName);
 
         if (!$this->modelsCache->has($key)) {
-            /** @var Phalcon\Config */
+            /** @var \Phalcon\Config */
             $config = $this->config->cache->modelCache;
             $this->store(
                 $key,

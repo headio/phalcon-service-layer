@@ -11,9 +11,9 @@ namespace Headio\Phalcon\ServiceLayer\Repository;
 
 use Headio\Phalcon\ServiceLayer\Exception\InvalidArgumentException;
 use Headio\Phalcon\ServiceLayer\Exception\RuntimeException;
+use ReflectionClass;
 use function class_exists;
 use function sprintf;
-use ReflectionClass;
 
 /**
  * A static factory providing repository instantiation.

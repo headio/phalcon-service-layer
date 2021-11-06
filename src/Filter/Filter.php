@@ -24,7 +24,7 @@ abstract class Filter implements FilterInterface
 
     private ?int $limit = null;
 
-    private ?array $offset = [];
+    private array $offset = [];
 
     private array $orderBy = [];
 
