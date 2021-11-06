@@ -68,7 +68,7 @@ use App\Domain\Repository\Foo as Repository;
 use App\Domain\Service\Foo as Service;
 use Headio\Phalcon\ServiceLayer\Repository\Factory;
 use Phalcon\Di\ServiceProviderInterface;
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 
 class Foo implements ServiceProviderInterface
 {
@@ -99,7 +99,7 @@ namespace App\Module\Admin;
 use App\Domain\Repository\Foo as Repository;
 use App\Domain\Service\Foo as Service;
 use Headio\Phalcon\ServiceLayer\Repository\Factory;
-use Phalcon\DiInterface;
+use Phalcon\Di\DiInterface;
 use Phalcon\Loader;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 
