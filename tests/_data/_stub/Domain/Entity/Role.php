@@ -52,12 +52,12 @@ class Role extends AbstractEntity
      * @Identity
      * @Column(type="integer", nullable=false, column="id", length="10")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @Column(type="string", nullable=false, column="label", length="64")
      */
-    protected $label;
+    protected ?string $label = null;
 
     /**
      * Use trait for timestamp functionality.

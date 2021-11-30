@@ -19,7 +19,7 @@ use function sha1;
 
 /**
  * Cache management component for the query repository.
- * 
+ *
  * @property \Phalcon\Config $config
  * @property \Psr\SimpleCache\CacheInterface $modelsCache
  */
@@ -27,7 +27,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
 {
     /**
      * {@inheritDoc}
-     * 
+     *
      * @param array<mixed> $params
      * @return array<mixed>
      */
@@ -44,7 +44,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @param array<mixed> $params
      * @return array<string,mixed>
      */

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Headio\Phalcon\ServiceLayer\Filter;
 
 use function is_null;
-use function strcmp;
+use function strcasecmp;
 use function strtoupper;
 
 class OrderBy implements OrderByInterface
@@ -25,7 +25,7 @@ class OrderBy implements OrderByInterface
         $this->direction = $direction;
 
         if (!is_null($this->direction)) {
-            if (0 === strcmp($this->direction, OrderByInterface::ASC)) {
+            if (0 === strcasecmp($this->direction, OrderByInterface::ASC)) {
                 $this->direction = null;
             } else {
                 $this->direction = OrderByInterface::DESC;

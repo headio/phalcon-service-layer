@@ -39,15 +39,15 @@ class RoleUser extends AbstractEntity
      * @Identity
      * @Column(type="integer", nullable=false, column="id", length="10")
      */
-    public $id;
+    public ?int $id = null;
 
     /**
      * @Column(type="integer", nullable=false, column="role_id", length="5")
      */
-    public $role_id;
+    public ?int $role_id = null;
 
     /**
      * @Column(type="integer", nullable=false, column="user_id", length="10")
      */
-    public $user_id;
+    public ?int $user_id = null;
 }

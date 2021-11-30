@@ -53,17 +53,17 @@ class User extends AbstractEntity
      * @Identity
      * @Column(type="integer", nullable=false, column="id", length="10")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @Column(type="string", nullable=false, column="name", length="64")
      */
-    protected $name;
+    protected ?string $name = null;
 
     /**
      * @Column(type="string", nullable=false, column="email", length="84")
      */
-    protected $email;
+    protected ?string $email = null;
 
     /**
      * Use trait for timestamp functionality.

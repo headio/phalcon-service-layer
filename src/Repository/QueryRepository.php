@@ -35,7 +35,7 @@ use function substr;
 
 /**
  * A generic abstract query repository class.
- * 
+ *
  * @property \Headio\Phalcon\ServiceLayer\Component\CacheManager $cacheManager
  */
 abstract class QueryRepository extends Injectable implements RepositoryInterface
