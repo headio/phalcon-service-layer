@@ -41,6 +41,7 @@ class Factory implements FactoryInterface
             );
         }
 
+        /** @psalm-suppress LessSpecificReturnStatement */
         return new $class($cache);
     }
 }

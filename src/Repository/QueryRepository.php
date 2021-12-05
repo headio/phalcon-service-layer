@@ -293,6 +293,8 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function findFirstBy(string $property, $value): EntityInterface
     {
@@ -356,7 +358,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 $entityName,
                 ['id' => $entity->getId(), 'rel' => $alias] + $criteria->getParams()
             ),
-            function () use ($entity, $alias, $criteria) {
+            function (EntityInterface $entity, string $alias, CriteriaInterface $criteria): ResultsetInterface {
                 return $entity->getRelated($alias, $criteria->getParams());
             }
         );
@@ -371,11 +373,12 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
             $keys = [];
             $resultset->rewind();
             while ($resultset->valid()) {
+                /** @var array<int,int> */
                 $keys[] = $resultset->current()->id;
                 $resultset->next();
             }
 
-            $entityName = $this->getEntityName();
+            $entityName = $this->getEntity();
             $filter->notIn((new $entityName())->getPrimaryKey(), $keys);
         }
 

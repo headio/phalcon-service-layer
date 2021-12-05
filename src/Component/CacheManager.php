@@ -51,7 +51,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     public function createCacheParameters(string $entityName, array $params): array
     {
         /** @var \Phalcon\Config $config */
-        $config = $this->config->cache->modelCache;
+        $config = $this->config->get('cache')->get('modelCache');
 
         return [
             'lifetime' => (int) $config->options->lifetime,
@@ -143,6 +143,8 @@ class CacheManager extends Injectable implements CacheManagerInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $data
      */
     public function store(string $key, $data, int $lifetime): bool
     {

@@ -134,6 +134,8 @@ interface FilterInterface
 
     /**
      * Append a condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function addCondition(string $column, $value, string $operator, string $type): void;
 
@@ -154,16 +156,22 @@ interface FilterInterface
 
     /**
      * Append an equality condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function eq(string $column, $value, string $type = Condition::AND): FilterInterface;
 
     /**
      * Append a greater than comparison condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function gt(string $column, $value, string $type = Condition::AND): FilterInterface;
 
     /**
      * Append a great than or equal comparison condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function gte(string $column, $value, string $type = Condition::AND): FilterInterface;
 
@@ -184,26 +192,36 @@ interface FilterInterface
 
     /**
      * Append a simple pattern match condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function like(string $column, $value, string $type = Condition::AND): FilterInterface;
 
     /**
      * Append a less than comparison condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function lt(string $column, $value, string $type = Condition::AND): FilterInterface;
 
     /**
      * Append a less than or equal comparison condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function lte(string $column, $value, string $type = Condition::AND): FilterInterface;
 
     /**
      * Append a negation equality condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function notEq(string $column, $value, string $type = Condition::AND): FilterInterface;
 
     /**
      * Append a negation pattern match condition to the filter criteria.
+     *
+     * @param mixed $value
      */
     public function notLike(string $column, $value, string $type = Condition::AND): FilterInterface;
 

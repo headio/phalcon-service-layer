@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Repository;
 
+use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
+
 interface UserInterface
 {
+    public function getQueryFilter(): FilterInterface;
 }

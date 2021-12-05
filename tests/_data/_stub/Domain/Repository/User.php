@@ -18,7 +18,7 @@ class User extends QueryRepository implements UserInterface
 {
     use RelationshipTrait;
 
-    public function getEntityName(): string
+    protected function getEntityName(): string
     {
         return 'Stub\\Domain\\Entity\\User';
     }

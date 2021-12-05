@@ -64,6 +64,8 @@ interface CacheManagerInterface
 
     /**
      * Store data in the cache.
+     *
+     * @param mixed $data
      */
     public function store(string $key, $data, int $lifetime): bool;
 }

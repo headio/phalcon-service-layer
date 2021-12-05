@@ -19,7 +19,7 @@ class Publishable extends Behavior implements BehaviorInterface
     /**
      * {@inheritDoc}
      */
-    public function notify($eventType, ModelInterface $model)
+    public function notify($eventType, ModelInterface $model): void
     {
         $dt = new DateTime('now');
         $expiry = '+10 years';

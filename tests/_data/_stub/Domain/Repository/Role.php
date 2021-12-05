@@ -18,7 +18,7 @@ class Role extends QueryRepository implements RoleInterface
 {
     use RelationshipTrait;
 
-    public function getEntityName(): string
+    protected function getEntityName(): string
     {
         return 'Stub\\Domain\\Entity\\Role';
     }

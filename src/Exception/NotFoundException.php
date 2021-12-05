@@ -12,7 +12,7 @@ use Throwable;
 
 class NotFoundException extends HttpException
 {
-    public function __construct(string $message = null, ?int $code = 0, Throwable $throwable = null, array $headers = [])
+    public function __construct(string $message = '', int $code = 0, Throwable $throwable = null, array $headers = [])
     {
         parent::__construct(404, $message, $code, $throwable, $headers);
     }

@@ -382,7 +382,7 @@ public function createFilter(int $offset, int $limit, string $key) : FilterInter
 {
     $store = new SessionBag($key);
     $filter = $this->getQueryFilter()
-        ->alias($this->getEntityName())
+        ->alias($this->getEntity())
         ->orderBy('id')
         ->limit($limit * 3);
 

@@ -25,6 +25,9 @@ class Condition implements ConditionInterface
      */
     private $value;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct(string $column, $value, string $operator, string $type = ConditionInterface::AND)
     {
         $this->column = $column;

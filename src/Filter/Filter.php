@@ -213,6 +213,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function addCondition(string $column, $value, string $operator, string $type): void
     {
@@ -249,6 +251,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function eq(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -259,6 +263,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function gt(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -269,6 +275,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function gte(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -309,6 +317,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function like(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -319,6 +329,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function lt(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -329,6 +341,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function lte(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -339,6 +353,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function notEq(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -349,6 +365,8 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param mixed $value
      */
     public function notLike(string $column, $value, string $type = Condition::AND): FilterInterface
     {
@@ -389,7 +407,7 @@ abstract class Filter implements FilterInterface
         }
 
         $this->limit = null;
-        $this->offset = null;
+        $this->offset = [];
         $this->alias = null;
 
         return $this;

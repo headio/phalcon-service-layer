@@ -19,7 +19,7 @@ class HttpException extends RuntimeException implements ExceptionInterface, Http
 
     public function __construct(
         int $statusCode,
-        string $message = null,
+        string $message = '',
         int $code = 0,
         Throwable $throwable = null,
         array $headers = []

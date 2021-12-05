@@ -69,6 +69,8 @@ interface RepositoryInterface
 
     /**
      * Fetch first record by property name from cache or storage.
+     *
+     * @param mixed $value
      */
     public function findFirstBy(string $property, $value): EntityInterface;
 
