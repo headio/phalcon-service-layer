@@ -19,12 +19,12 @@ trait TimestampTrait
     /**
      * @Column(type="integer", nullable=false, column="created", length="10")
      */
-    protected $created;
+    protected ?int $created = null;
 
     /**
      * @Column(type="integer", nullable=false, column="modified", length="10")
      */
-    protected $modified;
+    protected ?int $modified = null;
 
     /**
      * Get created

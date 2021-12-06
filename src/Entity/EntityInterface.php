@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace Headio\Phalcon\ServiceLayer\Entity;
 
+use Phalcon\Mvc\ModelInterface;
+
 /**
  * Entity Interface
  */
-interface EntityInterface
+interface EntityInterface extends ModelInterface
 {
     /**
      * Return the entity primary key attribute.

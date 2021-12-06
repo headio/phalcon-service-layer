@@ -19,17 +19,17 @@ trait PublishingTrait
     /**
      * @Column(type="boolean", nullable=true, column="published")
      */
-    protected $published = false;
+    protected ?bool $published = null;
 
     /**
      * @Column(type="integer", nullable=true, column="publish_from", length="10")
      */
-    protected $publish_from = null;
+    protected ?int $publish_from = null;
 
     /**
      * @Column(type="integer", nullable=true, column="publish_to", length="10")
      */
-    protected $publish_to = null;
+    protected ?int $publish_to = null;
 
     /**
      * Get published
