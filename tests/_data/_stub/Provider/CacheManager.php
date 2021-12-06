@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace Stub\Service;
+namespace Stub\Provider;
 
 use Headio\Phalcon\ServiceLayer\Component\CacheManager as Service;
 use Phalcon\Di\ServiceProviderInterface;

@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace Stub\Service;
+namespace Stub\Provider;
 
 use Phalcon\Cache\CacheFactory;
 use Phalcon\Cache\AdapterFactory;

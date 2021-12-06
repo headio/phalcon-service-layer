@@ -144,10 +144,7 @@ use Phalcon\Mvc\Controller;
 
 class Foo extends Controller
 {
-    /**
-     * @var App\Domain\Service\FooInterface
-     */
-    private $service;
+    private FooInterface $service;
 
     /**
      * Inject service layer dependencies
@@ -192,10 +189,7 @@ use Phalcon\Http\ResponseInterface;
 
 class Foo extends Injectable
 {
-    /**
-     * @var FooInterface
-     */
-    private $repository;
+    private FooInterface $repository;
 
     public function __construct(FooInterface $fooRepository)
     {
@@ -376,11 +370,12 @@ public function getPrimaryKeyForResource(string $label)
 }
 
 /**
- * Return the filter for the table view.
+ * Return the filter for a list view.
  */
 public function createFilter(int $offset, int $limit, string $key) : FilterInterface
 {
-    $store = new SessionBag($key);
+    $route = $this->router->getMatchedRoute();
+    $store = new SessionBag($route->getName());
     $filter = $this->getQueryFilter()
         ->alias($this->getEntity())
         ->orderBy('id')
@@ -480,12 +475,12 @@ class Resource extends AbstractEntity
      * @Identity
      * @Column(type="integer", nullable=false, column="id", length="10")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @Column(type="string", nullable=false, column="label", length="64")
      */
-    protected $label;
+    protected ?string $label = null;
 
     /**
      * Use trait for timestamp functionality.

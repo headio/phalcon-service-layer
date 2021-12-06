@@ -14,6 +14,7 @@ return [
         ],
     ],
     'applicationPath' => 'src' . DIRECTORY_SEPARATOR,
+    'baseUri' => '/',
     'cache' => [
         'apply' => false,
         'modelCache' => [
@@ -49,6 +50,12 @@ return [
         ],
     ],
     'debug' => true,
+    'dispatcher' => [
+        'defaultAction' => 'index',
+        'defaultController' => 'Index',
+        'defaultControllerNamespace' => 'Stub\\Module\\Admin\\Controller',
+        'defaultModule' => 'Admin'
+    ],
     'locale' => 'en_GB',
     'logPath' => 'tests' .
         DIRECTORY_SEPARATOR . '_data' .
@@ -62,16 +69,49 @@ return [
             'metaDataDir' => TEST_OUTPUT_DIR . 'Cache/Metadata/',
         ],
     ],
+    'modules' => [
+        'Admin' => [
+            'className' => 'Stub\\Module\\Admin\\Module',
+            'path' => TEST_STUB_DIR . 'Module/Admin/Module.php',
+            'metadata' => [
+                'controllersNamespace' => 'Stub\\Module\\Admin\\Controller'
+            ]
+        ],
+    ],
+    'paginator' => [
+        'cursor' => [
+            'queryIdentifiers' => [
+                'before' => 'prev',
+                'after' => 'next',
+            ],
+        ],
+    ],
+    'routes' => [
+        'Admin' => [
+            'Stub\Module\Admin\Controller\Tag' => '/tags',
+        ],
+    ],
     'services' => [
-        'Stub\Service\EventManager',
-        'Stub\Service\Logger',
-        'Stub\Service\Annotation',
-        'Stub\Service\CacheManager',
-        'Stub\Service\Db',
-        'Stub\Service\ModelCache',
-        'Stub\Service\ModelMetaData',
-        'Stub\Service\ModelManager',
-        'Stub\Service\TransactionManager'
+        'Stub\Provider\EventManager',
+        'Stub\Provider\Logger',
+        'Stub\Provider\Dispatcher',
+        'Stub\Provider\Request',
+        'Stub\Provider\Router',
+        'Stub\Provider\Annotation',
+        'Stub\Provider\CacheManager',
+        'Stub\Provider\Db',
+        'Stub\Provider\i18n',
+        'Stub\Provider\ModelCache',
+        'Stub\Provider\ModelMetaData',
+        'Stub\Provider\ModelManager',
+        'Stub\Provider\TransactionManager',
+        'Stub\Provider\Url',
+        'Stub\Provider\View',
     ],
     'timezone' => 'Europe/London',
+    'view' => [
+        'defaultPath' => TEST_OUTPUT_DIR . 'Module/Admin/View/',
+        'compiledPath' => TEST_OUTPUT_DIR . 'Cache/Volt/',
+        'compiledSeparator' => '_',
+    ]
 ];

@@ -1,3 +1,15 @@
+# ************************************************************
+# Sequel Pro SQL dump
+# Version 4541
+#
+# http://www.sequelpro.com/
+# https://github.com/sequelpro/sequelpro
+#
+# Host: localhost (MySQL 5.7.34-log)
+# Database: servicelayer_test
+# Generation Time: 2021-12-06 14:31:57 +0000
+# ************************************************************
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -20,7 +32,7 @@ CREATE TABLE `Role` (
   `modified` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_2b3845356f5921ca3a9aff3ef13b9658c6e40f96` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `Role` WRITE;
 /*!40000 ALTER TABLE `Role` DISABLE KEYS */;
@@ -55,8 +67,39 @@ CREATE TABLE `Role_User` (
   KEY `6a749103f5c001f8ac079deee869a53eccd2ed67` (`user_id`),
   CONSTRAINT `role_user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `Role` (`id`) ON DELETE CASCADE,
   CONSTRAINT `role_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+
+# Dump of table Tag
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `Tag`;
+
+CREATE TABLE `Tag` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(48) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UQ_pZvVDxrPbkL4ESLY` (`label`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+LOCK TABLES `Tag` WRITE;
+/*!40000 ALTER TABLE `Tag` DISABLE KEYS */;
+
+INSERT INTO `Tag` (`id`, `label`)
+VALUES
+	(25,'Elixir'),
+	(20,'Haskell'),
+	(30,'Java'),
+	(24,'JavaScript'),
+	(26,'Perl'),
+	(28,'PHP'),
+	(32,'Python'),
+	(31,'Ruby'),
+	(27,'TypeScript');
+
+/*!40000 ALTER TABLE `Tag` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table User
@@ -75,7 +118,7 @@ CREATE TABLE `User` (
   `modified` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_abf65b30ccf681c4bf021d0bc1aa6962f103b8da` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
@@ -83,7 +126,10 @@ LOCK TABLES `User` WRITE;
 INSERT INTO `User` (`id`, `name`, `email`, `published`, `publish_from`, `publish_to`, `created`, `modified`)
 VALUES
 	(1,'John Doe','john.doe@headcrumbs.io',NULL,NULL,NULL,1541926961,1551814073),
-	(2,'Jane Doe','jane.doe@headcrumbs.io',NULL,NULL,NULL,1541926963,1551814083);
+	(2,'Jane Doe','jane.doe@headcrumbs.io',NULL,NULL,NULL,1541926963,1551814083),
+	(3,'Bob Doe','bob.doe@headcrumbs.io',NULL,NULL,NULL,1541926963,1551814083),
+	(4,'Rob Doe','rob.doe@headcrumbs.io',NULL,NULL,NULL,1541926963,1551814083),
+	(5,'Silvia Doe','silvia.doe@headcrumbs.io',NULL,NULL,NULL,1541926963,1551814083);
 
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -7,13 +7,13 @@
  */
 declare(strict_types=1);
 
-namespace Stub\Service;
+namespace Stub\Provider;
 
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
-use Phalcon\Events\Manager as EventsManager;
+use Phalcon\Mvc\Model\Transaction\Manager as Service;
 
-class EventManager implements ServiceProviderInterface
+class TransactionManager implements ServiceProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -21,9 +21,9 @@ class EventManager implements ServiceProviderInterface
     public function register(DiInterface $di): void
     {
         $di->setShared(
-            'eventsManager',
+            'transactionManager',
             function () {
-                return new EventsManager();
+                return new Service();
             }
         );
     }

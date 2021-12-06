@@ -7,14 +7,13 @@
  */
 declare(strict_types=1);
 
-namespace Stub\Service;
+namespace Stub\Provider;
 
-use Stub\Middleware\ModelAnnotation;
-use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
-use Phalcon\Mvc\Model\Manager as Service;
+use Phalcon\Di\ServiceProviderInterface;
+use Phalcon\Url as Service;
 
-class ModelManager implements ServiceProviderInterface
+class Url implements ServiceProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -22,12 +21,10 @@ class ModelManager implements ServiceProviderInterface
     public function register(DiInterface $di): void
     {
         $di->setShared(
-            'modelsManager',
-            function () {
+            'url',
+            function () use ($di) {
                 $service = new Service();
-                $eventsManager = $this->get('eventsManager');
-                $service->setEventsManager($eventsManager);
-                $eventsManager->attach('modelsManager', new ModelAnnotation());
+                $service->setBaseUri($di->get('config')->baseUri);
 
                 return $service;
             }

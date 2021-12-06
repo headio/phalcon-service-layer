@@ -7,13 +7,13 @@
  */
 declare(strict_types=1);
 
-namespace Stub\Service;
+namespace Stub\Provider;
 
+use Phalcon\Http\Request as Service;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
-use Phalcon\Mvc\Model\Transaction\Manager as Service;
 
-class TransactionManager implements ServiceProviderInterface
+class Request implements ServiceProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -21,7 +21,7 @@ class TransactionManager implements ServiceProviderInterface
     public function register(DiInterface $di): void
     {
         $di->setShared(
-            'transactionManager',
+            'request',
             function () {
                 return new Service();
             }
