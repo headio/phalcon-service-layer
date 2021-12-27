@@ -33,7 +33,7 @@ class TimestampableCest
 
     public function behaviorHasOptions(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior returns options as an array representation');
+        $I->wantToTest('the behavior returns options as an array representation');
 
         $method = $I->getClassMethod($this->behavior, 'getOptions');
         $result = $method->invoke($this->behavior);
@@ -43,7 +43,7 @@ class TimestampableCest
 
     public function behaviorHasNoOptions(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior returns no options');
+        $I->wantToTest('the behavior returns no options');
 
         $behavior = new Timestampable();
         $method = $I->getClassMethod($behavior, 'getOptions');
@@ -54,7 +54,7 @@ class TimestampableCest
 
     public function behaviorHasEventHook(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior registers event hooks');
+        $I->wantToTest('the behavior registers event hooks');
 
         $method = $I->getClassMethod($this->behavior, 'mustTakeAction');
         $result = $method->invoke($this->behavior, 'beforeEvent');
@@ -64,7 +64,7 @@ class TimestampableCest
 
     public function behaviorTakesNoAction(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior does not take action on event');
+        $I->wantToTest('the behavior does not take action on event');
 
         $method = $I->getClassMethod($this->behavior, 'mustTakeAction');
         $result = $method->invoke($this->behavior, 'afterDelete');
@@ -74,7 +74,7 @@ class TimestampableCest
 
     public function behaviorTakesActionOnBeforeValidationOnCreateEventHook(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior takes action on `beforeValidationOnCreate` event hook');
+        $I->wantToTest('the behavior takes action on `beforeValidationOnCreate` event hook');
 
         $this->behavior->notify('beforeValidationOnCreate', $this->entity);
 
@@ -84,7 +84,7 @@ class TimestampableCest
 
     public function behaviorTakesActionOnBeforeValidationOnUpdateEventHook(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior takes action on `beforeValidationOnUpdate` event hook');
+        $I->wantToTest('the behavior takes action on `beforeValidationOnUpdate` event hook');
         $this->behavior->notify('beforeValidationOnUpdate', $this->entity);
 
         expect($this->entity->getModified())->isInstanceOf('DateTime');

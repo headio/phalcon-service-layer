@@ -32,7 +32,7 @@ class CacheInvalidateableCest
 
     public function behaviorHasOptions(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior returns options as an array representation');
+        $I->wantToTest('the behavior returns options as an array representation');
 
         $method = $I->getClassMethod($this->behavior, 'getOptions');
         $result = $method->invoke($this->behavior);
@@ -42,7 +42,7 @@ class CacheInvalidateableCest
 
     public function behaviorHasNoOptions(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior returns no options');
+        $I->wantToTest('the behavior returns no options');
 
         $behavior = new CacheInvalidateable();
         $method = $I->getClassMethod($behavior, 'getOptions');
@@ -53,7 +53,7 @@ class CacheInvalidateableCest
 
     public function behaviorTakesNoAction(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior does not take action on event');
+        $I->wantToTest('the behavior does not take action on event');
 
         $method = $I->getClassMethod($this->behavior, 'mustTakeAction');
         $result = $method->invoke($this->behavior, 'afterDelete');
@@ -63,7 +63,7 @@ class CacheInvalidateableCest
 
     public function behaviorTakesActionOnRegisteredEventHook(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior does take action on event');
+        $I->wantToTest('the behavior does take action on event');
 
         $behavior = new CacheInvalidateable(
             [

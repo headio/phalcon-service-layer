@@ -25,7 +25,7 @@ class FilterCest
 
     public function canAppendCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a condition to the filter criteria');
+        $I->wantToTest('appending a condition to the filter criteria');
 
         $filter = new Filter();
         $filter->addCondition(
@@ -42,7 +42,7 @@ class FilterCest
 
     public function canClearConditions(IntegrationTester $I)
     {
-        $I->wantToTest('Clearing all conditions assigned to the filter criteria');
+        $I->wantToTest('clearing all conditions assigned to the filter criteria');
 
         $filter = new Filter();
         $filter->clearConditions();
@@ -52,7 +52,7 @@ class FilterCest
 
     public function canAppendAGreaterThanCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a greater than comparison condition to the filter criteria');
+        $I->wantToTest('appending a greater than comparison condition to the filter criteria');
 
         $filter = new Filter();
         $filter->gt(
@@ -73,7 +73,7 @@ class FilterCest
 
     public function CanAppendAGreaterThanEqualCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a great than or equal comparison condition to the filter criteria');
+        $I->wantToTest('appending a great than or equal comparison condition to the filter criteria');
 
         $filter = new Filter();
         $filter->gte(
@@ -94,7 +94,7 @@ class FilterCest
 
     public function canAppendALessThanCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a less than comparison condition to the filter criteria');
+        $I->wantToTest('appending a less than comparison condition to the filter criteria');
 
         $filter = new Filter();
         $filter->lt(
@@ -115,7 +115,7 @@ class FilterCest
 
     public function CanAppendALessThanEqualCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a less than or equal comparison condition to the filter criteria');
+        $I->wantToTest('appending a less than or equal comparison condition to the filter criteria');
 
         $filter = new Filter();
         $filter->lte(
@@ -136,7 +136,7 @@ class FilterCest
 
     public function canAppendAnEqualCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending an equality condition to the filter criteria');
+        $I->wantToTest('appending an equality condition to the filter criteria');
 
         $filter = new Filter();
         $filter->eq(
@@ -157,7 +157,7 @@ class FilterCest
 
     public function canAppendANotEqualCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a negation equality condition to the filter criteria');
+        $I->wantToTest('appending a negation equality condition to the filter criteria');
 
         $filter = new Filter();
         $filter->notEq(
@@ -178,7 +178,7 @@ class FilterCest
 
     public function canAppendAnInCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending an inclusion comparison condition to the filter criteria');
+        $I->wantToTest('appending an inclusion comparison condition to the filter criteria');
 
         $filter = new Filter();
         $filter->in(
@@ -199,7 +199,7 @@ class FilterCest
 
     public function canAppendANotInCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a negation inclusion comparison condition to the filter criteria');
+        $I->wantToTest('appending a negation inclusion comparison condition to the filter criteria');
 
         $filter = new Filter();
         $filter->notIn(
@@ -220,7 +220,7 @@ class FilterCest
 
     public function canAppendIsNullCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a null value condition to the filter criteria');
+        $I->wantToTest('appending a null value condition to the filter criteria');
 
         $filter = new Filter();
         $filter->isNull(
@@ -236,7 +236,7 @@ class FilterCest
 
     public function canAppendIsNotNullCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a not null value condition to the filter criteria');
+        $I->wantToTest('appending a not null value condition to the filter criteria');
 
         $filter = new Filter();
         $filter->isNotNull(
@@ -252,7 +252,7 @@ class FilterCest
 
     public function canAppendALikeCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a pattern match condition to the filter criteria');
+        $I->wantToTest('appending a pattern match condition to the filter criteria');
 
         $filter = new Filter();
         $filter->like(
@@ -273,7 +273,7 @@ class FilterCest
 
     public function canAppendANotLikeCondition(IntegrationTester $I)
     {
-        $I->wantToTest('Appending a negation pattern match condition to the filter criteria');
+        $I->wantToTest('appending a negation pattern match condition to the filter criteria');
 
         $filter = new Filter();
         $filter->notLike(
@@ -294,7 +294,7 @@ class FilterCest
 
     public function canAppendMultipleConditions(IntegrationTester $I)
     {
-        $I->wantToTest('Appending multiple conditions to the filter criteria');
+        $I->wantToTest('appending multiple conditions to the filter criteria');
 
         $filter = new Filter();
         $filter->eq(

@@ -29,7 +29,7 @@ class RelationshipTraitCest
 
     public function canSynchronizeRelations(IntegrationTester $I)
     {
-        $I->wantTo('Synchronize a model relationship');
+        $I->wantToTest('synchronizing a related entity resultset');
 
         $entity = $this->service->getEntity(1);
         $result = $this->service->synchronizeRoles($entity, [2, 3]);
@@ -43,7 +43,7 @@ class RelationshipTraitCest
 
     public function canLinkRelations(IntegrationTester $I)
     {
-        $I->wantToTest('Associating a collection of models');
+        $I->wantToTest('associating a collection of models');
 
         $entity = $this->service->getEntity(1);
         $result = $this->service->linkRoles($entity, [2, 3, 4]);
@@ -53,7 +53,7 @@ class RelationshipTraitCest
 
     public function canUnlinkRelations(IntegrationTester $I)
     {
-        $I->wantToTest('detach a collection of models');
+        $I->wantToTest('detaching a collection of models');
 
         $entity = $this->service->getEntity(1);
         $result = $this->service->unlinkRoles($entity, [1]);

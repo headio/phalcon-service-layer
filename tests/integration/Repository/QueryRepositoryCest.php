@@ -35,7 +35,7 @@ class QueryRepositoryCest
 
     public function canReturnRecordCount(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can return number of results for filter');
+        $I->wantToTest('the query repository can return number of results for a filter');
 
         $filter = $this->repository->getQueryFilter();
         $result = $this->repository->count($filter);
@@ -46,8 +46,8 @@ class QueryRepositoryCest
     public function canCreateCriteria(IntegrationTester $I)
     {
         $I->wantToTest(
-            'Query repository returns an instance of the query criteria pre-populated ' .
-            'with the entity managed by the repository.'
+            'the query repository returns an instance of the query criteria pre-populated ' .
+            'with the entity managed by the repository'
         );
 
         $criteria = $this->repository->createCriteria();
@@ -57,7 +57,7 @@ class QueryRepositoryCest
 
     public function canCreateQuery(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can return a phalcon builder instance');
+        $I->wantToTest('the query repository can return a phalcon builder instance');
 
         $builder = $this->repository->createQuery();
 
@@ -67,7 +67,7 @@ class QueryRepositoryCest
 
     public function canApplyFilterToQueryCriteria(IntegrationTester $I)
     {
-        $I->wantTo('Apply a filter to the query criteria');
+        $I->wantToTest('applying a filter to the query criteria');
         $criteria = $this->repository->createCriteria();
         $filter = $this->repository->getQueryFilter()->setPrimaryKey($this->_data()['primaryKey']);
         $this->repository->applyFilter($criteria, $filter);
@@ -81,7 +81,7 @@ class QueryRepositoryCest
 
     public function canCreateBuilderFromCriteria(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can create query builder from criteria');
+        $I->wantToTest('creating a query builder from a query criteria instance');
 
         $criteria = $this->repository->createCriteria();
         $filter = $this->repository->getQueryFilter()->setPrimaryKey($this->_data()['primaryKey']);
@@ -95,8 +95,8 @@ class QueryRepositoryCest
     public function canCreateQueryFromBuilder(IntegrationTester $I)
     {
         $I->wantToTest(
-            'Query repository can apply filter to query criteria, create query from builder ' .
-            'and return exprected bind types'
+            'applying a query filter to the query criteria and returning the expected bind types from' .
+            'the query builder query instance'
         );
 
         $criteria = $this->repository->createCriteria();
@@ -112,8 +112,8 @@ class QueryRepositoryCest
     public function canCreateQueryFromBuilderAndReturnValidPhql(IntegrationTester $I)
     {
         $I->wantToTest(
-            'Query repository can apply filter to query criteria, create query from builder ' .
-            'and return expected phql syntax and bind types'
+            'applying a query filter to the query criteria and returning the expected phql syntax and bind' . 
+            'parameters from the query builder query instance'
         );
 
         $filter = $this->repository->getQueryFilter()
@@ -132,7 +132,7 @@ class QueryRepositoryCest
 
     public function canFind(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can fetch records using filter interface');
+        $I->wantToTest('fetching records using a filter interface');
 
         $filter = $this->repository->getQueryFilter();
         $result = $this->repository->find($filter);
@@ -153,7 +153,7 @@ class QueryRepositoryCest
 
     public function canFindByPkThrows404(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository cannot fetch record by primary key with invalid parameter');
+        $I->wantToTest('fetching record by primary key with an invalid parameter');
         $I->expectThrowable(
             new NotFoundException('404 Not Found'),
             function () {
@@ -164,7 +164,7 @@ class QueryRepositoryCest
 
     public function canFindFirstByUrl(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can fetch first record by valid property name');
+        $I->wantToTest('fetching the first record using valid property');
 
         $result = $this->repository->findFirstByEmail($this->_data()['email']);
 
@@ -175,7 +175,7 @@ class QueryRepositoryCest
 
     public function canGetEntity(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can return the entity managed by the repository');
+        $I->wantToTest('returning the entity managed by the repository');
 
         $result = $this->repository->getEntity();
 
@@ -184,7 +184,7 @@ class QueryRepositoryCest
 
     public function canGetQueryFilter(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can return the query filter assigned to the repository');
+        $I->wantToTest('returning the repository query filter');
 
         $result = $this->repository->getQueryFilter();
 
@@ -194,7 +194,7 @@ class QueryRepositoryCest
 
     public function canGetRelated(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can return the related models');
+        $I->wantToTest('the repository can return the related models for a given entity');
 
         $filter = $this->repository->getQueryFilter();
         $entityName = $this->repository->getEntity();
@@ -211,7 +211,7 @@ class QueryRepositoryCest
 
     public function canGetUnrelated(IntegrationTester $I)
     {
-        $I->wantToTest('Query repository can return the unrelated models');
+        $I->wantToTest('the repository can return the unrelated models for a given entity');
 
         $entityName = $this->repository->getEntity();
         $entity = new $entityName();

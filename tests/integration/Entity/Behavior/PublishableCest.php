@@ -33,7 +33,7 @@ class PublishableCest
 
     public function behaviorHasOptions(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior returns options as an array representation');
+        $I->wantToTest('the behavior returns options as an array representation');
 
         $method = $I->getClassMethod($this->behavior, 'getOptions');
         $result = $method->invoke($this->behavior);
@@ -43,7 +43,7 @@ class PublishableCest
 
     public function behaviorHasNoOptions(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior returns no options');
+        $I->wantToTest('the behavior returns no options');
 
         $behavior = new Publishable();
         $method = $I->getClassMethod($behavior, 'getOptions');
@@ -54,7 +54,7 @@ class PublishableCest
 
     public function behaviorHasExpiryOption(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior has expiry option');
+        $I->wantToTest('the behavior has expiry option');
 
         $behavior = new Publishable(['expiry' => '+3 months']);
         $method = $I->getClassMethod($behavior, 'getOptions');
@@ -64,7 +64,7 @@ class PublishableCest
 
     public function behaviorGetExpiryOption(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior returns expiry option');
+        $I->wantToTest('the behavior returns expiry option');
         $definition = ['expiry' => '+3 months'];
         $behavior = new Publishable($definition);
         $method = $I->getClassMethod($behavior, 'getOptions');
@@ -74,7 +74,7 @@ class PublishableCest
 
     public function behaviorHandlesCustomExpiryOption(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior handles custom expiry option');
+        $I->wantToTest('the behavior handles custom expiry option');
         $now = new DateTime('now');
         $behavior = new Publishable(['expiry' => '+3 months']);
         $this->entity->setPublished(true);
@@ -92,7 +92,7 @@ class PublishableCest
 
     public function behaviorHandlesDefaultExpiryOption(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior handles default expiry option');
+        $I->wantToTest('the behavior handles default expiry option');
         $now = new DateTime('now');
         $behavior = new Publishable();
         $this->entity->setPublished(true);
@@ -110,7 +110,7 @@ class PublishableCest
 
     public function behaviorHasEventHook(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior registers event hooks');
+        $I->wantToTest('the behavior registers event hooks');
 
         $method = $I->getClassMethod($this->behavior, 'mustTakeAction');
         $result = $method->invoke($this->behavior, 'beforeEvent');
@@ -120,7 +120,7 @@ class PublishableCest
 
     public function behaviorTakesNoAction(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior does not take action on event');
+        $I->wantToTest('the behavior does not take action on event');
 
         $method = $I->getClassMethod($this->behavior, 'mustTakeAction');
         $result = $method->invoke($this->behavior, 'afterDelete');
@@ -130,7 +130,7 @@ class PublishableCest
 
     public function behaviorTakesActionOnBeforeSaveEventHook(IntegrationTester $I)
     {
-        $I->wantToTest('Behavior takes action on `beforeSave` event hook');
+        $I->wantToTest('the behavior takes action on `beforeSave` event hook');
 
         $this->entity->setPublished(true);
         $this->behavior->notify('beforeSave', $this->entity);

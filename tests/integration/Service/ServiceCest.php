@@ -53,7 +53,7 @@ class ServiceCest
 
     public function canInsertRecord(IntegrationTester $I)
     {
-        $I->wantTo('Insert a new record using an isolated transaction');
+        $I->wantToTest('inserting a new record using an isolated transaction');
 
         $data = $this->getData();
         $result = $this->service->addModel($data);
@@ -63,7 +63,7 @@ class ServiceCest
 
     public function canNotInsertRecordIfValidationFails(IntegrationTester $I)
     {
-        $I->wantToTest('A validation failed exception is thrown trying to insert a record with missing data.');
+        $I->wantToTest('a validation failed exception is thrown trying to insert a record with missing data.');
 
         $I->expectThrowable(
             ValidationFailed::class,
@@ -76,7 +76,7 @@ class ServiceCest
 
     public function canUpdateRecord(IntegrationTester $I)
     {
-        $I->wantTo('Update an existing record using an isolated transaction');
+        $I->wantToTest('updating an existing record using an isolated transaction');
 
         $data = $this->getData();
         $this->service->addModel($data);
@@ -89,7 +89,7 @@ class ServiceCest
 
     public function canDeleteRecord(IntegrationTester $I)
     {
-        $I->wantTo('Delete a record using an isolated transaction');
+        $I->wantToTest('deleting a record using an isolated transaction');
 
         $data = $this->getData();
         $this->service->addModel($data);
