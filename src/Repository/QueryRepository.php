@@ -358,7 +358,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 $entityName,
                 ['id' => $entity->getId(), 'rel' => $alias] + $criteria->getParams()
             ),
-            function (EntityInterface $entity, string $alias, CriteriaInterface $criteria) {
+            function () use ($entity, $alias, $criteria) {
                 return $entity->getRelated($alias, $criteria->getParams());
             }
         );
