@@ -14,11 +14,11 @@ use IntegrationTester;
 
 class CacheManagerCest
 {
-    private $entity;
+    private User $model;
 
     public function _before(IntegrationTester $I)
     {
-        $this->entity = new User();
+        $this->model = new User();
         $this->di = $I->getApplication()->getDI();
     }
 
@@ -26,7 +26,7 @@ class CacheManagerCest
     {
         $I->wantTo('Create a cache key via the cache manager');
 
-        $entityName = get_class($this->entity);
+        $entityName = $this->model::class;
         $service = $this->di->get('cacheManager');
         $result = $service->createKey($entityName, $this->_data()['criteria']);
         expect(is_string($result))->true();
@@ -37,7 +37,7 @@ class CacheManagerCest
     {
         $I->wantTo('Create cache parameters via the cache manager');
 
-        $entityName = get_class($this->entity);
+        $entityName = get_class($this->model);
         $service = $this->di->get('cacheManager');
         $result = $service->createCacheParameters($entityName, $this->_data()['criteria']);
 
@@ -49,7 +49,7 @@ class CacheManagerCest
     {
         $I->wantTo('Append a cache constraint to the query criteria');
 
-        $entityName = get_class($this->entity);
+        $entityName = get_class($this->model);
         $service = $this->di->get('cacheManager');
         $result = $service->appendCacheParameter($entityName, $this->_data()['criteria']);
 
@@ -61,7 +61,7 @@ class CacheManagerCest
         $I->wantTo('Fetch cache key after storing data in the cache service');
 
         $service = $this->di->get('cacheManager');
-        $entityName = get_class($this->entity);
+        $entityName = get_class($this->model);
         $key = $service->createKey($entityName, $this->_data()['criteria']);
 
         expect($service->store($key, $this->_data()['cacheVal'], 60))->true();
@@ -74,7 +74,7 @@ class CacheManagerCest
         $I->wantTo('Fetch cache data after storing data in the cache service');
 
         $service = $this->di->get('cacheManager');
-        $entityName = get_class($this->entity);
+        $entityName = get_class($this->model);
         $key = $service->createKey($entityName, $this->_data()['criteria']);
 
         expect($service->store($key, $this->_data()['cacheVal'], 60))->true();
@@ -87,7 +87,7 @@ class CacheManagerCest
         $I->wantTo('Fetch and cache data in the cache store in one call');
 
         $service = $this->di->get('cacheManager');
-        $entityName = get_class($this->entity);
+        $entityName = get_class($this->model);
         $key = $service->createKey($entityName, $this->_data()['criteria']);
         $data = function () {
             return $this->_data()['cacheVal'];
@@ -102,7 +102,7 @@ class CacheManagerCest
         $I->wantTo('Delete the cached data via the cache manager');
 
         $service = $this->di->get('cacheManager');
-        $entityName = get_class($this->entity);
+        $entityName = get_class($this->model);
         $key = $service->createKey($entityName, $this->_data()['criteria']);
 
         expect($service->store($key, $this->_data()['cacheVal'], 60))->true();
@@ -119,7 +119,7 @@ class CacheManagerCest
         $I->wantTo('Expire the cache key via the cache manager');
 
         $service = $this->di->get('cacheManager');
-        $entityName = get_class($this->entity);
+        $entityName = get_class($this->model);
         $key = $service->createKey($entityName, $this->_data()['criteria']);
         $data = function () {
             return $this->_data()['cacheVal'];

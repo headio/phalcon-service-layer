@@ -18,31 +18,33 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
-            "php": "7.4"
+            "php": "8.0"
         }
     },
     "require": {
-        "php": ">=7.4 <8.0",
+        "php": ">=8.0.0 <8.0.99",
         "ext-mbstring": "*",
-        "ext-phalcon": ">= 4.1.0"
+        "ext-phalcon": ">=5.0.0"
     },
     "require-dev": {
         "codeception/codeception": "^4.1.0",
         "codeception/module-asserts": "^1.1",
-        "codeception/module-phalcon4": "^1.0",
+        "codeception/module-phalcon5": "^1.0.0",
         "codeception/specify": "^1.4",
         "codeception/verify": "^1.5",
         "friendsofphp/php-cs-fixer": "*",
-        "headio/phalcon-bootstrap": "4.x-dev",
+        "headio/phalcon-bootstrap": "5.x",
         "mockery/mockery": "^1.3",
         "monolog/monolog": "^2.1.0",
-        "phalcon/ide-stubs": "^4.1",
+        "phalcon/ide-stubs": "^5.0.0",
         "vimeo/psalm": "^4.14",
         "vlucas/phpdotenv": "^5.1"
     },
     "scripts": {
         "lint": "php-cs-fixer fix --diff --dry-run",
-        "fix": "php-cs-fixer fix"
+        "fix": "php-cs-fixer fix",
+        "test": "vendor/bin/codecept clean; vendor/bin/codecept build; vendor/bin/codecept run -f",
+        "psalm": "vendor/bin/psalm src --no-cache"
     },
     "autoload": {
         "psr-4": {

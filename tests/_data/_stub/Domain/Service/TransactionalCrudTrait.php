@@ -27,13 +27,21 @@ trait TransactionalCrudTrait
      *
      * @throws TransactionFailed
      */
-    protected function delete(EntityInterface $entity): bool
+    protected function delete(EntityInterface $model): bool
     {
-        $transaction = $this->transactionManager->get();
-        $entity->setTransaction($transaction);
+        /** @var \Phalcon\Mvc\Model\TransactionInterface */
+        $transaction = $this->transactionManager
+            ->get()
+            ->throwRollbackException(true);
+        /*
+        $transaction = $this->transactionManager->setDbService(
+            $model->getWriteConnectionService()
+        )->get()->throwRollbackException(true);
+        */
+        $model->setTransaction($transaction);
 
-        if (false === $entity->delete()) {
-            $transaction->rollback('Unable to delete record.', $entity);
+        if (false === $model->delete()) {
+            $transaction->rollback('Unable to delete record.', $model);
         }
 
         $transaction->commit();
@@ -47,13 +55,15 @@ trait TransactionalCrudTrait
      *
      * @throws TransactionFailed
      */
-    protected function insert(EntityInterface $entity): bool
+    protected function insert(EntityInterface $model): bool
     {
-        $transaction = $this->transactionManager->get();
-        $entity->setTransaction($transaction);
+        /** @var \Phalcon\Mvc\Model\TransactionInterface */
+        $transaction = $this->transactionManager->get()
+            ->throwRollbackException(true);
+        $model->setTransaction($transaction);
 
-        if (false === $entity->create()) {
-            $transaction->rollback('Unable to create new record.', $entity);
+        if (false === $model->create()) {
+            $transaction->rollback('Unable to create new record.', $model);
         }
 
         $transaction->commit();
@@ -67,13 +77,15 @@ trait TransactionalCrudTrait
      *
      * @throws TransactionFailed
      */
-    protected function update(EntityInterface $entity): bool
+    protected function update(EntityInterface $model): bool
     {
-        $transaction = $this->transactionManager->get();
-        $entity->setTransaction($transaction);
+        /** @var \Phalcon\Mvc\Model\TransactionInterface */
+        $transaction = $this->transactionManager->get()
+            ->throwRollbackException(true);
+        $model->setTransaction($transaction);
 
-        if (false === $entity->update()) {
-            $transaction->rollback('Unable to update record.', $entity);
+        if (false === $model->update()) {
+            $transaction->rollback('Unable to update record.', $model);
         }
 
         $transaction->commit();

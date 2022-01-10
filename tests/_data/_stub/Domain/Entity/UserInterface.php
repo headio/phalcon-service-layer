@@ -13,7 +13,7 @@ use Phalcon\Mvc\ModelInterface;
 
 interface UserInterface extends ModelInterface
 {
-    public function getId(): int;
+    public function getId(): ?int;
 
     public function getName(): ?string;
 

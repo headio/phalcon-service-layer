@@ -198,11 +198,11 @@ class QueryRepositoryCest
 
         $filter = $this->repository->getQueryFilter();
         $entityName = $this->repository->getEntity();
-        $entity = new $entityName();
+        $model = new $entityName();
 
         $result = $this->repository->getRelated(
             $this->_data()['alias'],
-            $entity,
+            $model,
             $filter
         );
 
@@ -214,10 +214,10 @@ class QueryRepositoryCest
         $I->wantToTest('the repository can return the unrelated models for a given entity');
 
         $entityName = $this->repository->getEntity();
-        $entity = new $entityName();
+        $model = new $entityName();
         $metaData = $this->di->get('modelsMetadata');
         $result = $this->repository->getUnrelated(
-            new Simple($metaData->getColumnMap($entity), $entity, null),
+            new Simple($metaData->getColumnMap($model), $model, null),
             new Filter()
         );
 

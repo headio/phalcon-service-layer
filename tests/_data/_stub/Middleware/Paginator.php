@@ -14,7 +14,7 @@ use Headio\Phalcon\ServiceLayer\Paginator\Cursor\Query;
 use Phalcon\Events\EventInterface;
 use Phalcon\Mvc\DispatcherInterface;
 use Phalcon\Di\AbstractInjectionAware;
-use Phalcon\Filter;
+use Phalcon\Filter\Filter;
 
 /**
  * Middleware component to pre-process pagination for

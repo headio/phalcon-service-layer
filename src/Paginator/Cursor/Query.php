@@ -11,15 +11,8 @@ namespace Headio\Phalcon\ServiceLayer\Paginator\Cursor;
 
 class Query implements QueryableInterface
 {
-    private bool $after;
-    private bool $before;
-    private int $cursor;
-
-    public function __construct(int $cursor, bool $before, bool $after)
+    public function __construct(private int $cursor, private bool $before, private bool $after)
     {
-        $this->cursor = $cursor;
-        $this->before = $before;
-        $this->after = $after;
     }
 
     /**

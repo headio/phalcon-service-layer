@@ -1,8 +1,8 @@
 # Phalcon service layer
 
-A simple service layer implementation for Phalcon projects
+A simple service layer implementation for Phalcon 5 projects
 
-[![Build Status](https://travis-ci.com/headio/phalcon-service-layer.svg?branch=master)](https://travis-ci.com/headio/phalcon-service-layer) [![Coverage Status](https://coveralls.io/repos/github/headio/phalcon-service-layer/badge.svg?branch=master)](https://coveralls.io/github/headio/phalcon-service-layer?branch=master)
+[![Build Status](https://travis-ci.com/headio/phalcon-service-layer.svg?branch=5.x)](https://travis-ci.com/headio/phalcon-service-layer) [![Coverage Status](https://coveralls.io/repos/github/headio/phalcon-service-layer/badge.svg?branch=5.x)](https://coveralls.io/github/headio/phalcon-service-layer?branch=5.x)
 
 ## Introduction
 
@@ -18,8 +18,8 @@ Naturally, you can avoid this paradigm by integrating a data mapper (Doctrine, A
 
 ## Dependencies
 
-* PHP 7.4+
-* Phalcon 4.1.0+
+* PHP >=8.0.0 <=8.0.99
+* Phalcon 5.0.0+
 
 ## Installation
 
@@ -72,7 +72,7 @@ use Phalcon\Di\DiInterface;
 
 class Foo implements ServiceProviderInterface
 {
-    public function register(DiInterface $di) : void
+    public function register(DiInterface $di): void
     {
         $di->setShared(
             'fooService',
@@ -108,20 +108,20 @@ class Module implements ModuleDefinitionInterface
     /**
      * {@inheritDoc}
      */
-    public function registerAutoloaders(DiInterface $di = null)
+    public function registerAutoloaders(DiInterface $container = null)
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(DiInterface $container)
     {
-        $di->setShared(
+        $container->setShared(
             'fooService',
-            function () use ($di) {
+            function () use ($container) {
                 /** @var bool */
-                $cache = $di->getConfig()->cache->modelCache->apply;
+                $cache = $container->getConfig()->cache->modelCache->apply;
                 $repository = Factory::create(Repository:class, $cache)
                 $service = new Service($repository);
 
@@ -149,7 +149,7 @@ class Foo extends Controller
     /**
      * Inject service layer dependencies
      */
-    public function onConstruct() : void
+    public function onConstruct(): void
     {
         $this->service = $this->getDI()->get('fooService');
     }
@@ -189,21 +189,18 @@ use Phalcon\Http\ResponseInterface;
 
 class Foo extends Injectable
 {
-    private FooInterface $repository;
-
-    public function __construct(FooInterface $fooRepository)
+    public function __construct(private FooInterface $fooRepository)
     {
-        $this->repository = $fooRepository;
     }
 
     /**
      * Delete a model instance
      */
-    public function deleteModel(int $id) : ResponseInterface
+    public function deleteModel(int $id): ResponseInterface
     {
-        $entity = $this->repository->findByPk($id);
+        $model = $this->repository->findByPk($id);
 
-        if ($this->delete($entity)) {
+        if ($this->delete($model)) {
             $this->flashSession->notice('Task completed');
             return $this->response->redirect(['for' => 'adminFoos']);
         }
@@ -230,7 +227,7 @@ class Foo extends QueryRepository implements FooInterface
     /**
      * Return an instance of the query filter used with this repository.
      */
-    public function getQueryFilter() : FilterInterface
+    public function getQueryFilter(): FilterInterface
     {
         return new QueryFilter();
     }
@@ -238,7 +235,7 @@ class Foo extends QueryRepository implements FooInterface
     /**
      * Return the entity name managed by this repository.
      */
-    protected function getEntityName() : string
+    protected function getEntityName(): string
     {
         return 'App\\Domain\\Entity\\Foo';
     }
@@ -266,29 +263,29 @@ interface RepositoryInterface
     /**
      * Apply the cache to the query criteria.
      */
-    public function applyCache(QueryInterface $query, CriteriaInterface $criteria) : void;
+    public function applyCache(QueryInterface $query, CriteriaInterface $criteria): void;
 
     /**
      * Apply the filter to the query criteria.
      */
-    public function applyFilter(CriteriaInterface $criteria, FilterInterface $filter) : void;
+    public function applyFilter(CriteriaInterface $criteria, FilterInterface $filter): void;
 
     /**
      * Fetch row count from cache or storage.
      */
-    public function count(FilterInterface $filter) : int;
+    public function count(FilterInterface $filter): int;
 
     /**
      * Return an instance of the query criteria pre-populated
      * with the entity managed by this repository.
      */
-    public function createCriteria() : CriteriaInterface;
+    public function createCriteria(): CriteriaInterface;
 
     /**
      * Return an instance of the query builder pre-populated
      * for the entity managed by this repository.
      */
-    public function createQuery(array $params = null, ?string $alias = null) : BuilderInterface;
+    public function createQuery(array $params = null, ?string $alias = null): BuilderInterface;
 
     /**
      * Fetch column value by query criteria.
@@ -300,38 +297,38 @@ interface RepositoryInterface
     /**
      * Fetch records by filter criteria from cache or storage.
      */
-    public function find(FilterInterface $filter) : ResultsetInterface;
+    public function find(FilterInterface $filter): ResultsetInterface;
 
     /**
      * Fetch record by primary key from cache or storage.
      */
-    public function findByPk(int $id) : EntityInterface;
+    public function findByPk(int $id): EntityInterface;
 
     /**
      * Fetch first record by filter criteria from cache or storage.
      */
-    public function findFirst(FilterInterface $filter) : EntityInterface;
+    public function findFirst(FilterInterface $filter): EntityInterface;
 
     /**
      * Fetch first record by property name from cache or storage.
      */
-    public function findFirstBy(string $property, $value) : EntityInterface;
+    public function findFirstBy(string $property, $value): EntityInterface;
 
     /**
      * Return the fully qualified (or unqualified) class name
      * for the entity managed by the repository.
      */
-    public function getEntity(bool $unqualified = false) : string;
+    public function getEntity(bool $unqualified = false): string;
 
     /**
      * Return the related models from cache or storage.
      */
-    public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter) : ResultsetInterface;
+    public function getRelated(string $alias, EntityInterface $model, FilterInterface $filter): ResultsetInterface|bool;
 
     /**
      * Return the unrelated models from cache or storage.
      */
-    public function getUnrelated(ResultsetInterface $resultset, FilterInterface $filter) : ResultsetInterface;
+    public function getUnrelated(ResultsetInterface $resultset, FilterInterface $filter): ResultsetInterface|bool;
 }
 ```
 
@@ -344,11 +341,13 @@ Repositories can utilize the query filter to build filter criteria. The filter c
  * Return a collection of models filtered by primary keys
  * from cache or storage.
  */
-public function getModelsByPrimaryKeys(array $keys) : ResultsetInterface
+public function getModelsByPrimaryKeys(array $keys): ResultsetInterface
 {
     $entityName = $this->getEntity();
-    $filter = $this->getQueryFilter()
-        ->in((new $entityName)->getPrimaryKey(), $keys);
+    $filter = $this
+        ->getQueryFilter()
+        ->in((new $entityName)->getPrimaryKey(), $keys)
+    ;
 
     return $this->find($filter);
 }
@@ -372,7 +371,7 @@ public function getPrimaryKeyForResource(string $label)
 /**
  * Return the filter for a list view.
  */
-public function createFilter(int $offset, int $limit, string $key) : FilterInterface
+public function createFilter(int $offset, int $limit, string $key): FilterInterface
 {
     $route = $this->router->getMatchedRoute();
     $store = new SessionBag($route->getName());
@@ -416,17 +415,17 @@ interface EntityInterface
     /**
      * Return the entity primary key attribute.
      */
-    public function getPrimaryKey() : string;
+    public function getPrimaryKey(): string;
 
     /**
      * Return the property binding type for a given property.
      */
-    public function getPropertyBindType(string $property) : int;
+    public function getPropertyBindType(string $property): int;
 
     /**
      * Return the model validation errors as an array representation.
      */
-    public function getValidationErrors() : array;
+    public function getValidationErrors(): array;
 }
 ```
 
@@ -490,7 +489,7 @@ class Resource extends AbstractEntity
     /**
      * {@inheritDoc}
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -505,17 +504,17 @@ class Resource extends AbstractEntity
         ));
     }
 
-    public function getId() : int
+    public function getId(): ?int
     {
-        return (int) $this->id;
+        return $this->id;
     }
 
-    public function getLabel() : ?string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
 
-    public function setLabel(string $input) : void
+    public function setLabel(string $input): void
     {
         $this->label = $input;
     }
@@ -524,7 +523,7 @@ class Resource extends AbstractEntity
 
 ### Validation
 
-Validation can be implemented in the service layer or in models.
+Validation can be implemented in the service layer or the entity classes.
 
 ## Testing
 

@@ -19,16 +19,13 @@ use Stub\Domain\Service\UserInterface as ServiceInterface;
 
 class User extends Injectable implements ServiceInterface
 {
-    private RoleInterface $roleRepository;
-
-    private UserInterface $repository;
-
     use TransactionalCrudTrait;
 
-    public function __construct(RoleInterface $roleRepository, UserInterface $userRepository)
+    public function __construct(
+        private RoleInterface $roleRepository,
+        private UserInterface $repository,
+    )
     {
-        $this->roleRepository = $roleRepository;
-        $this->repository = $userRepository;
     }
 
     public function findFirstByEmail(string $email): EntityInterface
@@ -49,48 +46,48 @@ class User extends Injectable implements ServiceInterface
     public function addModel(array $data): bool
     {
         $entityName = $this->repository->getEntity();
-        $entity = new $entityName();
-        $entity->assign($data);
+        $model = new $entityName();
+        $model->assign($data);
 
-        return $this->insert($entity);
+        return $this->insert($model);
     }
 
-    public function deleteModel(EntityInterface $entity): bool
+    public function deleteModel(EntityInterface $model): bool
     {
-        return $this->delete($entity);
+        return $this->delete($model);
     }
 
-    public function updateModel(EntityInterface $entity): bool
+    public function updateModel(EntityInterface $model): bool
     {
-        return $this->update($entity);
+        return $this->update($model);
     }
 
     /**
      * Return the related roles for a given entity
      */
-    public function getRoles(EntityInterface $entity): ResultsetInterface
+    public function getRoles(EntityInterface $model): ResultsetInterface
     {
         $filter = $this->roleRepository->getQueryFilter();
 
-        return $this->roleRepository->getRelatedRoles($entity, $filter);
+        return $this->roleRepository->getRelatedRoles($model, $filter);
     }
 
     /**
      * Synchronize role relationships
      *
-     * @throws Phalcon\Mvc\Model\Transaction\Failed
+     * @throws \Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function synchronizeRoles(EntityInterface $entity, array $keys): bool
+    public function synchronizeRoles(EntityInterface $model, array $keys): bool
     {
         $transaction = $this->transactionManager->get();
-        $entity->setTransaction($transaction);
+        $model->setTransaction($transaction);
 
-        if (false === $this->roleRepository->synchronize('roles', 'userRoles', $entity, $keys)) {
-            $transaction->rollback('Unable to synchronize role relationships.', $entity);
+        if (false === $this->roleRepository->synchronize('roles', 'userRoles', $model, $keys)) {
+            $transaction->rollback('Unable to synchronize role relationships.', $model);
         }
 
-        if (false === $entity->update()) {
-            $transaction->rollback('Unable to update record.', $entity);
+        if (false === $model->update()) {
+            $transaction->rollback('Unable to update record.', $model);
         }
 
         $transaction->commit();
@@ -101,12 +98,12 @@ class User extends Injectable implements ServiceInterface
     /**
      * Associate a collection of role entities
      *
-     * @throws Phalcon\Mvc\Model\Transaction\Failed
+     * @throws \Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function linkRoles(EntityInterface $entity, array $keys): bool
+    public function linkRoles(EntityInterface $model, array $keys): bool
     {
-        if ($this->roleRepository->link('roles', $entity, $keys)) {
-            return $this->update($entity);
+        if ($this->roleRepository->link('roles', $model, $keys)) {
+            return $this->update($model);
         }
 
         return false;
@@ -115,15 +112,15 @@ class User extends Injectable implements ServiceInterface
     /**
      * Detach a collection of related roles
      *
-     * @throws Phalcon\Mvc\Model\Transaction\Failed
+     * @throws \Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function unlinkRoles(EntityInterface $entity, array $keys): bool
+    public function unlinkRoles(EntityInterface $model, array $keys): bool
     {
         $transaction = $this->transactionManager->get();
-        $entity->setTransaction($transaction);
+        $model->setTransaction($transaction);
 
-        if (false === $this->roleRepository->unlink('roles', $entity, $keys, $transaction)) {
-            $transaction->rollback('Unable to delete record.', $entity);
+        if (false === $this->roleRepository->unlink('roles', $model, $keys, $transaction)) {
+            $transaction->rollback('Unable to delete record.', $model);
         }
 
         $transaction->commit();

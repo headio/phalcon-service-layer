@@ -15,15 +15,10 @@ use function strtoupper;
 
 class OrderBy implements OrderByInterface
 {
-    private string $column;
-
-    private ?string $direction;
-
-    public function __construct(string $column, ?string $direction = null)
-    {
-        $this->column = $column;
-        $this->direction = $direction;
-
+    public function __construct(
+        private string $column,
+        private string|null $direction = null,
+    ) {
         if (!is_null($this->direction)) {
             if (0 === strcasecmp($this->direction, OrderByInterface::ASC)) {
                 $this->direction = null;

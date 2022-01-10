@@ -12,38 +12,37 @@ namespace Unit\Entity;
 use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
 use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Phalcon\Db\Column;
-use Stub\Domain\Entity\Role as Entity;
+use Stub\Domain\Entity\Role;
 use Module\UnitTest;
 
 class EntityTest extends UnitTest
 {
-    private $entity;
+    private Role $model;
 
     protected function _before(): void
     {
         parent::_before();
 
-        $this->entity = new Entity();
-    }
-
-    protected function after(): void
-    {
-        parent::after();
+        $this->model = new Role();
     }
 
     public function testInheritance(): void
     {
         $this->specify(
-            'Entity should inherit expected abstract entity',
+            'Model should inherit expected abstract entity',
             function () {
-                expect($this->entity)->isInstanceOf(AbstractEntity::class);
+                expect(
+                    $this->model
+                )->isInstanceOf(AbstractEntity::class);
             }
         );
 
         $this->specify(
-            'Entity should implement expected interface',
+            'Model should implement expected interface',
             function () {
-                expect($this->entity)->isInstanceOf(EntityInterface::class);
+                expect(
+                    $this->model
+                )->isInstanceOf(EntityInterface::class);
             }
         );
     }
@@ -51,9 +50,11 @@ class EntityTest extends UnitTest
     public function testGetPrimarykey(): void
     {
         $this->specify(
-            'Entity should return expected primary key attribute',
+            'Model should return expected primary key attribute',
             function () {
-                expect($this->entity->getPrimarykey())->equals($this->_data()['pk']);
+                expect(
+                    $this->model->getPrimarykey()
+                )->equals($this->_data()['pk']);
             }
         );
     }
@@ -61,17 +62,17 @@ class EntityTest extends UnitTest
     public function testGetPropertyBindType(): void
     {
         $this->specify(
-            'Entity should return expected attribute bind type',
+            'Model should return expected attribute bind type',
             function () {
-                expect($this->entity->getPropertyBindType('label'))->equals($this->_data()['label']);
+                expect(
+                    $this->model->getPropertyBindType('label')
+                )
+                ->equals($this->_data()['label']);
             }
         );
     }
 
-    /**
-     * Return test data
-     */
-    protected function _data(): array
+    private function _data(): array
     {
         return [
             'pk' => 'id',

@@ -11,11 +11,8 @@ namespace Headio\Phalcon\ServiceLayer\Filter;
 
 class GroupBy implements GroupByInterface
 {
-    private string $column;
-
-    public function __construct(string $column)
+    public function __construct(private string $column)
     {
-        $this->column = $column;
     }
 
     /**

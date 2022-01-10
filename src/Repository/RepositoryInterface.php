@@ -83,10 +83,17 @@ interface RepositoryInterface
     /**
      * Return the related models from cache or storage.
      */
-    public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter): ResultsetInterface;
+    public function getRelated(
+        string $alias,
+        EntityInterface $model,
+        FilterInterface $filter
+    ): ResultsetInterface|bool;
 
     /**
      * Return the unrelated models from cache or storage.
      */
-    public function getUnrelated(ResultsetInterface $resultset, FilterInterface $filter): ResultsetInterface;
+    public function getUnrelated(
+        ResultsetInterface $resultset,
+        FilterInterface $filter
+    ): ResultsetInterface;
 }

@@ -14,11 +14,11 @@ use Headio\Phalcon\ServiceLayer\Entity\PublishingTrait;
 use Headio\Phalcon\ServiceLayer\Entity\TimestampTrait;
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Publishable;
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Timestampable;
-use Phalcon\Filter;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Email;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Filter;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\Email;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 
 /**
  * @Source("User")
@@ -92,9 +92,9 @@ class User extends AbstractEntity
         $this->addBehavior(new Publishable());
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
-        return (int) $this->id;
+        return $this->id;
     }
 
     public function getName(): ?string

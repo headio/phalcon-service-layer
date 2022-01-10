@@ -1,7 +1,7 @@
 language: php
 
 php:
-    - 7.4
+    - 8.0
 
 os: linux
 
@@ -9,7 +9,7 @@ dist: bionic
 
 env:
   global:
-    - PHALCON_VERSION="v4.1.0"
+    - PHALCON_VERSION="v5.0.0beta2"
     - DB_NAME="servicelayer_test"
 
 git:
@@ -49,11 +49,11 @@ before_install:
 
 install:
   - .ci/install-extensions.sh
-  - .ci/install-phalcon.sh
+  - travis_wait .ci/install-phalcon.sh
   - travis_retry composer update --no-interaction --no-progress --no-ansi --no-suggest --ignore-platform-reqs
 
 before_script:
-  - phpenv config-rm xdebug.ini
+  - phpenv config-rm xdebug.ini || exit 0
   - pecl install pcov
   - mysql -u root -p%%travis%% -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME} charset=utf8mb4 collate=utf8mb4_unicode_ci;"
   - mysql -u root -p%%travis%% ${DB_NAME} < tests/_data/dump.sql
@@ -67,8 +67,8 @@ script:
 jobs:
   include:
     - stage: Test coverage
-      if: branch = 4.x AND type = push
-      php: 7.4
+      if: branch = 5.x AND type = push
+      php: 8.0
       script:
         - make coverage
       after_script:

@@ -4,7 +4,7 @@ modules:
         - Asserts
         - \Helper\Integration
         - \Helper\Application
-        - Phalcon4:
+        - Phalcon5:
             bootstrap: tests/_boot/Boot.php
             cleanup: true
             savepoints: true

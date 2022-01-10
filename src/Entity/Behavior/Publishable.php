@@ -22,12 +22,9 @@ class Publishable extends Behavior implements BehaviorInterface
     public function notify($eventType, ModelInterface $model): void
     {
         $dt = new DateTime('now');
-        $expiry = '+10 years';
+        $expiry = $this->getOptions()['expiry'] ?? '+10 years';
 
         if ($eventType === 'beforeSave') {
-            if (isset($this->getOptions()['expiry'])) {
-                $expiry = $this->getOptions()['expiry'];
-            }
             if ($model->getPublished()) {
                 if (!$model->getPublishFrom() instanceof DateTime) {
                     $model->setPublishFrom($dt);

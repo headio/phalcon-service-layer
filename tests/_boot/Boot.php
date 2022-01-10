@@ -12,7 +12,7 @@ declare(strict_types=1);
 use Dotenv\Dotenv;
 use Headio\Phalcon\Bootstrap\Application\Factory as AppFactory;
 use Headio\Phalcon\Bootstrap\Di\Factory as DiFactory;
-use Phalcon\Config;
+use Phalcon\Config\Config;
 
 chdir(dirname(__DIR__, 2));
 require_once 'vendor/autoload.php';
@@ -24,7 +24,7 @@ try {
         require 'tests/_boot/Config.php'
     );
     $di = (new DiFactory($config))->createDefaultMvc();
-    /** @var Phalcon\Mvc\Application */
+    /** @var \Phalcon\Mvc\Application */
     $app = (new AppFactory($di))->createForMvc();
     return $app;
 } catch (\Throwable $e) {

@@ -24,8 +24,8 @@ class Dispatcher implements ServiceProviderInterface
     {
         $di->setShared(
             'dispatcher',
-            function () {
-                $config = $this->get('config');
+            function () use ($di) {
+                $config = $di->get('config');
                 $eventsManager = $this->get('eventsManager');
 
                 if ($config->cli) {

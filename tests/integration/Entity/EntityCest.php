@@ -11,37 +11,35 @@ namespace Integration\Entity;
 
 use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Stub\Domain\Repository\User;
-use Stub\Domain\Repository\UserInterface;
 use Phalcon\Mvc\Model\ValidationFailed;
+use Phalcon\Mvc\Model\Transaction\Failed as TransactionFailed;
 use IntegrationTester;
 
 class EntityCest
 {
-    private UserInterface $repository;
+    private User $repository;
 
     public function _before(IntegrationTester $I)
     {
-        $this->repository = new user(false);
+        $this->repository = new User(false);
         $this->di = $I->getApplication()->getDI();
     }
 
     public function canReturnValidationErrors(IntegrationTester $I)
     {
-        $I->wantTo('Return the entity validation errors.');
+        $I->wantToTest('invoking the model validation logic to inspect the validation errors.');
 
         $entityName = $this->repository->getEntity();
-        $entity = new $entityName();
-        $entity->assign(
+        $model = new $entityName();
+        $model->assign(
             $this->getData()
         );
 
         try {
-            $this->insert($entity);
-        } catch (ValidationFailed $e) {
-            $result = $entity->getValidationErrors();
-
+            $result = $this->insert($model);
+        } catch (ValidationFailed) {
+            $result = $model->getValidationErrors();
             expect_that(is_array($result));
-
             expect($result)->hasKey('email');
         }
     }
@@ -52,13 +50,16 @@ class EntityCest
      *
      * @throws TransactionFailed
      */
-    private function insert(EntityInterface $entity): bool
+    private function insert(EntityInterface $model): bool
     {
-        $transaction = $this->di->get('transactionManager')->get();
-        $entity->setTransaction($transaction);
+        /** @var \Phalcon\Mvc\Model\TransactionInterface */
+        $transaction = $this->di->get('transactionManager')
+            ->get()
+            ->throwRollbackException(false);
+        $model->setTransaction($transaction);
 
-        if (false === $entity->create()) {
-            $transaction->rollback('Unable to create new record.', $entity);
+        if (false === $model->create()) {
+            $transaction->rollback('Unable to create new record.', $model);
         }
 
         $transaction->commit();

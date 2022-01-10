@@ -23,40 +23,40 @@ class RelationshipTraitCest
     {
         $this->service = new Service(
             new RoleRepository(false),
-            new UserRepository(false)
+            new UserRepository(false),
         );
     }
 
-    public function canSynchronizeRelations(IntegrationTester $I)
+    private function canSynchronizeRelations(IntegrationTester $I)
     {
         $I->wantToTest('synchronizing a related entity resultset');
 
-        $entity = $this->service->getEntity(1);
-        $result = $this->service->synchronizeRoles($entity, [2, 3]);
+        $model = $this->service->getEntity(1);
+        $result = $this->service->synchronizeRoles($model, [2, 3]);
 
         expect($result)->true();
 
-        $result = $this->service->getRoles($entity);
+        $result = $this->service->getRoles($model);
 
         expect($result->count())->equals(2);
     }
 
-    public function canLinkRelations(IntegrationTester $I)
+    private function canLinkRelations(IntegrationTester $I)
     {
         $I->wantToTest('associating a collection of models');
 
-        $entity = $this->service->getEntity(1);
-        $result = $this->service->linkRoles($entity, [2, 3, 4]);
+        $model = $this->service->getEntity(1);
+        $result = $this->service->linkRoles($model, [2, 3, 4]);
 
         expect($result)->true();
     }
 
-    public function canUnlinkRelations(IntegrationTester $I)
+    private function canUnlinkRelations(IntegrationTester $I)
     {
         $I->wantToTest('detaching a collection of models');
 
-        $entity = $this->service->getEntity(1);
-        $result = $this->service->unlinkRoles($entity, [1]);
+        $model = $this->service->getEntity(1);
+        $result = $this->service->unlinkRoles($model, [1]);
 
         expect($result)->true();
     }

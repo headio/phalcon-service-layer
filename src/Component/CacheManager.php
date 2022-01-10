@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Headio\Phalcon\ServiceLayer\Component;
 
 use Phalcon\Di\Injectable;
-use Phalcon\Helper\Json;
+use Phalcon\Support\Helper\Json\Encode as Json;
 use Closure;
 use JSON_UNESCAPED_SLASHES;
 use JSON_UNESCAPED_UNICODE;
@@ -20,8 +20,8 @@ use function sha1;
 /**
  * Cache management component for the query repository.
  *
- * @property \Phalcon\Config $config
- * @property \Psr\SimpleCache\CacheInterface $modelsCache
+ * @property \Phalcon\Config\ConfigInterface $config
+ * @property \Phalcon\Cache\Cache $modelsCache
  */
 class CacheManager extends Injectable implements CacheManagerInterface
 {
@@ -50,8 +50,8 @@ class CacheManager extends Injectable implements CacheManagerInterface
      */
     public function createCacheParameters(string $entityName, array $params): array
     {
-        /** @var \Phalcon\Config $config */
-        $config = $this->config->get('cache')->get('modelCache');
+        /** @var \Phalcon\Config\Config */
+        $config = $this->config->cache->modelCache;
 
         return [
             'lifetime' => (int) $config->options->lifetime,
@@ -123,14 +123,12 @@ class CacheManager extends Injectable implements CacheManagerInterface
     public function expire(array $collection): void
     {
         foreach ($collection as $item) {
-            /** @var string */
             $key = $this->normalizeKey($item);
 
             if ($this->modelsCache->has($key)) {
-                /** @var bool */
                 $result = $this->delete($key);
+                /** @var \Phalcon\Config\Config */
                 $config = $this->config->cache->modelCache;
-                /** @var bool */
                 $result = $this->store(
                     $key,
                     microtime(true),
@@ -156,23 +154,21 @@ class CacheManager extends Injectable implements CacheManagerInterface
      */
     private function encodeKey(array $params): string
     {
-        $json = Json::encode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $json = (new Json())($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         return sha1($json);
     }
 
     /**
      * Fetch or create a cache key version prefix for the entity.
-     *
-     * @return mixed
      */
-    private function fetchVersion(string $entityName)
+    private function fetchVersion(string $entityName): float
     {
         /** @var string */
         $key = $this->normalizeKey($entityName);
 
         if (!$this->modelsCache->has($key)) {
-            /** @var \Phalcon\Config */
+            /** @var \Phalcon\Config\Config */
             $config = $this->config->cache->modelCache;
             $this->store(
                 $key,
@@ -185,7 +181,7 @@ class CacheManager extends Injectable implements CacheManagerInterface
     }
 
     /**
-     * Normalize the key version prefix for the entity
+     * Normalize the entity key version prefix
      * to satisify Phalcon's cache implementation.
      */
     private function normalizeKey(string $key): string

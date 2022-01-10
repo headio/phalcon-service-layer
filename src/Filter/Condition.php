@@ -14,27 +14,15 @@ use function strcmp;
 
 class Condition implements ConditionInterface
 {
-    private string $column;
-
-    private string $operator;
-
-    private string $type;
-
-    /**
-     * @var mixed
-     */
-    private $value;
-
     /**
      * @param mixed $value
      */
-    public function __construct(string $column, $value, string $operator, string $type = ConditionInterface::AND)
-    {
-        $this->column = $column;
-        $this->value = $value;
-        $this->operator = $operator;
-        $this->type = strtoupper($type);
-
+    public function __construct(
+        private string $column,
+        private $value,
+        private string $operator,
+        private string $type = ConditionInterface::AND,
+    ) {
         if (0 !== strcmp($this->type, ConditionInterface::AND)) {
             $this->type = ConditionInterface::OR;
         }

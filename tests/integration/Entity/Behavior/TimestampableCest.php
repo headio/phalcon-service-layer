@@ -10,18 +10,19 @@ declare(strict_types=1);
 namespace Integration\Entity\Behavior;
 
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Timestampable;
-use Stub\Domain\Entity\User as Entity;
+use Stub\Domain\Entity\User;
+use Phalcon\Mvc\Model\BehaviorInterface;
 use IntegrationTester;
 
 class TimestampableCest
 {
-    private $entity;
+    private User $model;
 
-    private $behavior;
+    private BehaviorInterface $behavior;
 
     public function _before(IntegrationTester $I)
     {
-        $this->entity = new Entity();
+        $this->model = new User();
         $this->behavior = new Timestampable(
             [
                 'foo' => 'bar',
@@ -76,17 +77,17 @@ class TimestampableCest
     {
         $I->wantToTest('the behavior takes action on `beforeValidationOnCreate` event hook');
 
-        $this->behavior->notify('beforeValidationOnCreate', $this->entity);
+        $this->behavior->notify('beforeValidationOnCreate', $this->model);
 
-        expect($this->entity->getCreated())->isInstanceOf('DateTime');
-        expect($this->entity->getModified())->isInstanceOf('DateTime');
+        expect($this->model->getCreated())->isInstanceOf('DateTime');
+        expect($this->model->getModified())->isInstanceOf('DateTime');
     }
 
     public function behaviorTakesActionOnBeforeValidationOnUpdateEventHook(IntegrationTester $I)
     {
         $I->wantToTest('the behavior takes action on `beforeValidationOnUpdate` event hook');
-        $this->behavior->notify('beforeValidationOnUpdate', $this->entity);
+        $this->behavior->notify('beforeValidationOnUpdate', $this->model);
 
-        expect($this->entity->getModified())->isInstanceOf('DateTime');
+        expect($this->model->getModified())->isInstanceOf('DateTime');
     }
 }

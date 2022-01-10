@@ -32,7 +32,7 @@ class FilterTest extends UnitTest
     {
         parent::_after();
     }
-
+    
     public function testCanCreateAnAliasForQueryColumns()
     {
         $this->specify(

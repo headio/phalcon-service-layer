@@ -20,15 +20,15 @@ interface UserInterface
 
     public function addModel(array $data): bool;
 
-    public function deleteModel(EntityInterface $entity): bool;
+    public function deleteModel(EntityInterface $model): bool;
 
-    public function updateModel(EntityInterface $entity): bool;
+    public function updateModel(EntityInterface $model): bool;
 
-    public function getRoles(EntityInterface $entity): ResultsetInterface;
+    public function getRoles(EntityInterface $model): ResultsetInterface;
 
-    public function synchronizeRoles(EntityInterface $entity, array $keys): bool;
+    public function synchronizeRoles(EntityInterface $model, array $keys): bool;
 
-    public function linkRoles(EntityInterface $entity, array $keys): bool;
+    public function linkRoles(EntityInterface $model, array $keys): bool;
 
-    public function unlinkRoles(EntityInterface $entity, array $keys): bool;
+    public function unlinkRoles(EntityInterface $model, array $keys): bool;
 }

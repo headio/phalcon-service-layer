@@ -27,30 +27,22 @@ class Cursor extends Injectable implements CursorInterface, JsonSerializable
 {
     private int $count;
 
-    private ResultsetInterface $resultset;
-
     private array $items;
 
-    private int $itemsPerPage;
-
     private bool $pageable;
-
-    private QueryableInterface $query;
 
     private RouteInterface $route;
 
     public function __construct(
-        ResultsetInterface $resultset,
-        int $itemsPerPage,
-        QueryableInterface $query
+        private ResultsetInterface $resultset,
+        private int $itemsPerPage,
+        private QueryableInterface $query
     ) {
-        $this->resultset = $resultset;
         $this->itemsPerPage = abs($itemsPerPage);
-        $this->query = $query;
         $this->count = $resultset->count();
         $this->pageable = $this->count > $this->itemsPerPage;
         $this->route = $this->router->getMatchedRoute();
-        $this->items = array_slice($this->resultset->toArray(), 0, $this->itemsPerPage, true);
+        $this->items = array_slice($resultset->toArray(), 0, $this->itemsPerPage, true);
     }
 
     /**
@@ -91,10 +83,12 @@ class Cursor extends Injectable implements CursorInterface, JsonSerializable
             return null;
         }
 
-        /** @var \Phalcon\Collection\CollectionInterface */
+        /** @var \Phalcon\Support\Collection\CollectionInterface */
         $definition = $this->getDI()
             ->get('config')
-            ->paginator->cursor->queryIdentifiers
+            ->paginator
+            ->cursor
+            ->queryIdentifiers
         ;
 
         if ($this->isFirst()) {
@@ -125,10 +119,12 @@ class Cursor extends Injectable implements CursorInterface, JsonSerializable
             return null;
         }
 
-        /** @var \Phalcon\Collection\CollectionInterface */
+        /** @var \Phalcon\Support\Collection\CollectionInterface */
         $definition = $this->getDI()
             ->get('config')
-            ->paginator->cursor->queryIdentifiers
+            ->paginator
+            ->cursor
+            ->queryIdentifiers
         ;
 
         return $this->url->get(
@@ -226,10 +222,8 @@ class Cursor extends Injectable implements CursorInterface, JsonSerializable
 
     /**
      * @inheritDoc
-     *
-     * @return string|false
      */
-    public function toJson(int $flags = 0)
+    public function toJson(int $flags = 0): string|bool
     {
         $options = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | $flags;
 

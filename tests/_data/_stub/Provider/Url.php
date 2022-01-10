@@ -11,7 +11,7 @@ namespace Stub\Provider;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use Phalcon\Url as Service;
+use Phalcon\Mvc\Url as Service;
 
 class Url implements ServiceProviderInterface
 {

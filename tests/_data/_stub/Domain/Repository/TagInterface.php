@@ -14,6 +14,7 @@ use Headio\Phalcon\ServiceLayer\Paginator\Cursor\QueryableInterface;
 
 interface TagInterface
 {
-    public function createFilter(?QueryableInterface $query, int $limit): FilterInterface;
+    public function createFilter(QueryableInterface $query, int $limit): FilterInterface;
+
     public function getQueryFilter(): FilterInterface;
 }

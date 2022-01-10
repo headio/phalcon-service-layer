@@ -13,7 +13,7 @@ use Phalcon\Mvc\ModelInterface;
 
 Interface RoleInterface extends ModelInterface
 {
-    public function getId(): int;
+    public function getId(): ?int;
 
     public function getLabel(): ?string;
 }

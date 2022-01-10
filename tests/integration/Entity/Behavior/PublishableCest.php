@@ -10,19 +10,20 @@ declare(strict_types=1);
 namespace Integration\Entity\Behavior;
 
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Publishable;
-use Stub\Domain\Entity\User as Entity;
+use Stub\Domain\Entity\User;
+use Phalcon\Mvc\Model\BehaviorInterface;
 use IntegrationTester;
 use DateTime;
 
 class PublishableCest
 {
-    private $entity;
+    private User $model;
 
-    private $behavior;
+    private BehaviorInterface $behavior;
 
     public function _before(IntegrationTester $I)
     {
-        $this->entity = new Entity();
+        $this->model = new User();
         $this->behavior = new Publishable(
             [
                 'foo' => 'bar',
@@ -77,16 +78,16 @@ class PublishableCest
         $I->wantToTest('the behavior handles custom expiry option');
         $now = new DateTime('now');
         $behavior = new Publishable(['expiry' => '+3 months']);
-        $this->entity->setPublished(true);
-        $behavior->notify('beforeSave', $this->entity);
+        $this->model->setPublished(true);
+        $behavior->notify('beforeSave', $this->model);
 
-        expect($this->entity->getPublishFrom())->isInstanceOf('DateTime');
-        expect($this->entity->getPublishTo())->isInstanceOf('DateTime');
+        expect($this->model->getPublishFrom())->isInstanceOf('DateTime');
+        expect($this->model->getPublishTo())->isInstanceOf('DateTime');
         expect(
-            $now->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+            $now->getTimestamp() < $this->model->getPublishTo()->getTimestamp()
         )->true();
         expect(
-            $now->modify('+4 months')->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+            $now->modify('+4 months')->getTimestamp() < $this->model->getPublishTo()->getTimestamp()
         )->false();
     }
 
@@ -95,16 +96,16 @@ class PublishableCest
         $I->wantToTest('the behavior handles default expiry option');
         $now = new DateTime('now');
         $behavior = new Publishable();
-        $this->entity->setPublished(true);
-        $behavior->notify('beforeSave', $this->entity);
+        $this->model->setPublished(true);
+        $behavior->notify('beforeSave', $this->model);
 
-        expect($this->entity->getPublishFrom())->isInstanceOf('DateTime');
-        expect($this->entity->getPublishTo())->isInstanceOf('DateTime');
+        expect($this->model->getPublishFrom())->isInstanceOf('DateTime');
+        expect($this->model->getPublishTo())->isInstanceOf('DateTime');
         expect(
-            $now->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+            $now->getTimestamp() < $this->model->getPublishTo()->getTimestamp()
         )->true();
         expect(
-            $now->modify('+11 years')->getTimestamp() < $this->entity->getPublishTo()->getTimestamp()
+            $now->modify('+11 years')->getTimestamp() < $this->model->getPublishTo()->getTimestamp()
         )->false();
     }
 
@@ -132,16 +133,16 @@ class PublishableCest
     {
         $I->wantToTest('the behavior takes action on `beforeSave` event hook');
 
-        $this->entity->setPublished(true);
-        $this->behavior->notify('beforeSave', $this->entity);
+        $this->model->setPublished(true);
+        $this->behavior->notify('beforeSave', $this->model);
 
-        expect($this->entity->getPublishFrom())->isInstanceOf('DateTime');
-        expect($this->entity->getPublishTo())->isInstanceOf('DateTime');
+        expect($this->model->getPublishFrom())->isInstanceOf('DateTime');
+        expect($this->model->getPublishTo())->isInstanceOf('DateTime');
 
-        $this->entity->setPublished(false);
-        $this->behavior->notify('beforeSave', $this->entity);
+        $this->model->setPublished(false);
+        $this->behavior->notify('beforeSave', $this->model);
 
-        expect_that(is_null($this->entity->getPublishFrom()));
-        expect_that(is_null($this->entity->getPublishTo()));
+        expect_that(is_null($this->model->getPublishFrom()));
+        expect_that(is_null($this->model->getPublishTo()));
     }
 }

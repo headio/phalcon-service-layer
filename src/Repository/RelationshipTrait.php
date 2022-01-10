@@ -40,10 +40,10 @@ trait RelationshipTrait
     public function synchronize(
         string $aliasHasManyToMany,
         string $aliasHasMany,
-        EntityInterface $entity,
+        EntityInterface $model,
         array $keys
     ): bool {
-        $entityName = get_class($entity);
+        $entityName = $model::class;
 
         /**
          * Stop execution if the entity's "@hasMany" alias is unknown.
@@ -74,8 +74,8 @@ trait RelationshipTrait
             );
         }
 
-        /** @var ResultsetInterface */
-        $related = $this->getRelated($aliasHasMany, $entity, $this->getQueryFilter());
+        /** @var ResultsetInterface|bool */
+        $related = $this->getRelated($aliasHasMany, $model, $this->getQueryFilter());
 
         /**
          * If no keys are given, unlink the existing
@@ -134,7 +134,7 @@ trait RelationshipTrait
              * Attach the models
              */
             if (!empty($link)) {
-                return $this->link($aliasHasManyToMany, $entity, $link);
+                return $this->link($aliasHasManyToMany, $model, $link);
             }
 
             if (!empty($unlink)) {
@@ -148,7 +148,7 @@ trait RelationshipTrait
          * Just assign the new models, as no related models exist.
          */
         if (!empty($keys)) {
-            return $this->link($aliasHasManyToMany, $entity, $keys);
+            return $this->link($aliasHasManyToMany, $model, $keys);
         }
 
         return true;
@@ -160,9 +160,9 @@ trait RelationshipTrait
      *
      * @throws OutOfRangeException
      */
-    public function link(string $alias, EntityInterface $entity, array $keys): bool
+    public function link(string $alias, EntityInterface $model, array $keys): bool
     {
-        $entityName = get_class($entity);
+        $entityName = $model::class;
         /**
          * Stop execution if the alias is unknown.
          */
@@ -192,7 +192,7 @@ trait RelationshipTrait
                 $models->next();
             }
 
-            $entity->{$alias} = $instances;
+            $model->{$alias} = $instances;
         }
 
         return true;
@@ -207,7 +207,7 @@ trait RelationshipTrait
      *
      * @throws OutOfRangeException
      */
-    public function unlink(string $alias, EntityInterface $entity, array $keys, ?TransactionInterface $transaction = null): bool
+    public function unlink(string $alias, EntityInterface $model, array $keys, ?TransactionInterface $transaction = null): bool
     {
         /**
          * Nothing to process continue!
@@ -216,7 +216,7 @@ trait RelationshipTrait
             return true;
         }
 
-        $entityName = get_class($entity);
+        $entityName = $model::class;
         /**
          * Stop execution if the alias is unknown.
          */
@@ -246,7 +246,7 @@ EX;
         $query = $this->modelsManager->createQuery($phql)
             ->setBindParams(
                 [
-                    $relation->getIntermediateFields() => $entity->getId(),
+                    $relation->getIntermediateFields() => $model->getId(),
                     'keys' => $keys
                 ]
             )
@@ -275,5 +275,9 @@ EX;
     /**
      * Return the related models from cache or storage.
      */
-    abstract public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter): ResultsetInterface;
+    abstract public function getRelated(
+        string $alias,
+        EntityInterface $model,
+        FilterInterface $filter
+    ): ResultsetInterface|bool;
 }

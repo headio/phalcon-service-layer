@@ -27,7 +27,7 @@ class Router implements ServiceProviderInterface
             function () use ($di) {
                 $config = $di->get('config');
 
-                if ($config->cli) {
+                if ($config->get('cli', false)) {
                     $service = new CliRouter();
 
                     if (!empty($module = $config->dispatcher->path('defaultModule', null))) {
@@ -37,11 +37,11 @@ class Router implements ServiceProviderInterface
                     return $service;
                 }
 
-                if (!isset($config->modules)) {
+                if (!$config->has('modules')) {
                     throw new OutOfRangeException('Undefined modules');
                 }
 
-                if (!isset($config->routes)) {
+                if (!$config->has('routes')) {
                     throw new OutOfRangeException('Undefined routes');
                 }
 
@@ -53,11 +53,11 @@ class Router implements ServiceProviderInterface
                 $service->setDefaultNamespace($config->dispatcher->defaultControllerNamespace);
                 $service->setDefaultModule($config->dispatcher->defaultModule);
 
-                foreach ($config->modules->toArray() ?? [] as $module => $settings) {
-                    if (!$config->routes->get($module, false)) {
+                foreach ($config->get('modules')?->toArray() ?? [] as $module => $settings) {
+                    if (!$config->get('routes')->has($module)) {
                         continue;
                     }
-                    foreach ($config->routes->{$module}->toArray() ?? [] as $key => $val) {
+                    foreach ($config->get('routes')->{$module}?->toArray() ?? [] as $key => $val) {
                         $service->addModuleResource($module, $key, $val);
                     }
                 }

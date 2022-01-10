@@ -17,12 +17,12 @@ use DateTime;
 trait TimestampTrait
 {
     /**
-     * @Column(type="integer", nullable=false, column="created", length="10")
+     * @Column(type="integer", nullable=false, column="created")
      */
     protected ?int $created = null;
 
     /**
-     * @Column(type="integer", nullable=false, column="modified", length="10")
+     * @Column(type="integer", nullable=false, column="modified")
      */
     protected ?int $modified = null;
 

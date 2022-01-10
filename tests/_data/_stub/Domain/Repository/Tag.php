@@ -27,7 +27,7 @@ class Tag extends QueryRepository implements TagInterface
     /**
      * {@inheritDoc}
      */
-    public function createFilter(?QueryableInterface $query, int $limit): FilterInterface
+    public function createFilter(QueryableInterface $query, int $limit): FilterInterface
     {
         $filter = $this->getQueryFilter()
             ->alias($this->getEntity())

@@ -22,12 +22,12 @@ trait PublishingTrait
     protected ?bool $published = null;
 
     /**
-     * @Column(type="integer", nullable=true, column="publish_from", length="10")
+     * @Column(type="integer", nullable=true, column="publish_from")
      */
     protected ?int $publish_from = null;
 
     /**
-     * @Column(type="integer", nullable=true, column="publish_to", length="10")
+     * @Column(type="integer", nullable=true, column="publish_to")
      */
     protected ?int $publish_to = null;
 

@@ -151,7 +151,7 @@ class CursorAdapterCest
         $result = $paginator->toJson();
 
         $I->assertEquals(
-            '{"items":[{"id":"32","label":"Python"},{"id":"31","label":"Ruby"}],"items_per_page":2,"next_url":"/tags/next/31","pageable":true,"prev_url":"/tags/prev/34"}',
+            '{"items":[{"id":32,"label":"Python"},{"id":31,"label":"Ruby"}],"items_per_page":2,"next_url":"/tags/next/31","pageable":true,"prev_url":"/tags/prev/34"}',
             $result
         );
     }

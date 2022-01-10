@@ -17,26 +17,25 @@ class Module implements ModuleDefinitionInterface
     /**
      * {@inheritDoc}
      */
-    public function registerAutoloaders(DiInterface $di = null)
+    public function registerAutoloaders(DiInterface $container = null)
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function registerServices(DiInterface $di)
+    public function registerServices(DiInterface $container)
     {
-        $config = $di->get('config');
+        $config = $container->get('config');
 
         // web app module environment settings
         if (!$config->cli) {
-            $di
-            ->get('dispatcher')
-            ->setDefaultNamespace(__NAMESPACE__ . '\\Controller');
+            $container
+                ->get('dispatcher')
+                ->setDefaultNamespace(__NAMESPACE__ . '\\Controller')
+            ;
 
-            $di
-            ->get('view')
-            ->setViewsDir(__DIR__ . '/View/');
+            $container->get('view')->setViewsDir(__DIR__ . '/View/');
         }
     }
 }

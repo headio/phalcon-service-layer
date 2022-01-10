@@ -26,7 +26,7 @@ class ServiceCest
     {
         $this->service = new Service(
             new RoleRepository(false),
-            new UserRepository(false)
+            new UserRepository(false),
         );
     }
 
@@ -80,9 +80,9 @@ class ServiceCest
 
         $data = $this->getData();
         $this->service->addModel($data);
-        $entity = $this->service->findFirstByEmail($data['email']);
-        $entity->setName('Jane Doe');
-        $result = $this->service->updateModel($entity);
+        $model = $this->service->findFirstByEmail($data['email']);
+        $model->setName('Jane Doe');
+        $result = $this->service->updateModel($model);
 
         expect($result)->true();
     }
@@ -93,8 +93,8 @@ class ServiceCest
 
         $data = $this->getData();
         $this->service->addModel($data);
-        $entity = $this->service->findFirstByEmail($data['email']);
-        $result = $this->service->deleteModel($entity);
+        $model = $this->service->findFirstByEmail($data['email']);
+        $result = $this->service->deleteModel($model);
 
         expect($result)->true();
     }

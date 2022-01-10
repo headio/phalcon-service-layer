@@ -13,10 +13,10 @@ use Headio\Phalcon\ServiceLayer\Entity\Behavior\CacheInvalidateable;
 use Headio\Phalcon\ServiceLayer\Entity\Behavior\Timestampable;
 use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
 use Headio\Phalcon\ServiceLayer\Entity\TimestampTrait;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\StringLength;
-use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Filter\Validation;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\StringLength;
+use Phalcon\Filter\Validation\Validator\Uniqueness;
 
 /**
  * @Source("Role")
@@ -83,9 +83,9 @@ class Role extends AbstractEntity
         );
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
-        return (int) $this->id;
+        return $this->id;
     }
 
     public function getLabel(): ?string

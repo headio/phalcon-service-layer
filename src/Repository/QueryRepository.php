@@ -16,16 +16,15 @@ use Headio\Phalcon\ServiceLayer\Exception\OutOfRangeException;
 use Headio\Phalcon\ServiceLayer\Exception\InvalidArgumentException;
 use Headio\Phalcon\ServiceLayer\Filter\ConditionInterface;
 use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
-use Headio\Phalcon\ServiceLayer\Helper\Inflector;
 use Phalcon\Mvc\Model\CriteriaInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
 use Phalcon\Di\Injectable;
+use Phalcon\Support\Helper\Str\Lower;
 use function class_exists;
 use function current;
-use function get_class;
 use function is_null;
 use function sprintf;
 use function strpos;
@@ -59,31 +58,25 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
      * Magic method to handle calls to undefined methods or
      * inaccessible methods and possible eventual delegation.
      *
-     * @return mixed
      * @throws BadMethodCallException
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): EntityInterface|ResultsetInterface|bool
     {
         switch (true) {
             case (0 === strpos($method, 'findFirstBy')):
                 $prop = strtolower(substr($method, 11));
 
                 return $this->findFirstBy($prop, ...$args);
-
-                break;
             case (0 === strpos($method, 'getRelated')):
-                $prop = Inflector::variablize(substr($method, 10));
+                $prop = substr($method, 10);
+                $prop = (new Lower())($prop[0]) . substr($prop, 1);
 
                 return $this->getRelated($prop, ...$args);
-
-                break;
             default:
                 throw new BadMethodCallException(
                     sprintf('Repository method %s not implemented.', $method),
                     405
                 );
-
-                break;
         }
     }
 
@@ -193,9 +186,9 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
      */
     public function createCriteria(): CriteriaInterface
     {
-        $entity = $this->getEntity();
+        $entityName = $this->getEntity();
 
-        return $entity::Query();
+        return $entityName::Query();
     }
 
     /**
@@ -261,8 +254,14 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
      */
     public function findByPk(int $id): EntityInterface
     {
-        $entity = $this->getEntity();
-        $filter = $this->getQueryFilter()->eq((new $entity())->getPrimaryKey(), $id);
+        $entityName = $this->getEntity();
+        $filter = $this
+            ->getQueryFilter()
+            ->eq(
+                (new $entityName())->getPrimaryKey(),
+                $id
+            )
+        ;
 
         return $this->findFirst($filter);
     }
@@ -330,9 +329,12 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
      *
      * @throws OutOfRangeException
      */
-    public function getRelated(string $alias, EntityInterface $entity, FilterInterface $filter): ResultsetInterface
-    {
-        $entityName = get_class($entity);
+    public function getRelated(
+        string $alias,
+        EntityInterface $model,
+        FilterInterface $filter,
+    ): ResultsetInterface|bool {
+        $entityName = $model::class;
         /**
          * Stop execution if the alias is unknown.
          */
@@ -350,16 +352,16 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         $this->applyFilter($criteria, $filter);
 
         if (!$this->cache) {
-            return $entity->getRelated($alias, $criteria->getParams());
+            return $model->getRelated($alias, $criteria->getParams());
         }
 
         return $this->cacheManager->fetch(
             $this->cacheManager->createKey(
                 $entityName,
-                ['id' => $entity->getId(), 'rel' => $alias] + $criteria->getParams()
+                ['id' => $model->getId(), 'rel' => $alias] + $criteria->getParams()
             ),
-            function () use ($entity, $alias, $criteria) {
-                return $entity->getRelated($alias, $criteria->getParams());
+            function () use ($model, $alias, $criteria) {
+                return $model->getRelated($alias, $criteria->getParams());
             }
         );
     }
@@ -367,8 +369,10 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getUnrelated(ResultsetInterface $resultset, FilterInterface $filter): ResultsetInterface
-    {
+    public function getUnrelated(
+        ResultsetInterface $resultset,
+        FilterInterface $filter,
+    ): ResultsetInterface {
         if ($resultset->count() <> 0) {
             $keys = [];
             $resultset->rewind();
@@ -388,8 +392,11 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * Return a condition expression in phalcon's `phql` syntax.
      */
-    private function buildConditionExpression(ConditionInterface $condition, string $placeholder, ?string $alias = null): string
-    {
+    private function buildConditionExpression(
+        ConditionInterface $condition,
+        string $placeholder,
+        ?string $alias = null
+    ): string {
         $useAlias = !empty($alias) ?? false;
 
         switch ($operator = $condition->getOperator()) {
