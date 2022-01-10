@@ -53,6 +53,7 @@ install:
   - travis_retry composer update --no-interaction --no-progress --no-ansi --no-suggest --ignore-platform-reqs
 
 before_script:
+  - pecl install --force psr
   - phpenv config-rm xdebug.ini || exit 0
   - pecl install pcov
   - mysql -u root -p%%travis%% -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME} charset=utf8mb4 collate=utf8mb4_unicode_ci;"
