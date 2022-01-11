@@ -25,12 +25,11 @@ use IntegrationTester;
 
 class QueryRepositoryCest
 {
-    private $repository;
+    private Repository $repository;
 
     public function _before(IntegrationTester $I)
     {
         $this->repository = new Repository($this->_data()['cache']);
-        $this->di = $I->getApplication()->getDI();
     }
 
     public function canReturnRecordCount(IntegrationTester $I)
@@ -113,7 +112,7 @@ class QueryRepositoryCest
     {
         $I->wantToTest(
             'applying a query filter to the query criteria and returning the expected phql syntax and bind' . 
-            'parameters from the query builder query instance'
+            ' parameters from the query builder query instance'
         );
 
         $filter = $this->repository->getQueryFilter()
@@ -215,7 +214,8 @@ class QueryRepositoryCest
 
         $entityName = $this->repository->getEntity();
         $model = new $entityName();
-        $metaData = $this->di->get('modelsMetadata');
+        $di = $I->getApplication()->getDI();
+        $metaData = $di->get('modelsMetadata');
         $result = $this->repository->getUnrelated(
             new Simple($metaData->getColumnMap($model), $model, null),
             new Filter()
@@ -224,10 +224,7 @@ class QueryRepositoryCest
         expect($result)->isInstanceOf(ResultsetInterface::class);
     }
 
-    /**
-     * Return test data
-     */
-    public function _data(): array
+    private function _data(): array
     {
         return [
             'alias' => 'roles',

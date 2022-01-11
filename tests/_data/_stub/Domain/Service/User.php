@@ -35,10 +35,7 @@ class User extends Injectable implements ServiceInterface
         return $this->repository->findFirst($filter);
     }
 
-    /**
-     * Fetch an entity by primary key
-     */
-    public function getEntity(int $id): EntityInterface
+    public function getModel(int $id): EntityInterface
     {
         return $this->repository->findByPk($id);
     }
@@ -79,7 +76,9 @@ class User extends Injectable implements ServiceInterface
      */
     public function synchronizeRoles(EntityInterface $model, array $keys): bool
     {
-        $transaction = $this->transactionManager->get();
+        $transaction = $this->transactionManager
+            ->get()
+            ->throwRollbackException(true);
         $model->setTransaction($transaction);
 
         if (false === $this->roleRepository->synchronize('roles', 'userRoles', $model, $keys)) {
@@ -116,7 +115,9 @@ class User extends Injectable implements ServiceInterface
      */
     public function unlinkRoles(EntityInterface $model, array $keys): bool
     {
-        $transaction = $this->transactionManager->get();
+        $transaction = $this->transactionManager
+            ->get()
+            ->throwRollbackException(true);
         $model->setTransaction($transaction);
 
         if (false === $this->roleRepository->unlink('roles', $model, $keys, $transaction)) {
