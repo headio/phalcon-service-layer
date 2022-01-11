@@ -46,7 +46,7 @@ class ServiceCest
     {
         $I->wantTo('find a record by pk');
 
-        $result = $this->service->getEntity(1);
+        $result = $this->service->getModel(1);
 
         expect($result)->isInstanceOf(EntityInterface::class);
     }
@@ -59,19 +59,6 @@ class ServiceCest
         $result = $this->service->addModel($data);
 
         expect($result)->true();
-    }
-
-    public function canNotInsertRecordIfValidationFails(IntegrationTester $I)
-    {
-        $I->wantToTest('a validation failed exception is thrown trying to insert a record with missing data.');
-
-        $I->expectThrowable(
-            ValidationFailed::class,
-            function () {
-                $data = ['name' => 'foo bar'];
-                $result = $this->service->addModel($data);
-            }
-        );
     }
 
     public function canUpdateRecord(IntegrationTester $I)

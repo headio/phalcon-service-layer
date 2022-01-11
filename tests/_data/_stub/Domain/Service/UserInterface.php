@@ -16,7 +16,7 @@ interface UserInterface
 {
     public function findFirstByEmail(string $email): EntityInterface;
 
-    public function getEntity(int $id): EntityInterface;
+    public function getModel(int $id): EntityInterface;
 
     public function addModel(array $data): bool;
 

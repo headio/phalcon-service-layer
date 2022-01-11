@@ -13,13 +13,15 @@ use Stub\Domain\Repository\Role as RoleRepository;
 use Stub\Domain\Repository\User as UserRepository;
 use Stub\Domain\Service\User as Service;
 use Stub\Domain\Service\UserInterface as ServiceInterface;
+use Phalcon\Mvc\Model\Transaction;
+use Phalcon\Mvc\Model\Transaction\Manager;
 use IntegrationTester;
 
 class RelationshipTraitCest
 {
     private ServiceInterface $service;
 
-    public function _before(IntegrationTester $I)
+    public function _before(IntegrationTester $I): void
     {
         $this->service = new Service(
             new RoleRepository(false),
@@ -27,11 +29,11 @@ class RelationshipTraitCest
         );
     }
 
-    private function canSynchronizeRelations(IntegrationTester $I)
+    public function canSynchronizeRelations(IntegrationTester $I): void
     {
         $I->wantToTest('synchronizing a related entity resultset');
 
-        $model = $this->service->getEntity(1);
+        $model = $this->service->getModel(1);
         $result = $this->service->synchronizeRoles($model, [2, 3]);
 
         expect($result)->true();
@@ -41,21 +43,21 @@ class RelationshipTraitCest
         expect($result->count())->equals(2);
     }
 
-    private function canLinkRelations(IntegrationTester $I)
+    public function canLinkRelations(IntegrationTester $I): void
     {
         $I->wantToTest('associating a collection of models');
 
-        $model = $this->service->getEntity(1);
+        $model = $this->service->getModel(1);
         $result = $this->service->linkRoles($model, [2, 3, 4]);
 
         expect($result)->true();
     }
 
-    private function canUnlinkRelations(IntegrationTester $I)
+    public function canUnlinkRelations(IntegrationTester $I): void
     {
         $I->wantToTest('detaching a collection of models');
 
-        $model = $this->service->getEntity(1);
+        $model = $this->service->getModel(1);
         $result = $this->service->unlinkRoles($model, [1]);
 
         expect($result)->true();

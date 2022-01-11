@@ -16,8 +16,6 @@ use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
 use Stub\Domain\Filter\Role as QueryFilter;
 use Stub\Domain\Entity\Role as Entity;
 use Stub\Domain\Repository\Role as Repository;
-use Phalcon\Mvc\Model\Transaction;
-use Phalcon\Mvc\Model\Transaction\Manager;
 use Mockery;
 use Module\UnitTest;
 
@@ -51,7 +49,6 @@ class RelationshipTraitTest extends UnitTest
                 Mockery::type('string'),
                 Entity::class,
                 Mockery::type('array'),
-                Transaction::class
             )
             ->andReturn(true);
 
@@ -62,7 +59,6 @@ class RelationshipTraitTest extends UnitTest
                 Mockery::type('string'),
                 Entity::class,
                 Mockery::type('array'),
-                Transaction::class
             )
             ->andReturn(true);
     }
@@ -86,15 +82,6 @@ class RelationshipTraitTest extends UnitTest
         expect_that(is_bool($result));
     }
 
-    public function testUnlinkModelWithTransaction(): void
-    {
-        $manager = new Manager();
-        $transaction = $manager->get();
-        $result = $this->mock->link('users', new Entity(), [1,2,3,4,5,6], $transaction);
-
-        expect_that(is_bool($result));
-    }
-
     public function testSynchronizeRelationship(): void
     {
         $result = $this->mock->synchronize(
@@ -102,22 +89,6 @@ class RelationshipTraitTest extends UnitTest
             'roleUsers',
             new Entity(),
             [1,2,3,4,5,6],
-            null
-        );
-
-        expect_that(is_bool($result));
-    }
-
-    public function testSynchronizeRelationshipWithTransaction(): void
-    {
-        $manager = new Manager();
-        $transaction = $manager->get();
-        $result = $this->mock->synchronize(
-            'users',
-            'roleUsers',
-            new Entity(),
-            [1,2,3,4,5,6],
-            $transaction
         );
 
         expect_that(is_bool($result));

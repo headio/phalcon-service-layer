@@ -33,11 +33,6 @@ trait TransactionalCrudTrait
         $transaction = $this->transactionManager
             ->get()
             ->throwRollbackException(true);
-        /*
-        $transaction = $this->transactionManager->setDbService(
-            $model->getWriteConnectionService()
-        )->get()->throwRollbackException(true);
-        */
         $model->setTransaction($transaction);
 
         if (false === $model->delete()) {

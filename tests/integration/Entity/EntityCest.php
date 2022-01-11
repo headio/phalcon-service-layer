@@ -11,8 +11,8 @@ namespace Integration\Entity;
 
 use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Stub\Domain\Repository\User;
+use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\ValidationFailed;
-use Phalcon\Mvc\Model\Transaction\Failed as TransactionFailed;
 use IntegrationTester;
 
 class EntityCest
@@ -22,12 +22,35 @@ class EntityCest
     public function _before(IntegrationTester $I)
     {
         $this->repository = new User(false);
-        $this->di = $I->getApplication()->getDI();
     }
 
-    public function canReturnValidationErrors(IntegrationTester $I)
+    public function canGetPrimarykey(IntegrationTester $I): void
     {
-        $I->wantToTest('invoking the model validation logic to inspect the validation errors.');
+        $I->wantToTest('a model returns the expected primary key attribute value');
+        $entityName = $this->repository->getEntity();
+        $model = new $entityName();
+
+        $I->assertEquals(
+            $model->getPrimarykey(),
+            'id'
+        );
+    }
+
+    public function testGetPropertyBindType(IntegrationTester $I): void
+    {
+        $I->wantToTest('a model returns the expected attribute bind type');
+        $entityName = $this->repository->getEntity();
+        $model = new $entityName();
+
+        $I->assertEquals(
+            $model->getPropertyBindType('name'),
+            Column::BIND_PARAM_STR
+        );
+    }
+
+    public function canReturnValidationErrors(IntegrationTester $I): void
+    {
+        $I->wantToTest('invoking the model validation to inspect the validation errors');
 
         $entityName = $this->repository->getEntity();
         $model = new $entityName();
@@ -36,35 +59,12 @@ class EntityCest
         );
 
         try {
-            $result = $this->insert($model);
+            $result = $model->create();
         } catch (ValidationFailed) {
             $result = $model->getValidationErrors();
             expect_that(is_array($result));
             expect($result)->hasKey('email');
         }
-    }
-
-    /**
-     * Persist a new entity; returns true on success
-     * and throws a transaction failed exception on failure.
-     *
-     * @throws TransactionFailed
-     */
-    private function insert(EntityInterface $model): bool
-    {
-        /** @var \Phalcon\Mvc\Model\TransactionInterface */
-        $transaction = $this->di->get('transactionManager')
-            ->get()
-            ->throwRollbackException(false);
-        $model->setTransaction($transaction);
-
-        if (false === $model->create()) {
-            $transaction->rollback('Unable to create new record.', $model);
-        }
-
-        $transaction->commit();
-
-        return true;
     }
 
     private function getData(): array
