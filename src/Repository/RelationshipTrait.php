@@ -44,11 +44,13 @@ trait RelationshipTrait
         array $keys
     ): bool {
         $entityName = $model::class;
-
         /**
          * Stop execution if the entity's "@hasMany" alias is unknown.
          */
-        if (false === ($this->modelsManager->getRelationByAlias($entityName, $aliasHasMany))) {
+        if (false === ($this->modelsManager->getRelationByAlias(
+            $entityName,
+            $aliasHasMany
+        ))) {
             throw new OutOfRangeException(
                 sprintf(
                     "Missing alias '%s' in '%s' entity relationship definition.",
@@ -57,7 +59,6 @@ trait RelationshipTrait
                 )
             );
         }
-
         /**
          * Stop execution if the entity's "@hasManyToMany" alias is unknown.
          */
@@ -74,76 +75,75 @@ trait RelationshipTrait
             );
         }
 
-        /** @var ResultsetInterface|bool */
+        /** @var ResultsetInterface|bool|int */
         $related = $this->getRelated($aliasHasMany, $model, $this->getQueryFilter());
-
         /**
-         * If no keys are given, unlink the existing
-         * models and return the result.
+         * Process the related models
          */
-        if ($related->count() <> 0 && empty($keys)) {
-            return $related->delete();
-        }
-
-        /**
-         * Otherwise grab the current related primary keys and calculate the
-         * changes necessary to synchronize the relations based on the given
-         * primary keys.
-         */
-        if ($related->count() <> 0) {
-            $related->rewind();
-            while ($related->valid()) {
-                $current[] = $related->current()->{$relation->getIntermediateReferencedFields()};
-                $related->next();
-            }
-
+        if ($related instanceof ResultsetInterface) {
             /**
-             * Store the required operations
+             * If no keys are given, unlink the existing
+             * models and return the result.
              */
-            $link = $ignore = [];
-
-            foreach ($keys as $key) {
-                if (array_key_exists($key, array_flip($current))) {
-                    array_push($ignore, $key);
-                } else {
-                    array_push($link, $key);
+            if ($related->count() <> 0 && empty($keys)) {
+                return $related->delete();
+            }
+            /**
+             * Otherwise grab the current related primary keys and calculate the
+             * changes necessary to synchronize the relations based on the given
+             * primary keys.
+             */
+            if ($related->count() <> 0) {
+                $related->rewind();
+                while ($related->valid()) {
+                    $current[] = $related->current()->{$relation->getIntermediateReferencedFields()};
+                    $related->next();
                 }
-            }
+                /**
+                 * Store the required operations
+                 */
+                $link = $ignore = [];
 
-            $unlink = array_diff($current, array_merge($ignore, $link));
-
-            /**
-             * Detach the models
-             */
-            if (!empty($unlink)) {
-                $result = $related->delete(
-                    function ($related) use ($relation, $unlink) {
-                        if (array_key_exists(
-                            $related->{$relation->getIntermediateReferencedFields()},
-                            array_flip($unlink)
-                        )) {
-                            return true;
-                        }
-
-                        return false;
+                foreach ($keys as $key) {
+                    if (array_key_exists($key, array_flip($current))) {
+                        array_push($ignore, $key);
+                    } else {
+                        array_push($link, $key);
                     }
-                );
-            }
+                }
 
-            /**
-             * Attach the models
-             */
-            if (!empty($link)) {
-                return $this->link($aliasHasManyToMany, $model, $link);
-            }
+                $unlink = array_diff($current, array_merge($ignore, $link));
+                /**
+                 * Detach the models
+                 */
+                if (!empty($unlink)) {
+                    $result = $related->delete(
+                        function ($related) use ($relation, $unlink) {
+                            if (array_key_exists(
+                                $related->{$relation->getIntermediateReferencedFields()},
+                                array_flip($unlink)
+                            )) {
+                                return true;
+                            }
 
-            if (!empty($unlink)) {
-                return $result;
-            }
+                            return false;
+                        }
+                    );
+                }
+                /**
+                 * Attach the models
+                 */
+                if (!empty($link)) {
+                    return $this->link($aliasHasManyToMany, $model, $link);
+                }
 
-            return true;
+                if (!empty($unlink)) {
+                    return $result;
+                }
+
+                return true;
+            }
         }
-
         /**
          * Just assign the new models, as no related models exist.
          */
@@ -279,5 +279,5 @@ EX;
         string $alias,
         EntityInterface $model,
         FilterInterface $filter
-    ): ResultsetInterface|bool;
+    ): ResultsetInterface|bool|int;
 }

@@ -36,6 +36,7 @@ use function substr;
  * A generic abstract query repository class.
  *
  * @property \Headio\Phalcon\ServiceLayer\Component\CacheManager $cacheManager
+ * @property \Phalcon\Mvc\Model\ManagerInterface $modelsManager
  */
 abstract class QueryRepository extends Injectable implements RepositoryInterface
 {
@@ -60,7 +61,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
      *
      * @throws BadMethodCallException
      */
-    public function __call(string $method, array $args): EntityInterface|ResultsetInterface|bool
+    public function __call(string $method, array $args): EntityInterface|ResultsetInterface|bool|int
     {
         switch (true) {
             case (0 === strpos($method, 'findFirstBy')):
@@ -333,12 +334,16 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         string $alias,
         EntityInterface $model,
         FilterInterface $filter,
-    ): ResultsetInterface|bool {
+    ): ResultsetInterface|bool|int {
         $entityName = $model::class;
+        $manager = $this->modelsManager;
         /**
          * Stop execution if the alias is unknown.
          */
-        if (false === $this->modelsManager->getRelationByAlias($entityName, $alias)) {
+        if (false === ($relation = $manager->getRelationByAlias(
+            $entityName,
+            $alias
+        ))) {
             throw new OutOfRangeException(
                 sprintf(
                     "Missing alias '%s' in '%s' entity relationship definition.",
@@ -352,7 +357,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         $this->applyFilter($criteria, $filter);
 
         if (!$this->cache) {
-            return $model->getRelated($alias, $criteria->getParams());
+            return $manager->getRelationRecords($relation, $model, $criteria->getParams());
         }
 
         return $this->cacheManager->fetch(
@@ -360,8 +365,8 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 $entityName,
                 ['id' => $model->getId(), 'rel' => $alias] + $criteria->getParams()
             ),
-            function () use ($model, $alias, $criteria) {
-                return $model->getRelated($alias, $criteria->getParams());
+            function () use ($criteria, $manager, $model, $relation): ResultsetInterface|bool|int {
+                return $manager->getRelationRecords($relation, $model, $criteria->getParams());
             }
         );
     }

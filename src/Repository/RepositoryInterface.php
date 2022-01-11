@@ -87,7 +87,7 @@ interface RepositoryInterface
         string $alias,
         EntityInterface $model,
         FilterInterface $filter
-    ): ResultsetInterface|bool;
+    ): ResultsetInterface|bool|int;
 
     /**
      * Return the unrelated models from cache or storage.
