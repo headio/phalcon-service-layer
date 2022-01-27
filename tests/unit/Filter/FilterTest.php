@@ -23,38 +23,6 @@ use ArrayIterator;
 
 class FilterTest extends UnitTest
 {
-    protected function _before(): void
-    {
-        parent::_before();
-    }
-
-    protected function _after(): void
-    {
-        parent::_after();
-    }
-    
-    public function testCanCreateAnAliasForQueryColumns()
-    {
-        $this->specify(
-            'Can create an alias on query columns',
-            function () {
-                $mock = Mockery::mock(
-                    Filter::class,
-                    FilterInterface::class
-                );
-                $mock->allows()->getAlias()->andReturn($this->_data()['alias']);
-                $mock->allows()->hasAlias()->andReturn(true);
-                $mock->allows()->alias()->with(Mockery::type('string'))->andReturn(new StubFilter());
-
-                $mock->alias($this->_data()['alias']);
-
-                expect($mock->hasAlias())->true();
-                expect($mock->getAlias())->equals($this->_data()['alias']);
-                expect_that(is_string($mock->getAlias()));
-            }
-        );
-    }
-
     public function testCanCreateAColumnConstraint()
     {
         $this->specify(

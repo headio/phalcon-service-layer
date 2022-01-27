@@ -12,6 +12,7 @@ namespace Module;
 use Codeception\Specify;
 use Codeception\Util\Debug;
 use Codeception\Test\Unit;
+use Phalcon\Di\DiInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -21,15 +22,9 @@ class UnitTest extends Unit
 {
     use Specify;
 
-    /**
-     * @var UnitTester
-     */
-    protected $tester;
+    protected UnitTester $tester;
 
-    /**
-     * @var Phalcon\Di\DiInterface
-     */
-    protected $di;
+    protected DiInterface $di;
 
     /**
      * {@inheritDoc}
@@ -37,13 +32,6 @@ class UnitTest extends Unit
     protected function _before(): void
     {
         $this->di = $this->tester->getApplication()->getDI();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function _after()
-    {
     }
 
     /**
@@ -76,11 +64,8 @@ class UnitTest extends Unit
 
     /**
      * Get inaccessible class method
-     *
-     * @param object
-     * @param string
      */
-    protected function getClassMethod($class, string $method): ?ReflectionMethod
+    protected function getClassMethod(string $class, string $method): ?ReflectionMethod
     {
         $rc = new ReflectionClass($class);
 

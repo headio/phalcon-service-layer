@@ -14,8 +14,9 @@ namespace Stub\Domain\Repository;
 use Stub\Domain\Entity\Tag as EntityName;
 use Stub\Domain\Filter\Tag as QueryFilter;
 use Headio\Phalcon\ServiceLayer\Paginator\Cursor\QueryableInterface;
+use Headio\Phalcon\ServiceLayer\Filter\Filter;
 use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
-use Headio\Phalcon\ServiceLayer\Filter\OrderByInterface;
+use Headio\Phalcon\ServiceLayer\Filter\OrderBy;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
 
 /**
@@ -29,20 +30,17 @@ class Tag extends QueryRepository implements TagInterface
      */
     public function createFilter(QueryableInterface $query, int $limit): FilterInterface
     {
-        $filter = $this->getQueryFilter()
-            ->alias($this->getEntity())
-            ->limit($limit+1)
-        ;
+        $filter = $this->getQueryFilter()->limit($limit+1);
 
         if (!$query->isPaging()) {
-            return $filter->orderBy('id', OrderByInterface::DESC);
+            return $filter->orderBy('id', OrderBy::DESC);
         }
 
         $filter->offset(
             $query->getCursor(),
-            $query->isAfter() ? FilterInterface::LESS_THAN : FilterInterface::GREATER_THAN_OR_EQUAL
+            $query->isAfter() ? Filter::LESS_THAN : Filter::GREATER_THAN_OR_EQUAL
         )
-        ->orderBy('id', $query->isAfter() ? OrderByInterface::DESC : OrderByInterface::ASC);
+        ->orderBy('id', $query->isAfter() ? OrderBy::DESC : OrderBy::ASC);
 
         return $filter;
     }
