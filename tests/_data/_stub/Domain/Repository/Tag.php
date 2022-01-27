@@ -29,10 +29,7 @@ class Tag extends QueryRepository implements TagInterface
      */
     public function createFilter(?QueryableInterface $query, int $limit): FilterInterface
     {
-        $filter = $this->getQueryFilter()
-            ->alias($this->getEntity())
-            ->limit($limit+1)
-        ;
+        $filter = $this->getQueryFilter()->limit($limit+1);
 
         if (!$query->isPaging()) {
             return $filter->orderBy('id', OrderByInterface::DESC);
