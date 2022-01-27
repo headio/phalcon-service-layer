@@ -453,7 +453,6 @@ class Filter implements FilterInterface
 
         $this->limit = null;
         $this->offset = [];
-        $this->alias = null;
 
         return $this;
     }
