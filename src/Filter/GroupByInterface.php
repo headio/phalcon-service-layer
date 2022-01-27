@@ -12,7 +12,7 @@ namespace Headio\Phalcon\ServiceLayer\Filter;
 interface GroupByInterface
 {
     /**
-     * Return the group by column constraint
+     * Return the group by column constraint.
      */
     public function getColumn(): string;
 }

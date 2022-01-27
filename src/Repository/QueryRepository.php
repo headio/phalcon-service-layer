@@ -111,25 +111,42 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
             );
         }
 
-        if ($filter->hasConditions()) {
-            if ($filter->hasAlias()) {
-                $alias = $filter->getAlias();
-            } else {
-                $alias = (null === $criteria->getModelName() ? $entityName : null);
-            }
-            $collection = $filter->getConditions();
+        if ($filter->hasJoins()) {
+            $collection = $filter->getJoins();
             $collection->rewind();
             while ($collection->valid()) {
-                $placeholder = strtoupper($collection->current()->getColumn()) . $collection->key();
-                $expression = $this->buildConditionExpression($collection->current(), $placeholder, $alias);
-                $callable = $collection->current()->getType() . 'Where';
-                $criteria->{$callable}($expression);
-                if (!is_null($collection->current()->getValue())) {
-                    $criteria->bind([$placeholder => $collection->current()->getValue()], true);
-                    $this->bindTypes[$placeholder] = (new $entityName())->getPropertyBindType($collection->current()->getColumn());
-                }
+                /** @var \Headio\Phalcon\ServiceLayer\Filter\JoinInterface */
+                $join = $collection->current();
+                $criteria->join(
+                    $join->getEntity(),
+                    $join->getConstraint(),
+                    $join->getAlias(),
+                    $join->getType(),
+                );
                 $collection->next();
             }
+        }
+
+        if ($filter->hasConditions()) {
+            $collection = $filter->getConditions();
+            $collection->rewind();
+
+            while ($collection->valid()) {
+                /** @var ConditionInterface */
+                $condition = $collection->current();
+                $placeholder = strtoupper($condition->getColumn()) . $collection->key();
+                $expression = $this->buildConditionExpression($condition, $placeholder);
+                $callable = $collection->current()->getType() . 'Where';
+                $criteria->{$callable}($expression);
+
+                if (!is_null($condition->getValue())) {
+                    $criteria->bind([$placeholder => $condition->getValue()], true);
+                    $this->bindTypes[$placeholder] = (new $entityName())->getPropertyBindType($condition->getColumn());
+                }
+
+                $collection->next();
+            }
+
             if (!empty($this->bindTypes)) {
                 $criteria->bindTypes($this->bindTypes);
             }
@@ -137,11 +154,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
 
         if ($filter->hasGroupBy()) {
             foreach ($filter->getGroupBy() as $item) {
-                if ($filter->hasAlias()) {
-                    $groupBy[] = sprintf('%s.%s', $filter->getAlias(), $item->getColumn());
-                } else {
-                    $groupBy[] = $item->getColumn();
-                }
+                $groupBy[] = $item->getColumn();
             }
 
             $criteria->groupBy(join(',', $groupBy));
@@ -154,11 +167,8 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 } else {
                     $format = $item->getColumn();
                 }
-                if ($filter->hasAlias()) {
-                    $orderBy[] = sprintf('%s.%s', $filter->getAlias(), $format);
-                } else {
-                    $orderBy[] = $format;
-                }
+
+                $orderBy[] = $format;
             }
 
             $criteria->orderBy(join(',', $orderBy));
@@ -397,67 +407,37 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     /**
      * Return a condition expression in phalcon's `phql` syntax.
      */
-    private function buildConditionExpression(
-        ConditionInterface $condition,
-        string $placeholder,
-        ?string $alias = null
-    ): string {
-        $useAlias = !empty($alias) ?? false;
-
+    private function buildConditionExpression(ConditionInterface $condition, string $placeholder): string
+    {
         switch ($operator = $condition->getOperator()) {
             case FilterInterface::LIKE:
                 $format = '%1$s LIKE LOWER(:%2$s:)';
-                if ($useAlias) {
-                    $format = '[%1$s].[%2$s] LIKE LOWER(:%3$s:)';
-                }
 
                 break;
             case FilterInterface::IN:
                 $format = '%1$s IN ({%2$s:array})';
-                if ($useAlias) {
-                    $format = '[%1$s].[%2$s] IN ({%3$s:array})';
-                }
 
                 break;
             case FilterInterface::NOT_IN:
                 $format = '%1$s NOT IN ({%2$s:array})';
-                if ($useAlias) {
-                    $format = '[%1$s].[%2$s] NOT IN ({%3$s:array})';
-                }
 
                 break;
             case FilterInterface::NOT_LIKE:
                 $format = '%1$s NOT LIKE LOWER(:%2$s:)';
-                if ($useAlias) {
-                    $format = '[%1$s].[%2$s] NOT LIKE LOWER(:%3$s:)';
-                }
 
                 break;
             case FilterInterface::IS_NULL:
                 $format = '%1$s IS NULL';
-                if ($useAlias) {
-                    $format = '[%1$s].[%2$s] IS NULL';
-                }
 
                 break;
             case FilterInterface::IS_NOT_NULL:
                 $format = '%1$s IS NOT NULL';
-                if ($useAlias) {
-                    $format = '[%1$s].[%2$s] IS NOT NULL';
-                }
 
                 break;
             default:
                 $format = '%1$s ' . $operator . ' :%2$s:';
-                if ($useAlias) {
-                    $format = '[%1$s].[%2$s] ' . $operator . ' :%3$s:';
-                }
 
                 break;
-        }
-
-        if ($useAlias) {
-            return sprintf($format, $alias, $condition->getColumn(), $placeholder);
         }
 
         return sprintf($format, $condition->getColumn(), $placeholder);
