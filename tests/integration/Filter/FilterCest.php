@@ -10,19 +10,15 @@ declare(strict_types=1);
 namespace Integration\Filter;
 
 use Headio\Phalcon\ServiceLayer\Filter\ConditionInterface;
+use Headio\Phalcon\ServiceLayer\Filter\Filter;
 use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Phalcon\Db\Column;
-use Stub\Domain\Filter\Role as Filter;
 use Stub\Domain\Repository\Role as Repository;
 use ArrayIterator;
 use IntegrationTester;
 
 class FilterCest
 {
-    public function _before(IntegrationTester $I)
-    {
-    }
-
     public function canAppendCondition(IntegrationTester $I)
     {
         $I->wantToTest('appending a condition to the filter criteria');
@@ -36,7 +32,6 @@ class FilterCest
         );
 
         expect($filter->hasConditions())->true();
-
         expect($filter->getConditions())->isInstanceOf(ArrayIterator::class);
     }
 
@@ -318,10 +313,7 @@ class FilterCest
         expect($phql)->equals($this->_data()['multiPhql']);
     }
 
-    /**
-     * Return test data
-     */
-    public function _data(): array
+    private function _data(): array
     {
         return [
             'cond' => [
