@@ -68,7 +68,11 @@ CREATE TABLE `Role_User` (
   CONSTRAINT `role_user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `Role` (`id`) ON DELETE CASCADE,
   CONSTRAINT `role_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `Role_User` (`id`, `role_id`, `user_id`)
+VALUES
+	(1,1,1),
 
+UNLOCK TABLES;
 
 
 # Dump of table Tag

@@ -12,13 +12,13 @@ namespace Headio\Phalcon\ServiceLayer\Filter;
 use ArrayIterator;
 use function abs;
 
-abstract class Filter implements FilterInterface
+class Filter implements FilterInterface
 {
-    private ?string $alias = null;
-
     private array $columns = [];
 
     private array $conditions = [];
+
+    private array $joins = [];
 
     private array $groupBy = [];
 
@@ -27,32 +27,6 @@ abstract class Filter implements FilterInterface
     private array $offset = [];
 
     private array $orderBy = [];
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAlias(): ?string
-    {
-        return $this->alias;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function hasAlias(): bool
-    {
-        return !empty($this->alias);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function alias(string $alias): FilterInterface
-    {
-        $this->alias = $alias;
-
-        return $this;
-    }
 
     /**
      * {@inheritDoc}
@@ -251,6 +225,73 @@ abstract class Filter implements FilterInterface
 
     /**
      * {@inheritDoc}
+     */
+    public function getJoins(): ArrayIterator
+    {
+        return new ArrayIterator($this->joins);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasJoins(): bool
+    {
+        return !empty($this->joins);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function join(string $entity, ?string $constrait = null, string $type, ?string $alias): void
+    {
+        $this->joins[] = new Join($entity, $constrait, $type, $alias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function leftJoin(string $entity, ?string $constrait = null, ?string $alias = null): FilterInterface
+    {
+        $this->join($entity, $constrait, Join::LEFT, $alias);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function innerJoin(string $entity, ?string $constrait = null, ?string $alias = null): FilterInterface
+    {
+        $this->join($entity, $constrait, Join::INNER, $alias);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rightJoin(string $entity, ?string $constrait = null, ?string $alias = null): FilterInterface
+    {
+        $this->join($entity, $constrait, Join::RIGHT, $alias);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function clearJoins(): FilterInterface
+    {
+        if ($this->hasJoins()) {
+            $this->joins = [];
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * @param mixed $value
      */
@@ -400,6 +441,10 @@ abstract class Filter implements FilterInterface
 
         if ($this->hasGroupBy()) {
             $this->groupBy = [];
+        }
+
+        if ($this->hasJoins()) {
+            $this->joins = [];
         }
 
         if ($this->hasOrderBy()) {
