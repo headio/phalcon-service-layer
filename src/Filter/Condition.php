@@ -28,15 +28,15 @@ class Condition implements ConditionInterface
     /**
      * @param mixed $value
      */
-    public function __construct(string $column, $value, string $operator, string $type = ConditionInterface::AND)
+    public function __construct(string $column, $value, string $operator, string $type = Condition::AND)
     {
         $this->column = $column;
         $this->value = $value;
         $this->operator = $operator;
         $this->type = strtoupper($type);
 
-        if (0 !== strcmp($this->type, ConditionInterface::AND)) {
-            $this->type = ConditionInterface::OR;
+        if (0 !== strcmp($this->type, Condition::AND)) {
+            $this->type = Condition::OR;
         }
     }
 
