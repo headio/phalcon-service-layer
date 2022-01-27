@@ -15,8 +15,6 @@ interface FilterInterface
 {
     /**
      * The condition filters
-     *
-     * @var constants
      */
     public const EQUAL = '=';
 
@@ -41,21 +39,6 @@ interface FilterInterface
     public const IS_NULL = 'IS NULL';
 
     public const IS_NOT_NULL = 'IS NOT NULL';
-
-    /**
-     * Return the alias
-     */
-    public function getAlias(): ?string;
-
-    /**
-     * Has an alias
-     */
-    public function hasAlias(): bool;
-
-    /**
-     * Prepend an alias to the query columns
-     */
-    public function alias(string $alias): FilterInterface;
 
     /**
      * Return the columns constraint
@@ -133,26 +116,61 @@ interface FilterInterface
     public function offset(int $offset, string $direction, string $type = Condition::AND): FilterInterface;
 
     /**
-     * Append a condition to the filter criteria.
+     * Append a condition constraint to the filter criteria.
      *
      * @param mixed $value
      */
     public function addCondition(string $column, $value, string $operator, string $type): void;
 
     /**
-     * Return the conditions constraint
+     * Return the condition constraints.
      */
     public function getConditions(): ArrayIterator;
 
     /**
-     * Has a conditions constraint
+     * Determine whether condition constraints exist.
      */
     public function hasConditions(): bool;
 
     /**
-     * Clear the conditions constraint
+     * Clear the condition constraints from the filter criteria.
      */
     public function clearConditions(): FilterInterface;
+
+    /**
+     * Return the join constraints.
+     */
+    public function getJoins(): ArrayIterator;
+
+    /**
+     * Determine whether join constraints exist.
+     */
+    public function hasJoins(): bool;
+
+    /**
+     * Append a join constraint to the filter criteria.
+     */
+    public function join(string $entity, ?string $constrait = null, string $type, ?string $alias): void;
+
+    /**
+     * Append a left join constraint to the filter criteria.
+     */
+    public function leftJoin(string $entity, ?string $constrait = null, ?string $alias = null): FilterInterface;
+
+    /**
+     * Append an inner join constraint to the filter criteria.
+     */
+    public function innerJoin(string $entity, ?string $constrait = null, ?string $alias = null): FilterInterface;
+
+    /**
+     * Append a right join constraint to the filter criteria.
+     */
+    public function rightJoin(string $entity, ?string $constrait = null, ?string $alias = null): FilterInterface;
+
+    /**
+     * Clear the join constraints from the filter criteria.
+     */
+    public function clearJoins(): FilterInterface;
 
     /**
      * Append an equality condition to the filter criteria.
@@ -169,7 +187,7 @@ interface FilterInterface
     public function gt(string $column, $value, string $type = Condition::AND): FilterInterface;
 
     /**
-     * Append a great than or equal comparison condition to the filter criteria.
+     * Append a greater than or equal comparison condition to the filter criteria.
      *
      * @param mixed $value
      */
@@ -231,7 +249,7 @@ interface FilterInterface
     public function notIn(string $column, array $value, string $type = Condition::AND): FilterInterface;
 
     /**
-     * Reset the filter criteria
+     * Reset the whole filter criteria.
      */
     public function clear(): FilterInterface;
 }
