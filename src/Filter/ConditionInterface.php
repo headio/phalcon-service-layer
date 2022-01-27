@@ -21,22 +21,22 @@ interface ConditionInterface
     public const OR = 'OR';
 
     /**
-     * Return the condition column
+     * Return the condition column constrait.
      */
     public function getColumn(): string;
 
     /**
-     * Return the condition operator
+     * Return the condition operator.
      */
     public function getOperator(): string;
 
     /**
-     * Return the condition type
+     * Return the condition type.
      */
     public function getType(): string;
 
     /**
-     * Return the condition value
+     * Return the condition value.
      *
      * @return mixed
      */

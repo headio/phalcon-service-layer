@@ -21,10 +21,10 @@ class Condition implements ConditionInterface
         private string $column,
         private $value,
         private string $operator,
-        private string $type = ConditionInterface::AND,
+        private string $type = Condition::AND,
     ) {
-        if (0 !== strcmp($this->type, ConditionInterface::AND)) {
-            $this->type = ConditionInterface::OR;
+        if (0 !== strcmp($this->type, Condition::AND)) {
+            $this->type = Condition::OR;
         }
     }
 
