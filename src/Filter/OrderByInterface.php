@@ -21,17 +21,17 @@ interface OrderByInterface
     public const DESC = 'DESC';
 
     /**
-     * Return the order by column constraint
+     * Return the order by column constraint.
      */
     public function getColumn(): string;
 
     /**
-     * Return the order by direction constraint
+     * Return the order by direction constraint.
      */
     public function getDirection(): ?string;
 
     /**
-     * Has an order by direction constraint
+     * Determine whether an order by direction constraint exists.
      */
     public function hasDirection(): bool;
 }
