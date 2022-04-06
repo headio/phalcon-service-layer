@@ -7,14 +7,14 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Entity;
+namespace Headio\Phalcon\ServiceLayer\Entity\Traits;
 
 use DateTime;
 
 /**
  * Entity timestamp trait
  */
-trait TimestampTrait
+trait TimestampableTrait
 {
     /**
      * @Column(type="integer", nullable=false, column="created")

@@ -7,14 +7,14 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Entity;
+namespace Headio\Phalcon\ServiceLayer\Entity\Traits;
 
 use DateTime;
 
 /**
  * Entity publishing trait
  */
-trait PublishingTrait
+trait PublishableTrait
 {
     /**
      * @Column(type="boolean", nullable=true, column="published")
