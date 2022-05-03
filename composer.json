@@ -5,7 +5,8 @@
     "keywords": [
         "Phalcon",
         "Service layer",
-        "Business logic"
+        "Business logic",
+        "Repository-Service Pattern"
     ],
     "license": "MIT",
     "authors": [
@@ -24,7 +25,8 @@
     "require": {
         "php": ">=8.0.0 <8.0.99",
         "ext-mbstring": "*",
-        "ext-phalcon": ">=5.0.0"
+        "ext-phalcon": ">=5.0.0",
+        "psr/simple-cache": "^3.0"
     },
     "require-dev": {
         "codeception/codeception": "^4.1.0",
