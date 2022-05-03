@@ -1,6 +1,6 @@
 # Phalcon service layer
 
-A simple service layer implementation for Phalcon 5 projects
+A simple repository service implementation for Phalcon 5 projects
 
 [![Build Status](https://travis-ci.com/headio/phalcon-service-layer.svg?branch=5.x)](https://travis-ci.com/headio/phalcon-service-layer) [![Coverage Status](https://coveralls.io/repos/github/headio/phalcon-service-layer/badge.svg?branch=5.x)](https://coveralls.io/github/headio/phalcon-service-layer?branch=5.x)
 
@@ -8,9 +8,9 @@ A simple service layer implementation for Phalcon 5 projects
 
 This library provides a layered architecture promising easier unit and integration testing.
 
-The service layer handles business logic, mediating between the application layer (controller or handler) and the domain, interacting with a single repository or multiple repositories. All repositories extend an abstract **query repository**, providing a collection-like interface, with well-defined query methods, encapsulating filtering and caching. Hence all queries are isolated in the repository layer.
+The service layer handles business logic, mediating between the application layer (controller or handler) and the domain, interacting with a single repository or multiple repositories. All repositories extend an abstract **query repository**, providing a collection-like interface, with well-defined query methods. Hence all queries are isolated in the repository layer.
 
-Phalcon ORM implements the active record pattern, therefore the responsiblity of persistence remains with the active record, in contrast to the repository pattern / data mapper (Doctrine), where repositories manage the entity lifecycle.
+Phalcon ORM implements the active record pattern, therefore the responsiblity of persistence remains with the active record, in contrast to the repository service pattern / data mapper (Doctrine), where repositories manage the entity lifecycle.
 
 If you have been reading between the lines, you have probably gathered this is a hybrid solution offering: testability, reuseability and prevention of logic leaking into the application layer. The trade-off is you need to write, test and maintain some extra boiler-plate code.
 
@@ -43,21 +43,20 @@ Assuming the following project structure, let's create the layers to handle remo
 │   │    │    │    │── Foo
 │   │    │    │── Module.php
 │   │── Domain
-│   │    │── Entity
-│   │    │    │── Foo
-│   │    │── Filter
+│   │    │── Model
 │   │    │    │── Foo
 │   │    │── Repository
 │   │    │    │── Foo
 │   │    │── Service
 │   │    │    │── Foo
-│   │── Service
+│   │── Provider
+│   │    │── FooService
 └──
 ```
 
-### Registering the service
+### Registering a service provider
 
-Create a new **Foo** service dependency inside the service provider directory **/src/Service/**.
+Create a new **Foo** service dependency inside the service provider directory **/src/Provider/**.
 
 ```php
 declare(strict_types=1);
@@ -76,10 +75,8 @@ class Foo implements ServiceProviderInterface
     {
         $di->setShared(
             'fooService',
-            function () use ($di) {
-                /** @var bool */
-                $cache = $di->getConfig()->cache->modelCache->apply;
-                $repository = Factory::create(Repository:class, $cache)
+            function () {
+                $repository = Factory::create(Repository::class)
                 $service = new Service($repository);
 
                 return $service;
@@ -120,9 +117,7 @@ class Module implements ModuleDefinitionInterface
         $container->setShared(
             'fooService',
             function () use ($container) {
-                /** @var bool */
-                $cache = $container->getConfig()->cache->modelCache->apply;
-                $repository = Factory::create(Repository:class, $cache)
+                $repository = Factory::create(Repository::class);
                 $service = new Service($repository);
 
                 return $service;
@@ -132,10 +127,9 @@ class Module implements ModuleDefinitionInterface
 }
 ```
 
-### The controller
+### Controller/Handler
 
 Now the service is in place, the controller can interact with the service layer by injecting the service into the controller via the **OnConstruct** method.
-To remove the record, the controller calls the  **deleteModel** method on the service.
 
 ```php
 namespace App\Module\Admin\Foo;
@@ -153,43 +147,26 @@ class Foo extends Controller
     {
         $this->service = $this->getDI()->get('fooService');
     }
-
-    /**
-     * Delete a model instance
-     *
-     * @Route("/delete/{id:[0-9]+}", methods={"GET"}, name="adminFooDelete")
-     */
-    public function deleteAction(int $id)
-    {
-        try {
-            $id = $this->filter->sanitize($id, Filter::FILTER_ABSINT);
-            return $this->service->deleteModel($id);
-        } catch (Throwable $e) {
-            $message = $this->handleException($e);
-            $this->flashSession->error($message);
-            return $this->response->redirect(['for' => 'adminFoos']);
-        }
-    }
 }
 ```
 
-### The service layer
+### Service layer
 
-To remove the record, the service interacts with the repository. If the record exists, the service calls the delete method (implementation skipped for simplicity); on success the user is redirected to the table view.
+The service layer interacts with one repository (or multiple repositories) to process the business logic. In the example below, the service calls the delete method (implementation skipped for simplicity) to remove a model instance by primary key and return to the list view.
 
 ```php
 declare(strict_types=1);
 
 namespace App\Domain\Service\Foo;
 
-use App\Domain\Filter\Foo as QueryFilter;
 use App\Domain\Repository\FooInterface;
+use App\Domain\Service\FooInterface as ServiceInterface;
 use Phalcon\Di\Injectable;
 use Phalcon\Http\ResponseInterface;
 
-class Foo extends Injectable
+class Foo extends Injectable implements ServiceInterface
 {
-    public function __construct(private FooInterface $fooRepository)
+    public function __construct(private FooInterface $repository)
     {
     }
 
@@ -208,212 +185,302 @@ class Foo extends Injectable
 }
 ```
 
-### The repository
+### Repository
 
-The **Foo** repository extends the abstract query repository, implementing the following abstract methods. The repository could implement additional interfaces, e.g. **FooInterface**, providing further concrete methods for the service layer.
+All repositories must extend the abstract query repository and implement one abstract method.
 
 ```php
 declare(strict_types=1);
 
 namespace App\Domain\Repository;
 
-use App\Domain\Filter\Foo as QueryFilter;
+use App\Domain\Model\Foo as Model;
 use App\Domain\Repository\FooInterface;
-use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
 
 class Foo extends QueryRepository implements FooInterface
 {
     /**
-     * Return an instance of the query filter used with this repository.
+     * Return the model name managed by this repository.
      */
-    public function getQueryFilter(): FilterInterface
+    protected function getModelName(): string
     {
-        return new QueryFilter();
-    }
-
-    /**
-     * Return the entity name managed by this repository.
-     */
-    protected function getEntityName(): string
-    {
-        return 'App\\Domain\\Entity\\Foo';
+        return Model::class;
     }
 }
 ```
 
-### The query repository
+The **Foo** repository can implement additional interfaces, e.g. **FooInterface**, providing further concrete methods for the service layer.
 
-The query repository implements the following interface:
+The abstract query repository implements the following repository interface:
 
 ```php
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Repository;
+namespace Headio\Phalcon\Repository\Repository;
 
-use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
-use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
-use Phalcon\Mvc\Model\CriteriaInterface;
+use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
 
 interface RepositoryInterface
 {
     /**
-     * Apply the cache to the query criteria.
-     */
-    public function applyCache(QueryInterface $query, CriteriaInterface $criteria): void;
-
-    /**
-     * Apply the filter to the query criteria.
-     */
-    public function applyFilter(CriteriaInterface $criteria, FilterInterface $filter): void;
-
-    /**
-     * Fetch row count from cache or storage.
-     */
-    public function count(FilterInterface $filter): int;
-
-    /**
      * Return an instance of the query criteria pre-populated
-     * with the entity managed by this repository.
+     * with the model managed by this repository.
      */
     public function createCriteria(): CriteriaInterface;
 
     /**
-     * Return an instance of the query builder pre-populated
-     * for the entity managed by this repository.
+     * Return an instance of the query builder.
      */
-    public function createQuery(array $params = null, ?string $alias = null): BuilderInterface;
+    public function createBuilder(array $params = null): BuilderInterface;
 
     /**
-     * Fetch column value by query criteria.
-     *
-     * @return mixed
+     * Fetch a column value by query criteria from storage.
      */
-    public function fetchColumn(CriteriaInterface $criteria);
+    public function fetchColumn(CriteriaInterface $criteria): mixed;
 
     /**
-     * Fetch records by filter criteria from cache or storage.
+     * Fetch records by query criteria from storage.
      */
-    public function find(FilterInterface $filter): ResultsetInterface;
+    public function find(CriteriaInterface $criteria): ResultsetInterface;
 
     /**
-     * Fetch record by primary key from cache or storage.
+     * Fetch record by primary key from storage.
      */
-    public function findByPk(int $id): EntityInterface;
+    public function findByPk(int $id): ModelInterface;
 
     /**
-     * Fetch first record by filter criteria from cache or storage.
+     * Fetch first record by query criteria from storage.
      */
-    public function findFirst(FilterInterface $filter): EntityInterface;
+    public function findFirst(CriteriaInterface $criteria): ModelInterface;
 
     /**
-     * Fetch first record by property name from cache or storage.
+     * Fetch first record by property name from storage.
      */
-    public function findFirstBy(string $property, $value): EntityInterface;
+    public function findFirstBy(string $property, mixed $value): ModelInterface;
 
     /**
      * Return the fully qualified (or unqualified) class name
-     * for the entity managed by the repository.
+     * for the model managed by this repository.
      */
-    public function getEntity(bool $unqualified = false): string;
+    public function getModel(bool $unqualified = false): string;
 
     /**
-     * Return the related models from cache or storage.
+     * Return the related models from storage.
      */
-    public function getRelated(string $alias, EntityInterface $model, FilterInterface $filter): ResultsetInterface|bool|int;
-
-    /**
-     * Return the unrelated models from cache or storage.
-     */
-    public function getUnrelated(ResultsetInterface $resultset, FilterInterface $filter): ResultsetInterface;
+    public function getRelated(
+        string $alias,
+        ModelInterface $model,
+        CriteriaInterface $criteria = null,
+    ): ResultsetInterface|bool|int;
 }
 ```
 
-### The filter interface
-
-Repositories can utilize the query filter to build filter criteria. The filter criteria are applied to the query criteria before executing queries. See the following usage examples inside an arbitrary repository:
-
-```php
-/**
- * Return a collection of models filtered by primary keys
- * from cache or storage.
- */
-public function getModelsByPrimaryKeys(array $keys): ResultsetInterface
-{
-    $entityName = $this->getEntity();
-    $filter = $this
-        ->getQueryFilter()
-        ->in((new $entityName)->getPrimaryKey(), $keys)
-    ;
-
-    return $this->find($filter);
-}
-
-/**
- * Return the primary key value by query criteria
- * from cache or storage.
- *
- * @return mixed
- */
-public function getPrimaryKeyForResource(string $label)
-{
-    $criteria = $this->createCriteria()->columns(['id']);
-    $filter = $this->getQueryFilter()->eq('label', $label);
-    $this->applyFilter($criteria, $filter);
-    $result = $this->fetchColumn($criteria);
-
-    return $result;
-}
-
-/**
- * Return the filter for a list view.
- */
-public function createFilter(int $offset, int $limit, string $key): FilterInterface
-{
-    $route = $this->router->getMatchedRoute();
-    $store = new SessionBag($route->getName());
-    $filter = $this->getQueryFilter()
-        ->alias($this->getEntity())
-        ->orderBy('id')
-        ->limit($limit * 3);
-
-    if ($offset > 0) {
-        $filter->offset($offset);
-    }
-
-    if (!empty($keyword = $this->request->getQuery('keyword', Filter::FILTER_STRING))) {
-        $store->keyword = $keyword;
-    }
-
-    if ($this->request->get('clear', Filter::FILTER_INT)) {
-        $store->destroy();
-    }
-
-    if ($store->has('keyword')) {
-        $filter->setKeyword($store->keyword);
-    }
-
-    return $filter;
-}
-```
-
-### The entity
-
-The simple repository pattern relies on Getter/Setter implementation for public properties. All models must extend the **AbstractEntity** class, which implements the following entity interface:
+In addition, a relationship trait is provided to simplify handling model relationships.
 
 ```php
 declare(strict_types=1);
 
+namespace App\Domain\Repository;
+
+use App\Domain\Model\Foo as Model;
+use App\Domain\Repository\FooInterface;
+use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
+use Headio\Phalcon\ServiceLayer\Repository\Traits\RelationshipTrait;
+
+class Foo extends QueryRepository implements FooInterface
+{
+    use RelationshipTrait;
+
+    /**
+     * Return the model name managed by this repository.
+     */
+    protected function getModelName(): string
+    {
+        return Model::class;
+    }
+}
+```
+
+#### Query caching
+
+Query caching is handled utilizing Phalcon's event manager.
+To get started first include the **CacheableTrait** in your repository; the **EventsAwareInterface** is implemented inside the cacheable trait.
+
+```php
+declare(strict_types=1);
+
+namespace App\Domain\Repository;
+
+use App\Domain\Model\User as Model;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
+use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
+use Headio\Phalcon\ServiceLayer\Repository\Traits\CacheableTrait;
+use Phalcon\Events\EventsAwareInterface;
+
+class User extends QueryRepository implements UserInterface, EventsAwareInterface
+{
+    use CacheableTrait;
+
+    /**
+     * Return the model name managed by this repository.
+     */
+    protected function getModelName(): string
+    {
+        return Model::class;
+    }
+}
+```
+
+Then create a service provider for your service layer, or a repository if you want to omit the service layer and work with repositories directly. The example below utilizes Phalcon's service provider interface.
+
+```php
+declare(strict_types=1);
+
+namespace App\Service;
+
+use App\Domain\Repository\Foo as Repository;
+use App\Domain\Service\Foo as Service;
+use Headio\Phalcon\ServiceLayer\Cache\Listener\CacheListener;
+use Headio\Phalcon\ServiceLayer\Repository\Factory;
+use Phalcon\Di\ServiceProviderInterface;
+use Phalcon\Di\DiInterface;
+
+class Foo implements ServiceProviderInterface
+{
+    public function register(DiInterface $di): void
+    {
+        $di->setShared(
+            'fooService',
+            function () {
+                $eventsManager = new EventsManager();
+                // factory instantiation
+                $repository = Factory::create(Repository::class);
+                $repository->setEventsManager($eventsManager);
+                $cacheManager = $this->get('cacheManager');
+                // attach the cache event listener and inject the
+                // cache manager dependency
+                $eventsManager->attach(
+                    'cache',
+                    new CacheListener(
+                        $cacheManager
+                    )
+                );
+                $service = new Service($repository);
+
+                return $service;
+            }
+        );
+    }
+}
+```
+
+##### Cache event listener
+
+The event listener provides two methods to handle caching, see below.
+
+```php
 /**
- * Entity Interface
+ * This event listener provides caching functionality for repositories.
  */
-interface EntityInterface
+class CacheListener
+{
+    public function __construct(private ManagerInterface $manager)
+    {
+    }
+
+    /**
+     * Appends a cache declaration to a Phalcon query instance.
+     */
+    public function append(
+        EventInterface $event,
+        RepositoryInterface $repository,
+        QueryInterface $query,
+    ): QueryInterface;
+
+    /**
+     * Fetches data from cache or storage using the cache-aside
+     * strategy.
+     */
+    public function fetch(
+        EventInterface $event,
+        RepositoryInterface $repository,
+        array $context,
+    ): ModelInterface|ResultsetInterface;
+}
+```
+
+To trigger a cache event, see the following concrete examples from the cacheable trait.
+
+```php
+trait CacheableTrait
 {
     /**
-     * Return the entity primary key attribute.
+     * Fetch first record by query criteria from cache or storage.
+     *
+     * @throws NotFoundException
+     */
+    public function findFirst(CriteriaInterface $criteria): ModelInterface
+    {
+        $query = $criteria
+            ->createBuilder()
+            ->getQuery()
+            ->setUniqueRow(true)
+        ;
+        $this->eventsManager->fire('cache:append', $this, $query);
+        $model = $query->execute();
+
+        if (!$model instanceof ModelInterface) {
+            throw new NotFoundException('404 Not Found');
+        }
+
+        return $model;
+    }
+
+    /**
+     * Fetch data from cache or storage.
+     */
+    public function fromCache(
+        QueryInterface|array $query,
+        Closure $callable,
+        DateInterval|int $lifetime = null,
+    ): ResultsetInterface|ModelInterface|null {
+        $key = $this->cacheManager->generateKey(
+            $this->getModel(),
+            $query,
+        );
+
+        return $this->eventsManager->fire(
+            'cache:fetch',
+            $this,
+            [$key, $callable],
+        );
+    }
+```
+
+### Pagination
+
+This library provides a cursor-based paginator adapter; see **_stub** directory inside the test directory for usage.
+
+### The model
+
+All models must extend the abstract **Model** class, which implements the following model interface:
+
+```php
+declare(strict_types=1);
+
+namespace Headio\Phalcon\ServiceLayer\Model;
+
+use Phalcon\Di\DiInterface;
+use Phalcon\Mvc\Model\CriteriaInterface;
+
+interface ModelInterface
+{
+    /**
+     * Return the model primary key attribute.
      */
     public function getPrimaryKey(): string;
 
@@ -426,104 +493,18 @@ interface EntityInterface
      * Return the model validation errors as an array representation.
      */
     public function getValidationErrors(): array;
-}
-```
-
-A repository trait is implemented to simplify handling many-to-many model relationships. This implementation requires both the @hasMany and @hasManyToMany relationship definitions on the source entity. See the following example:
-
-```php
-declare(strict_types=1);
-
-namespace App\Domain\Entity;
-
-use Headio\Phalcon\ServiceLayer\Entity\AbstractEntity;
-use Headio\Phalcon\ServiceLayer\Entity\TimestampTrait;
-use Headio\Phalcon\ServiceLayer\Entity\Behavior\CacheInvalidateable;
-use Headio\Phalcon\ServiceLayer\Entity\Behavior\Timestampable;
-
-/**
- * @Source("Resource")
- *
- * @HasManyToMany(
- *     "id",
- *     "App\Domain\Entity\ResourceUser",
- *     "resource_id",
- *     "user_id",
- *     "App\Domain\Entity\User",
- *     "id", {
- *         "alias" : "users",
- *         "params": {
- *             "order" : "[App\Domain\Entity\User].[id] DESC"
- *         }
- *     }
- * )
- *
- * @HasMany(
- *     "id",
- *     "App\Domain\Entity\ResourceUser",
- *     "resource_id",
- *     {
- *         "alias" : "resourceUsers"
- *     }
- * )
- */
-class Resource extends AbstractEntity
-{
-    /**
-     * @Primary
-     * @Identity
-     * @Column(type="integer", nullable=false, column="id", length="10")
-     */
-    protected ?int $id = null;
 
     /**
-     * @Column(type="string", nullable=false, column="label", length="64")
+     * Return an instance of the query criteria pre-populated
+     * with the model.
      */
-    protected ?string $label = null;
-
-    /**
-     * Use trait for timestamp functionality.
-     */
-    use TimestampTrait;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function initialize(): void
-    {
-        parent::initialize();
-
-        $this->addBehavior(new Timestampable());
-        $this->addBehavior(new CacheInvalidateable(
-            [
-                'invalidate' => [
-                    'App\\Domain\\Entity\\Role',
-                    'App\\Domain\\Entity\\User'
-                ]
-            ]
-        ));
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    public function setLabel(string $input): void
-    {
-        $this->label = $input;
-    }
+    public static function query(DiInterface $container = null): CriteriaInterface;
 }
 ```
 
 ### Validation
 
-Validation can be implemented in the service layer or the entity classes.
+Validation can be implemented in the service layer or the model classes.
 
 ## Testing
 
