@@ -22,3 +22,15 @@ printf "\\n" | pecl install --force igbinary 1> /dev/null
 
 (>&1 echo 'Install memcached extension ...')
 printf "\\n" | pecl install --force memcached 1> /dev/null
+
+redis_ext=$($(phpenv which php-config) --extension-dir)/redis.so
+if [[ "$(php --ri redis 1> /dev/null)" = "" ]] && [[ ! -f "${redis_ext}" ]]
+then
+  (>&1 echo 'Install redis extension ...')
+  printf "\\n" | pecl install --force redis 1> /dev/null
+fi
+
+if [[ "$(php --ri redis 1> /dev/null)" = "" ]] && [[ -f "${redis_ext}" ]]
+then
+	echo 'extension="redis.so"' > "$PHP_CONF_D/redis.ini"
+fi

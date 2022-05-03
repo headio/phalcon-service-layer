@@ -16,23 +16,18 @@ return [
     'applicationPath' => 'src' . DIRECTORY_SEPARATOR,
     'baseUri' => '/',
     'cache' => [
-        'apply' => false,
         'modelCache' => [
-            'adapter' => 'libmemcached',
+            'adapter' => $_SERVER['CACHE_ADAPTER'],
             'options' => [
-                'defaultSerializer' => $_SERVER['MEMCACHED_SERIALIZER'],
-                'lifetime' => 3600 * 24 * 30,
-                'prefix' => $_SERVER['MEMCACHED_PREFIX_KEY'],
-                'servers' => [
-                    [
-                        'host' => $_SERVER['MEMCACHED_HOST'],
-                        'port' => (int) $_SERVER['MEMCACHED_PORT'],
-                        'weight' => (int) $_SERVER['MEMCACHED_WEIGHT']
-                    ],
-                ],
-                'client' => [
-                    \Memcached::OPT_CONNECT_TIMEOUT => 10,
-                ],
+                'defaultSerializer' => $_SERVER['CACHE_SERIALIZER'],
+                'host' => $_SERVER['CACHE_HOST'],
+                'port' => (int) $_SERVER['CACHE_PORT'],
+                'auth' => $_SERVER['CACHE_AUTH'],
+                'index' => $_SERVER['CACHE_INDEX'],
+                'lifetime' => (int) $_SERVER['CACHE_LIFETIME'],
+                'persistent' => (bool) $_SERVER['CACHE_PERSISTENT'],
+                'prefix' => $_SERVER['CACHE_PREFIX'],
+                'socket' => $_SERVER['CACHE_SOCKET'],
             ],
         ],
     ],
