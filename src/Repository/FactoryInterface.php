@@ -14,5 +14,5 @@ interface FactoryInterface
     /**
      * Instantiate a new repository
      */
-    public static function create(string $class, bool $cache): RepositoryInterface;
+    public static function create(string $class): RepositoryInterface;
 }

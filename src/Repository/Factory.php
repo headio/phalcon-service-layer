@@ -25,7 +25,7 @@ class Factory implements FactoryInterface
      *
      * @throws InvalidArgumentException|RuntimeException
      */
-    public static function create(string $class, bool $cache): RepositoryInterface
+    public static function create(string $class): RepositoryInterface
     {
         if (!class_exists($class)) {
             throw new InvalidArgumentException(
@@ -37,11 +37,14 @@ class Factory implements FactoryInterface
 
         if (!$rc->implementsInterface(__NAMESPACE__ . '\\RepositoryInterface')) {
             throw new RuntimeException(
-                sprintf('Repository %s does not implement repository interface.', $rc->getShortName())
+                sprintf(
+                    'Repository %s does not implement repository interface.',
+                    $rc->getShortName()
+                )
             );
         }
 
         /** @psalm-suppress LessSpecificReturnStatement */
-        return new $class($cache);
+        return new $class();
     }
 }
