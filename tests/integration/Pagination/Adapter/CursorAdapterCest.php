@@ -26,7 +26,7 @@ class CursorAdapterCest
 
         $response = $I->getApplication()->handle($_SERVER['REQUEST_URI']);
 
-        $repository = new Repository(false);
+        $repository = new Repository();
 
         $itemsPerPage = 2;
 
@@ -36,12 +36,12 @@ class CursorAdapterCest
             true
         );
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 
@@ -67,12 +67,12 @@ class CursorAdapterCest
             true
         );
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 
@@ -98,12 +98,12 @@ class CursorAdapterCest
             true
         );
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 
@@ -139,12 +139,12 @@ class CursorAdapterCest
             true
         );
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 
@@ -175,12 +175,12 @@ class CursorAdapterCest
             true
         );
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 
@@ -202,12 +202,12 @@ class CursorAdapterCest
 
         $query = new Cursor(31, false, true);
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 
@@ -233,12 +233,12 @@ class CursorAdapterCest
 
         $query = new Cursor(28, false, true);
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 
@@ -263,12 +263,12 @@ class CursorAdapterCest
 
         $query = new Cursor(26, false, true);
 
-        $filter = $repository->createFilter(
+        $criteria = $repository->createFilter(
             $query,
             $itemsPerPage
         );
 
-        $models = $repository->find($filter);
+        $models = $repository->find($criteria);
 
         $paginator = new Paginator($models, $itemsPerPage, $query);
 

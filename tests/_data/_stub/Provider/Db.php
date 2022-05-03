@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace Stub\Provider;
 
-use Phalcon\Db\AdapterInterface;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use Phalcon\Events\EventInterface;
 
 class Db implements ServiceProviderInterface
 {
@@ -23,8 +21,8 @@ class Db implements ServiceProviderInterface
     {
         $di->setShared(
             'db',
-            function () use ($di) {
-                $config = $di->get('config');
+            function () {
+                $config = $this->get('config');
                 $adapter = 'Phalcon\\Db\\Adapter\\Pdo\\' . $config->database->adapter;
                 $service = new $adapter($config->database->toArray());
 

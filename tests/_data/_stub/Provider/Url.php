@@ -22,9 +22,9 @@ class Url implements ServiceProviderInterface
     {
         $di->setShared(
             'url',
-            function () use ($di) {
+            function () {
                 $service = new Service();
-                $service->setBaseUri($di->get('config')->baseUri);
+                $service->setBaseUri($this->get('config')->baseUri);
 
                 return $service;
             }

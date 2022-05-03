@@ -9,72 +9,58 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Service;
 
-use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Phalcon\Di\Injectable;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Stub\Domain\Repository\RoleInterface;
 use Stub\Domain\Repository\UserInterface;
-use Stub\Domain\Service\TransactionalCrudTrait;
+use Stub\Domain\Service\Transactional;
 use Stub\Domain\Service\UserInterface as ServiceInterface;
 
 class User extends Injectable implements ServiceInterface
 {
-    use TransactionalCrudTrait;
+    use Transactional;
 
     public function __construct(
         private RoleInterface $roleRepository,
         private UserInterface $repository,
-    )
-    {
+    ) {
     }
 
-    public function findFirstByEmail(string $email): EntityInterface
+    public function createModel(array $data): bool
     {
-        $filter = $this->repository->getQueryFilter()->setEmail($email);
-
-        return $this->repository->findFirst($filter);
-    }
-
-    public function getModel(int $id): EntityInterface
-    {
-        return $this->repository->findByPk($id);
-    }
-
-    public function addModel(array $data): bool
-    {
-        $entityName = $this->repository->getEntity();
-        $model = new $entityName();
+        $model = $this->repository->newInstance();
         $model->assign($data);
 
         return $this->insert($model);
     }
 
-    public function deleteModel(EntityInterface $model): bool
+    public function deleteModel(ModelInterface $model): bool
     {
         return $this->delete($model);
     }
 
-    public function updateModel(EntityInterface $model): bool
+    public function getModel(int $id): ModelInterface
+    {
+        return $this->repository->findByPk($id);
+    }
+    
+    public function updateModel(ModelInterface $model): bool
     {
         return $this->update($model);
     }
 
-    /**
-     * Return the related roles for a given entity
-     */
-    public function getRoles(EntityInterface $model): ResultsetInterface
+    public function getRoles(ModelInterface $model): ResultsetInterface
     {
-        $filter = $this->roleRepository->getQueryFilter();
+        $criteria = $this->roleRepository->createCriteria();
 
-        return $this->roleRepository->getRelatedRoles($model, $filter);
+        return $this->roleRepository->getRelated('roles', $model, $criteria);
     }
 
     /**
-     * Synchronize role relationships
-     *
      * @throws \Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function synchronizeRoles(EntityInterface $model, array $keys): bool
+    public function synchronizeRoles(ModelInterface $model, array $keys): bool
     {
         $transaction = $this->transactionManager
             ->get()
@@ -95,11 +81,9 @@ class User extends Injectable implements ServiceInterface
     }
 
     /**
-     * Associate a collection of role entities
-     *
      * @throws \Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function linkRoles(EntityInterface $model, array $keys): bool
+    public function linkRoles(ModelInterface $model, array $keys): bool
     {
         if ($this->roleRepository->link('roles', $model, $keys)) {
             return $this->update($model);
@@ -109,11 +93,9 @@ class User extends Injectable implements ServiceInterface
     }
 
     /**
-     * Detach a collection of related roles
-     *
      * @throws \Phalcon\Mvc\Model\Transaction\Failed
      */
-    public function unlinkRoles(EntityInterface $model, array $keys): bool
+    public function unlinkRoles(ModelInterface $model, array $keys): bool
     {
         $transaction = $this->transactionManager
             ->get()

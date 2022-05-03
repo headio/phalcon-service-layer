@@ -7,11 +7,13 @@
  */
 declare(strict_types=1);
 
-namespace Stub\Domain\Repository;
+namespace Stub\Domain\Model;
 
 use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 
-interface UserInterface
+Interface RoleInterface extends ModelInterface
 {
-    public function newInstance(): ModelInterface;
+    public function getId(): ?int;
+
+    public function getLabel(): ?string;
 }

@@ -19,36 +19,33 @@ use Module\UnitTest;
 
 class FactoryTest extends UnitTest
 {
-    /**
-     * @var Mockery
-     */
     private $mock;
 
     protected function _before(): void
     {
         parent::_before();
 
-        $cache = false;
         $this->mock = Mockery::mock(
             Factory::class,
             FactoryInterface::class
         );
         $this->mock->allows()
             ->create()
-            ->with(Mockery::type('string'), Mockery::type('bool'))
-            ->andReturnUsing(function ($class) use ($cache) {
+            ->with(Mockery::type('string'))
+            ->andReturnUsing(function ($class) {
                 if (!class_exists($class)) {
                     throw new InvalidArgumentException(
                         sprintf('Repository class %s does not exist.', $class)
                     );
                 }
 
-                return new $class($cache);
+                return new $class();
             });
     }
 
     protected function _after(): void
     {
+        Mockery::close();
         parent::_after();
     }
 
@@ -59,7 +56,6 @@ class FactoryTest extends UnitTest
             function () {
                 $repository = $this->mock->create(
                     Repository::class,
-                    false
                 );
 
                 expect($repository)->isInstanceOf(Repository::class);
@@ -80,7 +76,6 @@ class FactoryTest extends UnitTest
 
                 $repository = $this->mock->create(
                     Foo::class,
-                    false
                 );
             }
         );

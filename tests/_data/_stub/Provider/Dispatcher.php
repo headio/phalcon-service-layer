@@ -24,9 +24,8 @@ class Dispatcher implements ServiceProviderInterface
     {
         $di->setShared(
             'dispatcher',
-            function () use ($di) {
-                $config = $di->get('config');
-                $eventsManager = $this->get('eventsManager');
+            function () {
+                $config = $this->get('config');
 
                 if ($config->cli) {
                     $service = new CliService();
@@ -36,11 +35,10 @@ class Dispatcher implements ServiceProviderInterface
                         $service->setDefaultNamespace($namespace);
                     }
 
-                    $service->setEventsManager($eventsManager);
-
                     return $service;
                 }
 
+                $eventsManager = $this->get('eventsManager');
                 $service = new MvcService();
                 $service->setControllerSuffix('');
                 $service->setDefaultNamespace($config->dispatcher->defaultControllerNamespace);

@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Module;
 
 use Codeception\Specify;
-use Codeception\Util\Debug;
 use Codeception\Test\Unit;
 use Phalcon\Di\DiInterface;
 use ReflectionClass;
@@ -24,7 +23,7 @@ class UnitTest extends Unit
 
     protected UnitTester $tester;
 
-    protected DiInterface $di;
+    protected ?DiInterface $di = null;
 
     /**
      * {@inheritDoc}
@@ -37,9 +36,9 @@ class UnitTest extends Unit
     /**
      * {@inheritDoc}
      */
-    protected function debug($mixed)
+    protected function _after(): void
     {
-        return Debug::debug($mixed);
+        $this->di = null;
     }
 
     /**

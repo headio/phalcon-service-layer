@@ -15,7 +15,6 @@ use Stub\Domain\Repository\User as UserRepository;
 use Stub\Domain\Service\User as Service;
 use Stub\Domain\Service\UserInterface as ServiceInterface;
 use Phalcon\Mvc\Model\ValidationFailed;
-use Phalcon\Mvc\Model\Transaction\Failed as TransactionFailed;
 use IntegrationTester;
 
 class ServiceCest
@@ -25,49 +24,26 @@ class ServiceCest
     public function _before(IntegrationTester $I)
     {
         $this->service = new Service(
-            new RoleRepository(false),
-            new UserRepository(false),
+            new RoleRepository(),
+            new UserRepository(),
         );
-    }
-
-    public function canFindRecordByProperty(IntegrationTester $I)
-    {
-        $I->wantTo('find a record by property');
-
-        $data = $this->getData();
-        $result = $this->service->addModel($data);
-
-        expect($result)->true();
-
-        $result = $this->service->findFirstByEmail($data['email']);
-    }
-
-    public function canFindRecordByPk(IntegrationTester $I)
-    {
-        $I->wantTo('find a record by pk');
-
-        $result = $this->service->getModel(1);
-
-        expect($result)->isInstanceOf(EntityInterface::class);
     }
 
     public function canInsertRecord(IntegrationTester $I)
     {
         $I->wantToTest('inserting a new record using an isolated transaction');
 
-        $data = $this->getData();
-        $result = $this->service->addModel($data);
+        $data = $this->data();
+        $result = $this->service->createModel($data);
 
         expect($result)->true();
     }
 
     public function canUpdateRecord(IntegrationTester $I)
     {
-        $I->wantToTest('updating an existing record using an isolated transaction');
+        $I->wantToTest('updating a record using an isolated transaction');
 
-        $data = $this->getData();
-        $this->service->addModel($data);
-        $model = $this->service->findFirstByEmail($data['email']);
+        $model = $this->service->getModel(1);
         $model->setName('Jane Doe');
         $result = $this->service->updateModel($model);
 
@@ -78,15 +54,13 @@ class ServiceCest
     {
         $I->wantToTest('deleting a record using an isolated transaction');
 
-        $data = $this->getData();
-        $this->service->addModel($data);
-        $model = $this->service->findFirstByEmail($data['email']);
+        $model = $this->service->getModel(1);
         $result = $this->service->deleteModel($model);
 
         expect($result)->true();
     }
 
-    private function getData(): array
+    private function data(): array
     {
         return [
             'name' => 'Baby Doe',

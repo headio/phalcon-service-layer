@@ -11,13 +11,11 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Repository;
 
-use Stub\Domain\Entity\Tag as EntityName;
-use Stub\Domain\Filter\Tag as QueryFilter;
-use Headio\Phalcon\ServiceLayer\Paginator\Cursor\QueryableInterface;
-use Headio\Phalcon\ServiceLayer\Filter\Filter;
-use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
 use Headio\Phalcon\ServiceLayer\Filter\OrderBy;
+use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
+use Headio\Phalcon\ServiceLayer\Paginator\Cursor\QueryableInterface;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
+use Stub\Domain\Model\Tag as Model;
 
 /**
  * @property \Phalcon\Http\RequestInterface $request;
@@ -28,36 +26,30 @@ class Tag extends QueryRepository implements TagInterface
     /**
      * {@inheritDoc}
      */
-    public function createFilter(QueryableInterface $query, int $limit): FilterInterface
+    public function createFilter(QueryableInterface $query, int $limit): CriteriaInterface
     {
-        $filter = $this->getQueryFilter()->limit($limit+1);
+        $criteria = $this->createCriteria()->limit($limit+1);
 
         if (!$query->isPaging()) {
-            return $filter->orderBy('id', OrderBy::DESC);
+            return $criteria->orderBy('id' . OrderBy::DESC);
         }
 
-        $filter->offset(
-            $query->getCursor(),
-            $query->isAfter() ? Filter::LESS_THAN : Filter::GREATER_THAN_OR_EQUAL
-        )
-        ->orderBy('id', $query->isAfter() ? OrderBy::DESC : OrderBy::ASC);
+        if ($query->isAfter()) {
+            $criteria->lt('id', $query->getCursor());
+        } else {
+            $criteria->gte('id', $query->getCursor());
+        }
 
-        return $filter;
+        $criteria->orderBy('id ' . ($query->isAfter() ? OrderBy::DESC : OrderBy::ASC));
+
+        return $criteria;
     }
 
     /**
-     * Return an instance of the query filter used with this repository.
+     * Return the model name managed by this repository.
      */
-    public function getQueryFilter(): FilterInterface
+    protected function getModelName(): string
     {
-        return new QueryFilter();
-    }
-
-    /**
-     * Return the entity name managed by this repository.
-     */
-    public function getEntityName(): string
-    {
-        return EntityName::class;
+        return Model::class;
     }
 }

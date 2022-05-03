@@ -25,8 +25,8 @@ class i18n implements ServiceProviderInterface
     {
         $di->setShared(
             'i18n',
-            function () use ($di) {
-                $config = $di->get('config');
+            function () {
+                $config = $this->get('config');
                 $locale = $config->locale;
 
                 if (!$config->useI18n) {

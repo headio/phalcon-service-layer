@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Stub\Provider;
 
-use Headio\Phalcon\ServiceLayer\Component\CacheManager as Service;
+use Headio\Phalcon\ServiceLayer\Cache\Manager as Service;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Di\DiInterface;
 
@@ -23,7 +23,12 @@ class CacheManager implements ServiceProviderInterface
         $di->setShared(
             'cacheManager',
             function () {
-                return new Service();
+                $config = $this->get('config')->cache->modelCache->options;
+                $cache = $this->get('modelsCache');
+                return new Service(
+                    $config,
+                    $cache,
+                );
             }
         );
     }

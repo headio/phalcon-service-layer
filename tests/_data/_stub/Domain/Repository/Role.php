@@ -9,22 +9,24 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Repository;
 
-use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
-use Headio\Phalcon\ServiceLayer\Repository\RelationshipTrait;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
-use Stub\Domain\Filter\Role as Filter;
+use Headio\Phalcon\ServiceLayer\Repository\Traits\RelationshipTrait;
 
 class Role extends QueryRepository implements RoleInterface
 {
     use RelationshipTrait;
 
-    protected function getEntityName(): string
+    public function newInstance(): ModelInterface
     {
-        return 'Stub\\Domain\\Entity\\Role';
+        $modelName = $this->getModel();
+        $model = new $modelName();
+
+        return $model;
     }
 
-    public function getQueryFilter(): FilterInterface
+    protected function getModelName(): string
     {
-        return new Filter();
+        return 'Stub\\Domain\\Model\\Role';
     }
 }

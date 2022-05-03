@@ -9,26 +9,24 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Service;
 
-use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 
 interface UserInterface
 {
-    public function findFirstByEmail(string $email): EntityInterface;
+    public function createModel(array $data): bool;
 
-    public function getModel(int $id): EntityInterface;
+    public function deleteModel(ModelInterface $model): bool;
 
-    public function addModel(array $data): bool;
+    public function getModel(int $id): ModelInterface;
 
-    public function deleteModel(EntityInterface $model): bool;
+    public function updateModel(ModelInterface $model): bool;
 
-    public function updateModel(EntityInterface $model): bool;
+    public function getRoles(ModelInterface $model): ResultsetInterface;
 
-    public function getRoles(EntityInterface $model): ResultsetInterface;
+    public function synchronizeRoles(ModelInterface $model, array $keys): bool;
 
-    public function synchronizeRoles(EntityInterface $model, array $keys): bool;
+    public function linkRoles(ModelInterface $model, array $keys): bool;
 
-    public function linkRoles(EntityInterface $model, array $keys): bool;
-
-    public function unlinkRoles(EntityInterface $model, array $keys): bool;
+    public function unlinkRoles(ModelInterface $model, array $keys): bool;
 }

@@ -9,12 +9,10 @@ declare(strict_types=1);
 
 namespace Stub\Domain\Repository;
 
-use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
 use Headio\Phalcon\ServiceLayer\Paginator\Cursor\QueryableInterface;
 
 interface TagInterface
 {
-    public function createFilter(QueryableInterface $query, int $limit): FilterInterface;
-
-    public function getQueryFilter(): FilterInterface;
+    public function createFilter(QueryableInterface $query, int $limit): CriteriaInterface;
 }

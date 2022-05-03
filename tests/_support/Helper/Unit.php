@@ -10,7 +10,15 @@ declare(strict_types=1);
 namespace Helper;
 
 use Codeception\Module;
+use Codeception\Util\Debug;
 
 class Unit extends Module
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function debug($mixed)
+    {
+        return Debug::debug($mixed);
+    }
 }

@@ -11,8 +11,11 @@ namespace Headio\Phalcon\ServiceLayer\Paginator\Cursor;
 
 class Query implements QueryableInterface
 {
-    public function __construct(private int $cursor, private bool $before, private bool $after)
-    {
+    public function __construct(
+        private int $cursor,
+        private bool $before,
+        private bool $after
+    ) {
     }
 
     /**

@@ -24,8 +24,8 @@ class Router implements ServiceProviderInterface
     {
         $di->setShared(
             'router',
-            function () use ($di) {
-                $config = $di->get('config');
+            function () {
+                $config = $this->get('config');
 
                 if ($config->get('cli', false)) {
                     $service = new CliRouter();

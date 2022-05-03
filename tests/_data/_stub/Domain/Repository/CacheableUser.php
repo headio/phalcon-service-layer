@@ -11,10 +11,14 @@ namespace Stub\Domain\Repository;
 
 use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
+use Headio\Phalcon\ServiceLayer\Repository\Traits\CacheableTrait;
 use Headio\Phalcon\ServiceLayer\Repository\Traits\RelationshipTrait;
+use Phalcon\Events\EventsAwareInterface;
 
-class User extends QueryRepository implements UserInterface
+class CacheableUser extends QueryRepository implements UserInterface, EventsAwareInterface
 {
+    use CacheableTrait;
+
     use RelationshipTrait;
 
     public function newInstance(): ModelInterface

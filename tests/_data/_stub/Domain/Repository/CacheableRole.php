@@ -10,11 +10,17 @@ declare(strict_types=1);
 namespace Stub\Domain\Repository;
 
 use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
+use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
+use Headio\Phalcon\ServiceLayer\Repository\Traits\CacheableTrait;
 use Headio\Phalcon\ServiceLayer\Repository\Traits\RelationshipTrait;
+use Phalcon\Events\EventsAwareInterface;
+use Phalcon\Mvc\Model\ResultsetInterface;
 
-class User extends QueryRepository implements UserInterface
+class CacheableRole extends QueryRepository implements RoleInterface, EventsAwareInterface
 {
+    use CacheableTrait;
+
     use RelationshipTrait;
 
     public function newInstance(): ModelInterface
@@ -27,6 +33,6 @@ class User extends QueryRepository implements UserInterface
 
     protected function getModelName(): string
     {
-        return 'Stub\\Domain\\Model\\User';
+        return 'Stub\\Domain\\Model\\Role';
     }
 }
