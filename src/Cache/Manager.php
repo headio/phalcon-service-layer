@@ -62,11 +62,9 @@ class Manager implements ManagerInterface
             $key = $this->normalizeKey($item);
 
             if ($this->cache->has($key)) {
-                $result = $this->cache->delete($key);
-                $this->cache->set(
+                $this->cache->getAdapter()->setForever(
                     $key,
                     microtime(true),
-                    $this->config->lifetime,
                 );
             }
         }
@@ -125,10 +123,9 @@ class Manager implements ManagerInterface
         $key = $this->normalizeKey($model);
 
         if (!$this->cache->has($key)) {
-            $result = $this->cache->set(
+            $this->cache->getAdapter()->setForever(
                 $key,
                 microtime(true),
-                $this->config->lifetime,
             );
         }
 
