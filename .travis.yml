@@ -9,7 +9,7 @@ dist: bionic
 
 env:
   global:
-    - PHALCON_VERSION="v5.0.0beta2"
+    - PHALCON_VERSION="v5.0.0beta3"
     - DB_NAME="servicelayer_test"
 
 git:
