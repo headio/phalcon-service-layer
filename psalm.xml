@@ -4,7 +4,6 @@
     name="Phalcon service layer"
     allowStringToStandInForClass="true"
     resolveFromConfigFile="true"
-    totallyTyped="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -24,6 +23,7 @@
         <file name="vendor/phalcon/ide-stubs/src/Filter/Validation.php"/>
         <file name="vendor/phalcon/ide-stubs/src/Http/Response.php"/>
         <file name="vendor/phalcon/ide-stubs/src/Http/Request.php"/>
+        <file name="vendor/psr/simple-cache/src/CacheInterface.php"/>
         <file name="tests/_bootstrap.php"/>
     </stubs>
     <issueHandlers>
