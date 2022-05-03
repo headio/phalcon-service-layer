@@ -7,13 +7,18 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Entity;
+namespace Headio\Phalcon\ServiceLayer\Model;
 
 use Headio\Phalcon\ServiceLayer\Exception\OutOfRangeException;
+use Headio\Phalcon\ServiceLayer\Model\Criteria;
+use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
+use Phalcon\Di\Di;
+use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model;
 use function sprintf;
 
-class AbstractEntity extends Model implements EntityInterface
+abstract class AbstractModel extends Model implements ModelInterface
 {
     /**
      * {@inheritDoc}
@@ -45,13 +50,11 @@ class AbstractEntity extends Model implements EntityInterface
     {
         static $metaData = null;
 
-        if (!isset($metaData)) {
-            $metaData = $this->getDI()->get('modelsMetadata');
-        }
+        $metaData ??= $this->getDI()->get('modelsMetadata');
 
         if (!$metaData->hasAttribute($this, $property)) {
             throw new OutOfRangeException(
-                sprintf('Unknown property %s', $property)
+                sprintf('Unknown property "%s"', $property)
             );
         }
 
@@ -61,8 +64,7 @@ class AbstractEntity extends Model implements EntityInterface
     }
 
     /**
-     * Return the model validation errors as an array representation,
-     * consolidating individual field validation errors.
+     * {@inheritDoc}
      */
     public function getValidationErrors(): array
     {
@@ -79,5 +81,20 @@ class AbstractEntity extends Model implements EntityInterface
         }
 
         return $errors;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function query(DiInterface $container = null): CriteriaInterface
+    {
+        $container ??= Di::getDefault();
+        $criteria = $container->get(Criteria::class) ?? new Criteria();
+        $criteria->setDI($container);
+        $criteria->setModelName(
+            get_called_class()
+        );
+
+        return $criteria;
     }
 }

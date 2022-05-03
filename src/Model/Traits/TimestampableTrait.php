@@ -7,13 +7,10 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Entity\Traits;
+namespace Headio\Phalcon\ServiceLayer\Model\Traits;
 
-use DateTime;
+use DateTimeImmutable;
 
-/**
- * Entity timestamp trait
- */
 trait TimestampableTrait
 {
     /**
@@ -29,31 +26,22 @@ trait TimestampableTrait
     /**
      * Get created
      */
-    public function getCreated(): DateTime
+    public function getCreated(): DateTimeImmutable
     {
-        return new DateTime("@{$this->created}");
+        return new DateTimeImmutable("@{$this->created}");
     }
 
-    /**
-     * Get last modified
-     */
-    public function getModified(): DateTime
+    public function getModified(): DateTimeImmutable
     {
-        return new DateTime("@{$this->modified}");
+        return new DateTimeImmutable("@{$this->modified}");
     }
 
-    /**
-     * Set created
-     */
-    public function setCreated(DateTime $input): void
+    public function setCreated(DateTimeImmutable $input): void
     {
         $this->created = $input->getTimestamp();
     }
 
-    /**
-     * Set modified
-     */
-    public function setModified(DateTime $input): void
+    public function setModified(DateTimeImmutable $input): void
     {
         $this->modified = $input->getTimestamp();
     }

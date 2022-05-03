@@ -7,19 +7,16 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Entity\Traits;
+namespace Headio\Phalcon\ServiceLayer\Model\Traits;
 
-use DateTime;
+use DateTimeImmutable;
 
-/**
- * Entity publishing trait
- */
 trait PublishableTrait
 {
     /**
      * @Column(type="boolean", nullable=true, column="published")
      */
-    protected ?bool $published = null;
+    protected ?bool $published = false;
 
     /**
      * @Column(type="integer", nullable=true, column="publish_from")
@@ -31,49 +28,42 @@ trait PublishableTrait
      */
     protected ?int $publish_to = null;
 
-    /**
-     * Get published
-     */
-    public function getPublished(): bool
+    public function getPublished(): ?bool
     {
-        return (bool) $this->published;
+        return $this->published;
     }
 
-    /**
-     * Get publish from
-     */
-    public function getPublishFrom(): ?DateTime
+    public function getPublishFrom(): ?DateTimeImmutable
     {
         if (!empty($this->publish_from)) {
-            return new DateTime("@{$this->publish_from}");
+            return new DateTimeImmutable("@{$this->publish_from}");
         }
 
         return null;
     }
 
-    /**
-     * Get publish to
-     */
-    public function getPublishTo(): ?DateTime
+    public function getPublishTo(): ?DateTimeImmutable
     {
         if (!empty($this->publish_to)) {
-            return new DateTime("@{$this->publish_to}");
+            return new DateTimeImmutable("@{$this->publish_to}");
         }
 
         return null;
     }
 
     /**
-     * Check whether the model is published.
+     * Check whether the model is published; the model
+     * is considered published if the date time lies
+     * between the "from" and "to" date definitions.
      */
     public function isPublished(): bool
     {
         if (!$this->getPublished()) {
             return false;
         }
-        if ($this->getPublishFrom() instanceof Datetime &&
-            $this->getPublishTo() instanceof Datetime) {
-            $now = (new DateTime('now'))->getTimestamp();
+        if ($this->getPublishFrom() instanceof DateTimeImmutable &&
+            $this->getPublishTo() instanceof DateTimeImmutable) {
+            $now = (new DateTimeImmutable('now'))->getTimestamp();
             if ($now >= $this->getPublishFrom()->getTimestamp() &&
                 $now < $this->getPublishTo()->getTimestamp()) {
                 return true;
@@ -83,26 +73,18 @@ trait PublishableTrait
         return false;
     }
 
-    /**
-     * Set published
-     */
     public function setPublished(bool $input): void
     {
         $this->published = $input;
     }
 
-    /**
-     * Set publish from
-     *
-     * @param DateTime|string
-     */
-    public function setPublishFrom($input): void
+    public function setPublishFrom(DateTimeImmutable|string|null $input): void
     {
-        if ($input instanceof DateTime) {
+        if ($input instanceof DateTimeImmutable) {
             $this->publish_from = $input->getTimestamp();
         } elseif (!empty($input)) {
-            $instance = new DateTime($input);
-            if ($instance instanceof DateTime) {
+            $instance = new DateTimeImmutable($input);
+            if ($instance instanceof DateTimeImmutable) {
                 $this->publish_from = $instance->getTimestamp();
             }
         } else {
@@ -110,18 +92,13 @@ trait PublishableTrait
         }
     }
 
-    /**
-     * Set publish to
-     *
-     * @param DateTime|string
-     */
-    public function setPublishTo($input): void
+    public function setPublishTo(DateTimeImmutable|string|null $input): void
     {
-        if ($input instanceof DateTime) {
+        if ($input instanceof DateTimeImmutable) {
             $this->publish_to = $input->getTimestamp();
         } elseif (!empty($input)) {
-            $instance = new DateTime($input);
-            if ($instance instanceof DateTime) {
+            $instance = new DateTimeImmutable($input);
+            if ($instance instanceof DateTimeImmutable) {
                 $this->publish_to = $instance->getTimestamp();
             }
         } else {

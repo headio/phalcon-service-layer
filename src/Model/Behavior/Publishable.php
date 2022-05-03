@@ -7,30 +7,30 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Entity\Behavior;
+namespace Headio\Phalcon\ServiceLayer\Model\Behavior;
 
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\Model\BehaviorInterface;
-use Phalcon\Mvc\ModelInterface;
-use DateTime;
+use DateTimeImmutable;
 
 class Publishable extends Behavior implements BehaviorInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function notify($eventType, ModelInterface $model): void
+    public function notify(string $type, ModelInterface $model): void
     {
-        $dt = new DateTime('now');
+        $dt = new DateTimeImmutable('now');
         $expiry = $this->getOptions()['expiry'] ?? '+10 years';
 
-        if ($eventType === 'beforeSave') {
+        if ($type === 'beforeSave') {
             if ($model->getPublished()) {
-                if (!$model->getPublishFrom() instanceof DateTime) {
+                if (!$model->getPublishFrom() instanceof DateTimeImmutable) {
                     $model->setPublishFrom($dt);
                 }
 
-                if (!$model->getPublishTo() instanceof DateTime) {
+                if (!$model->getPublishTo() instanceof DateTimeImmutable) {
                     $model->setPublishTo($dt->modify($expiry));
                 }
             } else {

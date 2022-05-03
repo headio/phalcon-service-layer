@@ -7,28 +7,28 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Entity\Behavior;
+namespace Headio\Phalcon\ServiceLayer\Model\Behavior;
 
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
 use Phalcon\Mvc\Model\BehaviorInterface;
-use Phalcon\Mvc\ModelInterface;
-use DateTime;
+use DateTimeImmutable;
 
 class Timestampable extends Behavior implements BehaviorInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function notify($eventType, ModelInterface $model): void
+    public function notify(string $type, ModelInterface $model): void
     {
-        $dt = new DateTime('now');
+        $dt = new DateTimeImmutable('now');
 
-        if ($eventType === 'beforeValidationOnCreate') {
+        if ($type === 'beforeValidationOnCreate') {
             $model->setCreated($dt);
             $model->setModified($dt);
         }
 
-        if ($eventType === 'beforeValidationOnUpdate') {
+        if ($type === 'beforeValidationOnUpdate') {
             $model->setModified($dt);
         }
     }
