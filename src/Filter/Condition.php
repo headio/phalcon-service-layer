@@ -9,56 +9,33 @@ declare(strict_types=1);
 
 namespace Headio\Phalcon\ServiceLayer\Filter;
 
-use function strtoupper;
-use function strcmp;
-
-class Condition implements ConditionInterface
+interface Condition
 {
-    /**
-     * @param mixed $value
-     */
-    public function __construct(
-        private string $column,
-        private $value,
-        private string $operator,
-        private string $type = Condition::AND,
-    ) {
-        if (0 !== strcmp($this->type, Condition::AND)) {
-            $this->type = Condition::OR;
-        }
-    }
+    public const AND = 'AND';
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getColumn(): string
-    {
-        return $this->column;
-    }
+    public const OR = 'OR';
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getOperator(): string
-    {
-        return $this->operator;
-    }
+    public const EQUAL = '=';
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
+    public const GREATER_THAN = '>';
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
+    public const GREATER_THAN_OR_EQUAL = '>=';
+
+    public const IN = 'IN';
+
+    public const NOT_IN = 'NOT IN';
+
+    public const LESS_THAN = '<';
+
+    public const LESS_THAN_OR_EQUAL = '<=';
+
+    public const LIKE = 'LIKE';
+
+    public const NOT_LIKE = 'NOT LIKE';
+
+    public const NOT_EQUAL = '<>';
+
+    public const IS_NULL = 'IS NULL';
+
+    public const IS_NOT_NULL = 'IS NOT NULL';
 }

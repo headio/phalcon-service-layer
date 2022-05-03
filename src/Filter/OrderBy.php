@@ -9,45 +9,9 @@ declare(strict_types=1);
 
 namespace Headio\Phalcon\ServiceLayer\Filter;
 
-use function is_null;
-use function strcasecmp;
-
-class OrderBy implements OrderByInterface
+interface OrderBy
 {
-    public function __construct(
-        private string $column,
-        private string|null $direction = null,
-    ) {
-        if (!is_null($this->direction)) {
-            if (0 === strcasecmp($this->direction, OrderBy::ASC)) {
-                $this->direction = null;
-            } else {
-                $this->direction = OrderBy::DESC;
-            }
-        }
-    }
+    public const ASC = 'ASC';
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getColumn(): string
-    {
-        return $this->column;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDirection(): ?string
-    {
-        return $this->direction;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function hasDirection(): bool
-    {
-        return !empty($this->direction);
-    }
+    public const DESC = 'DESC';
 }

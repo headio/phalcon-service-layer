@@ -9,91 +9,61 @@ declare(strict_types=1);
 
 namespace Headio\Phalcon\ServiceLayer\Repository;
 
-use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
-use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
-use Phalcon\Mvc\Model\CriteriaInterface;
+use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
-use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
 
 interface RepositoryInterface
 {
     /**
-     * Apply the cache to the query criteria.
-     */
-    public function applyCache(QueryInterface $query, CriteriaInterface $criteria): void;
-
-    /**
-     * Apply the filter to the query criteria.
-     */
-    public function applyFilter(CriteriaInterface $criteria, FilterInterface $filter): void;
-
-    /**
-     * Fetch row count from cache or storage.
-     */
-    public function count(FilterInterface $filter): int;
-
-    /**
      * Return an instance of the query criteria pre-populated
-     * with the entity managed by this repository.
+     * with the model managed by this repository.
      */
     public function createCriteria(): CriteriaInterface;
 
     /**
-     * Return an instance of the query builder pre-populated
-     * for the entity managed by this repository.
+     * Return an instance of the query builder.
      */
-    public function createQuery(array $params = null, ?string $alias = null): BuilderInterface;
+    public function createBuilder(array $params = null): BuilderInterface;
 
     /**
-     * Fetch column value by query criteria.
-     *
-     * @return mixed
+     * Fetch a column value by query criteria from storage.
      */
-    public function fetchColumn(CriteriaInterface $criteria);
+    public function fetchColumn(CriteriaInterface $criteria): mixed;
 
     /**
-     * Fetch records by filter criteria from cache or storage.
+     * Fetch records by query criteria from storage.
      */
-    public function find(FilterInterface $filter): ResultsetInterface;
+    public function find(CriteriaInterface $criteria): ResultsetInterface;
 
     /**
-     * Fetch record by primary key from cache or storage.
+     * Fetch record by primary key from storage.
      */
-    public function findByPk(int $id): EntityInterface;
+    public function findByPk(int $id): ModelInterface;
 
     /**
-     * Fetch first record by filter criteria from cache or storage.
+     * Fetch first record by query criteria from storage.
      */
-    public function findFirst(FilterInterface $filter): EntityInterface;
+    public function findFirst(CriteriaInterface $criteria): ModelInterface;
 
     /**
-     * Fetch first record by property name from cache or storage.
-     *
-     * @param mixed $value
+     * Fetch first record by property name from storage.
      */
-    public function findFirstBy(string $property, $value): EntityInterface;
+    public function findFirstBy(string $property, mixed $value): ModelInterface;
 
     /**
      * Return the fully qualified (or unqualified) class name
-     * for the entity managed by the repository.
+     * for the model managed by this repository.
      */
-    public function getEntity(bool $unqualified = false): string;
+    public function getModel(bool $unqualified = false): string;
 
     /**
-     * Return the related models from cache or storage.
+     * Return the related models from storage.
      */
     public function getRelated(
         string $alias,
-        EntityInterface $model,
-        FilterInterface $filter
+        ModelInterface $model,
+        CriteriaInterface $criteria = null,
     ): ResultsetInterface|bool|int;
-
-    /**
-     * Return the unrelated models from cache or storage.
-     */
-    public function getUnrelated(
-        ResultsetInterface $resultset,
-        FilterInterface $filter
-    ): ResultsetInterface;
 }

@@ -7,13 +7,12 @@
  */
 declare(strict_types=1);
 
-namespace Headio\Phalcon\ServiceLayer\Repository;
+namespace Headio\Phalcon\ServiceLayer\Repository\Traits;
 
-use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Headio\Phalcon\ServiceLayer\Exception\OutOfRangeException;
-use Headio\Phalcon\ServiceLayer\Filter\FilterInterface;
+use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
+use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Phalcon\Db\Column;
-use Phalcon\Mvc\Model\CriteriaInterface;
 use Phalcon\Mvc\Model\TransactionInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use function array_diff;
@@ -21,62 +20,60 @@ use function array_flip;
 use function array_key_exists;
 use function array_merge;
 use function array_push;
-use function get_class;
 use function is_null;
 use function sprintf;
 
 trait RelationshipTrait
 {
     /**
-     * Synchronize a "many-to-many" model relationship for a source entity
+     * Synchronize a "many-to-many" model relationship for a source model
      * based on a collection of model primary keys; returns true on success
      * and false otherwise.
      *
      * This implementation requires both the @hasMany and @hasManyToMany
-     * relationship definitions on the source entity.
+     * relationship definitions on the source model.
      *
      * @throws OutOfRangeException
      */
     public function synchronize(
         string $aliasHasManyToMany,
         string $aliasHasMany,
-        EntityInterface $model,
+        ModelInterface $model,
         array $keys
     ): bool {
-        $entityName = $model::class;
+        $modelName = $model::class;
         /**
-         * Stop execution if the entity's "@hasMany" alias is unknown.
+         * Stop execution if the model's "@hasMany" alias is unknown.
          */
         if (false === ($this->modelsManager->getRelationByAlias(
-            $entityName,
+            $modelName,
             $aliasHasMany
         ))) {
             throw new OutOfRangeException(
                 sprintf(
-                    "Missing alias '%s' in '%s' entity relationship definition.",
+                    'Missing alias "%s" in "%s" model relationship definition.',
                     $aliasHasMany,
-                    $entityName
+                    $modelName
                 )
             );
         }
         /**
-         * Stop execution if the entity's "@hasManyToMany" alias is unknown.
+         * Stop execution if the model's "@hasManyToMany" alias is unknown.
          */
         if (false === ($relation = $this->modelsManager->getRelationByAlias(
-            $entityName,
+            $modelName,
             $aliasHasManyToMany
         ))) {
             throw new OutOfRangeException(
                 sprintf(
-                    "Missing alias '%s' in '%s' entity relationship definition.",
+                    'Missing alias "%s" in "%s" model relationship definition.',
                     $aliasHasManyToMany,
-                    $entityName
+                    $modelName
                 )
             );
         }
 
-        /** @var ResultsetInterface|bool|int */
-        $related = $this->getRelated($aliasHasMany, $model, $this->getQueryFilter());
+        $related = $this->getRelated($aliasHasMany, $model);
         /**
          * Process the related models
          */
@@ -156,28 +153,29 @@ trait RelationshipTrait
 
     /**
      * Associate a collection of models via an alias defined in the
-     * source entity relationship definition.
+     * source model relationship definition.
      *
      * @throws OutOfRangeException
      */
-    public function link(string $alias, EntityInterface $model, array $keys): bool
+    public function link(string $alias, ModelInterface $model, array $keys): bool
     {
-        $entityName = $model::class;
+        $modelName = $model::class;
         /**
          * Stop execution if the alias is unknown.
          */
-        if (false === $this->modelsManager->getRelationByAlias($entityName, $alias)) {
+        if (false === $this->modelsManager->getRelationByAlias($modelName, $alias)) {
             throw new OutOfRangeException(
                 sprintf(
-                    "Missing alias '%s' in '%s' entity relationship definition.",
+                    'Missing alias "%s" in "%s" model relationship definition.',
                     $alias,
-                    $entityName
+                    $modelName
                 )
             );
         }
 
         /** @var QueryInterface */
-        $query = $this->createCriteria()->inWhere('id', $keys)
+        $query = $this->createCriteria()
+            ->inWhere('id', $keys)
             ->createBuilder()
             ->getQuery();
 
@@ -200,15 +198,19 @@ trait RelationshipTrait
 
     /**
      * Detach a collection of models via an alias defined in the
-     * source entity relationship definition.
+     * source model relationship definition.
      *
      * @note:
      * This implementation only supports detaching "many-to-many" relationships.
      *
      * @throws OutOfRangeException
      */
-    public function unlink(string $alias, EntityInterface $model, array $keys, ?TransactionInterface $transaction = null): bool
-    {
+    public function unlink(
+        string $alias,
+        ModelInterface $model,
+        array $keys,
+        ?TransactionInterface $transaction = null
+    ): bool {
         /**
          * Nothing to process continue!
          */
@@ -216,16 +218,16 @@ trait RelationshipTrait
             return true;
         }
 
-        $entityName = $model::class;
+        $modelName = $model::class;
         /**
          * Stop execution if the alias is unknown.
          */
-        if (false === ($relation = $this->modelsManager->getRelationByAlias($entityName, $alias))) {
+        if (false === ($relation = $this->modelsManager->getRelationByAlias($modelName, $alias))) {
             throw new OutOfRangeException(
                 sprintf(
-                    "Missing alias '%s' in '%s' entity relationship definition.",
+                    'Missing alias "%s" in "%s" model relationship definition.',
                     $alias,
-                    $entityName
+                    $modelName
                 )
             );
         }
@@ -255,7 +257,8 @@ EX;
                     $relation->getIntermediateFields() => Column::BIND_PARAM_INT,
                     'keys' => Column::BIND_PARAM_INT
                 ]
-            );
+            )
+        ;
 
         if (!is_null($transaction)) {
             $query->setTransaction($transaction);
@@ -268,7 +271,7 @@ EX;
 
     /**
      * Return an instance of the query criteria pre-populated
-     * with the entity managed by this repository.
+     * with the model managed by this repository.
      */
     abstract public function createCriteria(): CriteriaInterface;
 
@@ -277,7 +280,7 @@ EX;
      */
     abstract public function getRelated(
         string $alias,
-        EntityInterface $model,
-        FilterInterface $filter
+        ModelInterface $model,
+        CriteriaInterface $criteria = null,
     ): ResultsetInterface|bool|int;
 }
