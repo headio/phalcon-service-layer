@@ -27,7 +27,7 @@ class View implements ServiceProviderInterface
         $di->setShared(
             'view',
             function () use ($di) {
-                $config = $this->get('config');
+                $config = $di->get('config');
                 $service = new Service();
                 $volt = new Volt($service, $di);
                 $volt->setOptions(

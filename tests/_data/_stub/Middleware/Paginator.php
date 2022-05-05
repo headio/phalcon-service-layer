@@ -37,7 +37,7 @@ class Paginator extends AbstractInjectionAware
         if ($annotations->has('Paginateable')) {
             /** @var \Phalcon\Annotations\Annotation */
             $annotation = $annotations->get('Paginateable');
-            // Paginateable action controller
+            // paginateable action controller
             if (true === $annotation->getArguments()[0]) {
                 /** @var \Phalcon\Config\ConfigInterface */
                 $config = $dispatcher->getDI()->get('config');

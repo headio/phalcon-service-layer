@@ -25,8 +25,8 @@ class Logger implements ServiceProviderInterface
     {
         $di->setShared(
             'logger',
-            function ()  {
-                $config = $this->get('config');
+            function () use ($di) {
+                $config = $di->get('config');
                 $formatter = new LineFormatter(
                     "%datetime% %channel%.%level_name%: %message% %context% %extra%\n",
                     'c',

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Integration\Service;
 
-use Headio\Phalcon\ServiceLayer\Entity\EntityInterface;
 use Stub\Domain\Repository\Role as RoleRepository;
 use Stub\Domain\Repository\User as UserRepository;
 use Stub\Domain\Service\User as Service;

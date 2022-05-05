@@ -19,5 +19,5 @@ return $config->setRules([
     'blank_line_after_opening_tag' => false,
     'protected_to_private' => false,
 ])
-    ->setFinder($finder)
+->setFinder($finder)
 ;

@@ -23,8 +23,8 @@ class Annotation implements ServiceProviderInterface
     {
         $di->setShared(
             'annotations',
-            function () {
-                $config = $this->get('config');
+            function () use ($di) {
+                $config = $di->get('config');
 
                 if ($config->debug) {
                     $service = new Memory();

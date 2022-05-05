@@ -22,9 +22,9 @@ class CacheManager implements ServiceProviderInterface
     {
         $di->setShared(
             'cacheManager',
-            function () {
-                $config = $this->get('config')->cache->modelCache->options;
-                $cache = $this->get('modelsCache');
+            function () use ($di) {
+                $config = $di->get('config')->cache->modelCache->options;
+                $cache = $di->get('modelsCache');
                 return new Service(
                     $config,
                     $cache,

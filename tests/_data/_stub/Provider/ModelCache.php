@@ -24,8 +24,8 @@ class ModelCache implements ServiceProviderInterface
     {
         $di->set(
             'modelsCache',
-            function ()  {
-                $config = $this->get('config')->cache->modelCache;
+            function () use ($di) {
+                $config = $di->get('config')->cache->modelCache;
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
                 $cacheFactory = new CacheFactory($adapterFactory);

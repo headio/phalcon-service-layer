@@ -26,8 +26,8 @@ class ModelMetaData implements ServiceProviderInterface
     {
         $di->setShared(
             'modelsMetadata',
-            function () {
-                $config = $this->get('config');
+            function () use ($di) {
+                $config = $di->get('config');
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
 

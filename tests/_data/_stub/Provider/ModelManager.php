@@ -23,9 +23,9 @@ class ModelManager implements ServiceProviderInterface
     {
         $di->setShared(
             'modelsManager',
-            function () {
+            function () use ($di) {
                 $service = new Service();
-                $eventsManager = $this->get('eventsManager');
+                $eventsManager = $di->get('eventsManager');
                 $service->setEventsManager($eventsManager);
                 $eventsManager->attach('modelsManager', new ModelMapper());
 

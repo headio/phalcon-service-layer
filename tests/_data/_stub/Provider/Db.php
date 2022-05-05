@@ -21,8 +21,8 @@ class Db implements ServiceProviderInterface
     {
         $di->setShared(
             'db',
-            function () {
-                $config = $this->get('config');
+            function () use ($di) {
+                $config = $di->get('config');
                 $adapter = 'Phalcon\\Db\\Adapter\\Pdo\\' . $config->database->adapter;
                 $service = new $adapter($config->database->toArray());
 
