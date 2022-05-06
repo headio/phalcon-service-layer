@@ -176,15 +176,27 @@ class RepositoryCest
         $I->wantToTest('fetching the related models for a relationship alias definition');
 
         $data = $this->data();
-        $modelName = $this->repository->getModel();
-        $model = new $modelName();
-
-        $result = $this->repository->getRelated(
-            $data['alias'],
+        $model = $this->repository->findByPk($data['primaryKey']);
+        $alias = $data['alias'];
+        $result = $this->repository->{"get$alias"}(
             $model,
         );
 
         $I->assertInstanceOf(ResultsetInterface::class, $result);
+    }
+
+    public function canFetchNumberOfRelatedModelRecords(IntegrationTester $I)
+    {
+        $I->wantToTest('fetching the number of related model records for a relationship alias definition');
+
+        $data = $this->data();
+        $model = $this->repository->findByPk($data['primaryKey']);
+        $alias = $data['alias'];
+        $result = $this->repository->{"count$alias"}(
+            $model,
+        );
+        $I->debug($result);
+        $I->assertTrue(is_int($result));
     }
 
     private function data(): array

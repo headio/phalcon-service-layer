@@ -174,13 +174,13 @@ class RepositoryTest extends UnitTest
         ];
 
         $m = Mockery::mock(QueryRepository::class);
-        $m
-        ->shouldReceive('findByPk')
-        ->once()
-        ->with($expected['id'])
-        ->andReturn(
-            new Model($expected),
-        );
+        $m->shouldReceive('findByPk')
+            ->once()
+            ->with($expected['id'])
+            ->andReturn(
+                new Model($expected),
+            )
+        ;
 
         $m->findByPk($expected['id']);
     }
@@ -199,13 +199,13 @@ class RepositoryTest extends UnitTest
         $c = Mockery::mock(Criteria::class);
         $r->shouldReceive('createCriteria')
             ->once()
-        ->andReturn($c);
+            ->andReturn($c)
+        ;
         $m->shouldReceive('find')->once()->with($c);
-        $c
-        ->shouldReceive('eq')
-        ->with('label', $expected['label'])
-        ->andReturnSelf();
-
+        $c->shouldReceive('eq')
+            ->with('label', $expected['label'])
+            ->andReturnSelf()
+        ;
         $c = $r->createCriteria();
         $c->eq('label', $expected['label']);
         $m->find($c);

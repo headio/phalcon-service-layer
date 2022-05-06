@@ -52,9 +52,7 @@ class User extends Injectable implements ServiceInterface
 
     public function getRoles(ModelInterface $model): ResultsetInterface
     {
-        $criteria = $this->roleRepository->createCriteria();
-
-        return $this->roleRepository->getRelated('roles', $model, $criteria);
+        return $this->repository->getRoles($model);
     }
 
     /**

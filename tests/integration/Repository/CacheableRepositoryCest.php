@@ -415,13 +415,13 @@ class CacheableRepositoryCest
 
         $data = $this->data();
         $model = $this->repository->findByPk($data['primaryKey']);
-        $result = $this->repository->getRelated(
-            $data['alias'],
+        $alias = $data['alias'];
+        $result = $this->repository->{"get$alias"}(
             $model,
         );
         $criteria = [
             'id' => $model->getId(),
-            'relation' => $data['alias'],
+            'relation' => $alias,
         ];
         // generate the key to fetch
         // and validate the data from cache
@@ -443,8 +443,8 @@ class CacheableRepositoryCest
 
         $data = $this->data();
         $model = $this->repository->findByPk($data['primaryKey']);
-        $result = $this->repository->nocache()->getRelated(
-            $data['alias'],
+        $alias = $data['alias'];
+        $result = $this->repository->nocache()->{"get$alias"}(
             $model,
         );
         $criteria = [
@@ -464,8 +464,7 @@ class CacheableRepositoryCest
         );
 
         // executing a second request should use cache
-        $result = $this->repository->getRelated(
-            $data['alias'],
+        $result = $this->repository->{"get$alias"}(
             $model,
         );
 
