@@ -57,13 +57,4 @@ interface RepositoryInterface
      * for the model managed by this repository.
      */
     public function getModel(bool $unqualified = false): string;
-
-    /**
-     * Return the related models from storage.
-     */
-    public function getRelated(
-        string $alias,
-        ModelInterface $model,
-        CriteriaInterface $criteria = null,
-    ): ResultsetInterface|bool|int;
 }

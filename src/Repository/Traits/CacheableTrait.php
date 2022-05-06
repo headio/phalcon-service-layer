@@ -151,11 +151,12 @@ trait CacheableTrait
     /**
      * Return the related models from cache or storage.
      */
-    public function getRelated(
+    protected function getRelated(
         string $alias,
         ModelInterface $model,
         CriteriaInterface $criteria = null,
-    ): ResultsetInterface|bool|int {
+        string $method = null,
+    ): ResultsetInterface|ModelInterface|bool|int {
         $keyParams = [
             'id' => $model->getId(),
             'relation' => $alias,
@@ -163,7 +164,7 @@ trait CacheableTrait
 
         return $this->fromCache(
             $keyParams,
-            fn () => parent::getRelated($alias, $model, $criteria),
+            fn () => parent::getRelated($alias, $model, $criteria, $method),
             $this->getLifetime(),
         );
     }
