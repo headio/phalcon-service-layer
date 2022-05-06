@@ -73,7 +73,7 @@ trait RelationshipTrait
             );
         }
 
-        $related = $this->getRelated($aliasHasMany, $model);
+        $related = $this->{"get$aliasHasMany"}($model);
         /**
          * Process the related models
          */
@@ -278,9 +278,10 @@ EX;
     /**
      * Return the related models from cache or storage.
      */
-    abstract public function getRelated(
+    abstract protected function getRelated(
         string $alias,
         ModelInterface $model,
         CriteriaInterface $criteria = null,
-    ): ResultsetInterface|bool|int;
+        string $method = null,
+    ): ResultsetInterface|ModelInterface|bool|int;
 }
