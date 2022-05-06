@@ -19,7 +19,8 @@ use Phalcon\Di\Injectable;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
-use Phalcon\Support\Helper\Str\Lower;
+use Phalcon\Support\Helper\Str\Decapitalize;
+use Phalcon\Support\Helper\Str\Uncamelize;
 use function class_exists;
 use function current;
 use function sprintf;
@@ -150,15 +151,51 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Handle calls to inaccessible (or undefined) methods
+     * and eventual delegation.
+     *
+     * @throws BadMethodCallException
+     */
+    public function __call(string $method, array $args): mixed
+    {
+        if (str_starts_with($method, 'findFirstBy')) {
+            $prop = (new Uncamelize())(substr($method, 11));
+            return $this->findFirstBy($prop, ...$args);
+        }
+
+        if (str_starts_with($method, 'get')) {
+            $prop = (new Decapitalize())(substr($method, 3));
+            return $this->getRelated($prop, ...$args);
+        }
+
+        if (str_starts_with($method, 'count')) {
+            $prop = (new Decapitalize())(substr($method, 5));
+            $params = [
+                'model' => $args[0],
+                'method' => 'count',
+            ];
+            $params['criteria'] = $args[1]??= null;
+            return $this->getRelated($prop, ...$params);
+        }
+
+        throw new BadMethodCallException(
+            sprintf('Repository method "%s" not implemented.', $method),
+            405
+        );
+    }
+
+    /**
+     * Return a collection of related models by query criteria or the
+     * number of related records from storage.
      *
      * @throws OutOfRangeException
      */
-    public function getRelated(
+    protected function getRelated(
         string $alias,
         ModelInterface $model,
         CriteriaInterface $criteria = null,
-    ): ResultsetInterface|bool|int {
+        string $method = null,
+    ): ResultsetInterface|ModelInterface|bool|int {
         $modelName = $model::class;
         $manager = $this->modelsManager;
         /**
@@ -180,27 +217,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
         $criteria ??= $this->createCriteria();
         $params = $criteria->getParams();
 
-        return $manager->getRelationRecords($relation, $model, $params);
-    }
-
-    /**
-     * Handle calls to inaccessible (or undefined) methods
-     * and possible eventual delegation.
-     *
-     * @throws BadMethodCallException
-     */
-    public function __call(string $method, array $args): ModelInterface
-    {
-        if (str_starts_with($method, 'findFirstBy')) {
-            $prop = (new Lower())(substr($method, 11));
-
-            return $this->findFirstBy($prop, ...$args);
-        }
-
-        throw new BadMethodCallException(
-            sprintf('Repository method "%s" not implemented.', $method),
-            405
-        );
+        return $manager->getRelationRecords($relation, $model, $params, $method);
     }
 
     /**
