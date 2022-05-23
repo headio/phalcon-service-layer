@@ -11,8 +11,6 @@ namespace Unit\Repository;
 
 use Headio\Phalcon\ServiceLayer\Model\Criteria;
 use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
-use Headio\Phalcon\ServiceLayer\Paginator\Adapter\Cursor;
-use Headio\Phalcon\ServiceLayer\Paginator\Cursor\Query;
 use Headio\Phalcon\ServiceLayer\Repository\QueryRepository;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Query\Builder;
@@ -211,45 +209,5 @@ class RepositoryTest extends UnitTest
         $c = $r->createCriteria();
         $c->eq('label', $expected['label']);
         $m->find($c);
-    }
-
-    public function testPaginateWithCursor()
-    {
-        $expected = [
-            'id' => 1,
-            'before' => false,
-            'after' => true,
-            'limit' => 10,
-        ];
-        $c = Mockery::mock(Cursor::class);
-        $cr = Mockery::mock(Criteria::class);
-        $qr = Mockery::mock(QueryRepository::class);
-        $r = Mockery::mock(Repository::class);
-        $q = Mockery::mock(Query::class);
-        $cr->shouldReceive('lt')
-            ->once()
-            ->andReturn($cr)
-        ;
-        $r->shouldReceive('createCriteria')
-            ->once()
-            ->andReturn($cr)
-        ;
-        $q->shouldReceive('getCursor');
-        $qr->shouldReceive('paginateWithCursor')
-            ->with(
-                $q, 
-                $cr,
-                $expected['limit'],
-            )
-            ->andReturn($c)
-        ;
-        $criteria = $r->createCriteria();
-        $query = new Query(
-            $expected['id'],
-            $expected['before'],
-            $expected['after'],
-        );
-        $criteria->lt('id', $query->getCursor());
-        $qr->paginateWithCursor($q, $criteria, $expected['limit']);
     }
 }

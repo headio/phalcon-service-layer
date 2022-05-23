@@ -12,8 +12,6 @@ namespace Integration\Repository;
 use Headio\Phalcon\ServiceLayer\Exception\NotFoundException;
 use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
 use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
-use Headio\Phalcon\ServiceLayer\Paginator\Adapter\Cursor;
-use Headio\Phalcon\ServiceLayer\Paginator\Cursor\Query;
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Resultset\Simple;
@@ -197,48 +195,19 @@ class RepositoryCest
         $result = $this->repository->{"count$alias"}(
             $model,
         );
+        $I->debug($result);
         $I->assertTrue(is_int($result));
-    }
-
-    public function canPaginateWithCursor(IntegrationTester $I)
-    {
-        $I->wantToTest('fetching a collection of models using a cursor-based pagination strategy');
-
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI'] = '/tags/next/34';
-
-        $response = $I->getApplication()->handle($_SERVER['REQUEST_URI']);
-
-        $data = $this->data();
-        $criteria = $this->repository
-            ->createCriteria()
-            ->lt('id', $data['offsetId'])
-        ;
-        $query = new Query(
-            $data['cursor'],
-            false,
-            true,
-        );
-        $result = $this->repository->paginateWithCursor(
-            $query,
-            $criteria,
-            $data['limit']
-        );
-
-        $I->assertInstanceOf(Cursor::class, $result);
     }
 
     private function data(): array
     {
         return [
             'alias' => 'roles',
-            'cursor' => 34,
             'builderPhql' => 'SELECT [Stub\\Domain\\Model\\User].* FROM [Stub\\Domain\\Model\\User] WHERE id = :ID0:',
             'email' => 'john.doe@headcrumbs.io',
             'like' => [
                 'email' => 'headcrumbs',
             ],
-            'limit' => 10,
             'offsetId' => 10,
             'primaryKey' => 1,
             'queryBuilderPhql' => 'SELECT [Stub\Domain\Model\User].* FROM [Stub\Domain\Model\User] WHERE id > :ID0: GROUP BY [name] ORDER BY id',
