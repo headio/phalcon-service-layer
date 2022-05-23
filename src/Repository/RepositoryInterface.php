@@ -11,6 +11,8 @@ namespace Headio\Phalcon\ServiceLayer\Repository;
 
 use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
 use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
+use Headio\Phalcon\ServiceLayer\Paginator\Adapter\CursorInterface;
+use Headio\Phalcon\ServiceLayer\Paginator\Cursor\QueryableInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
 
@@ -57,4 +59,14 @@ interface RepositoryInterface
      * for the model managed by this repository.
      */
     public function getModel(bool $unqualified = false): string;
+
+    /**
+     * Return a collection of records using a cursor-based
+     * pagination strategy.
+     */
+    public function paginateWithCursor(
+        QueryableInterface $query,
+        CriteriaInterface $criteria,
+        int $limit,
+    ): CursorInterface;
 }

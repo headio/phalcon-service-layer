@@ -15,6 +15,9 @@ use Headio\Phalcon\ServiceLayer\Exception\OutOfRangeException;
 use Headio\Phalcon\ServiceLayer\Exception\InvalidArgumentException;
 use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
 use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
+use Headio\Phalcon\ServiceLayer\Paginator\Adapter\Cursor;
+use Headio\Phalcon\ServiceLayer\Paginator\Adapter\CursorInterface;
+use Headio\Phalcon\ServiceLayer\Paginator\Cursor\QueryableInterface;
 use Phalcon\Di\Injectable;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Row;
@@ -151,6 +154,19 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function paginateWithCursor(
+        QueryableInterface $query,
+        CriteriaInterface $criteria,
+        int $limit,
+    ): CursorInterface {
+        $models = $this->find($criteria);
+
+        return new Cursor($models, $limit, $query);
+    }
+
+    /**
      * Handle calls to inaccessible (or undefined) methods
      * and eventual delegation.
      *
@@ -160,11 +176,13 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
     {
         if (str_starts_with($method, 'findFirstBy')) {
             $prop = (new Uncamelize())(substr($method, 11));
+
             return $this->findFirstBy($prop, ...$args);
         }
 
         if (str_starts_with($method, 'get')) {
             $prop = (new Decapitalize())(substr($method, 3));
+
             return $this->getRelated($prop, ...$args);
         }
 
@@ -175,6 +193,7 @@ abstract class QueryRepository extends Injectable implements RepositoryInterface
                 'method' => 'count',
             ];
             $params['criteria'] = $args[1]??= null;
+
             return $this->getRelated($prop, ...$params);
         }
 
