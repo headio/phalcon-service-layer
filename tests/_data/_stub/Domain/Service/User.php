@@ -10,16 +10,16 @@ declare(strict_types=1);
 namespace Stub\Domain\Service;
 
 use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
+use Headio\Phalcon\ServiceLayer\Service\Traits\TransactionalTrait;
 use Phalcon\Di\Injectable;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Stub\Domain\Repository\RoleInterface;
 use Stub\Domain\Repository\UserInterface;
-use Stub\Domain\Service\Transactional;
 use Stub\Domain\Service\UserInterface as ServiceInterface;
 
 class User extends Injectable implements ServiceInterface
 {
-    use Transactional;
+    use TransactionalTrait;
 
     public function __construct(
         private RoleInterface $roleRepository,
@@ -44,7 +44,7 @@ class User extends Injectable implements ServiceInterface
     {
         return $this->repository->findByPk($id);
     }
-    
+
     public function updateModel(ModelInterface $model): bool
     {
         return $this->update($model);
