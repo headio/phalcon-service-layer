@@ -16,6 +16,7 @@ use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Phalcon\Di\Di;
 use Phalcon\Di\DiInterface;
 use Phalcon\Mvc\Model;
+
 use function sprintf;
 
 abstract class AbstractModel extends Model implements ModelInterface

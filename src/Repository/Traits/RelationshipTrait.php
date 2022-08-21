@@ -15,6 +15,7 @@ use Headio\Phalcon\ServiceLayer\Model\ModelInterface;
 use Phalcon\Db\Column;
 use Phalcon\Mvc\Model\TransactionInterface;
 use Phalcon\Mvc\Model\ResultsetInterface;
+
 use function array_diff;
 use function array_flip;
 use function array_key_exists;

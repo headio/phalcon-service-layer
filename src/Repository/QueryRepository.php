@@ -24,6 +24,7 @@ use Phalcon\Mvc\Model\Row;
 use Phalcon\Mvc\Model\Query\BuilderInterface;
 use Phalcon\Support\Helper\Str\Decapitalize;
 use Phalcon\Support\Helper\Str\Uncamelize;
+
 use function class_exists;
 use function current;
 use function sprintf;

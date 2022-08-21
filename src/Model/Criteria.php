@@ -13,6 +13,7 @@ use Headio\Phalcon\ServiceLayer\Filter\Condition;
 use Phalcon\Support\Helper\Str\Upper;
 use Phalcon\Mvc\Model\Criteria as PhalconCriteria;
 use ARRAY_FILTER_USE_KEY;
+
 use function array_filter;
 use function sprintf;
 use function strcasecmp;
