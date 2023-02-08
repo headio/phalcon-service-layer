@@ -13,7 +13,7 @@ use Headio\Phalcon\ServiceLayer\Model\CriteriaInterface;
 use Phalcon\Config\ConfigInterface;
 use Phalcon\Mvc\Model\QueryInterface;
 use Phalcon\Support\Helper\Json\Encode as Json;
-use Psr\SimpleCache\CacheInterface;
+use Phalcon\Cache\CacheInterface;
 use Closure;
 use DateInterval;
 use JSON_UNESCAPED_SLASHES;
