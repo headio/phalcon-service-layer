@@ -29,7 +29,7 @@ class ModelCache implements ServiceProviderInterface
                 $serializerFactory = new SerializerFactory();
                 $adapterFactory = new AdapterFactory($serializerFactory);
                 $cacheFactory = new CacheFactory($adapterFactory);
-                /** @var \Psr\SimpleCache\CacheInterface */
+                /** @var \Phalcon\Cache\CacheInterface */
                 $service = $cacheFactory->load($config);
 
                 return $service;

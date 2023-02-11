@@ -31,7 +31,6 @@ class ManagerCest
                 'limit' => 10,
             ],
         );
-
         $I->assertTrue(ctype_xdigit($result));
     }
 
