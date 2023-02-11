@@ -195,7 +195,6 @@ class RepositoryCest
         $result = $this->repository->{"count$alias"}(
             $model,
         );
-        $I->debug($result);
         $I->assertTrue(is_int($result));
     }
 

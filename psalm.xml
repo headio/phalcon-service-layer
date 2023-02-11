@@ -25,7 +25,6 @@
         <file name="vendor/phalcon/ide-stubs/src/Filter/Validation.php"/>
         <file name="vendor/phalcon/ide-stubs/src/Http/Response.php"/>
         <file name="vendor/phalcon/ide-stubs/src/Http/Request.php"/>
-        <file name="vendor/psr/simple-cache/src/CacheInterface.php"/>
         <file name="tests/_bootstrap.php"/>
     </stubs>
     <issueHandlers>

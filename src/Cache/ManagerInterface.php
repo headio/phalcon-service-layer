@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Headio\Phalcon\ServiceLayer\Cache;
 
 use Phalcon\Mvc\Model\QueryInterface;
-use Psr\SimpleCache\CacheInterface;
+use Phalcon\Cache\CacheInterface;
 use Closure;
 use DateInterval;
 
