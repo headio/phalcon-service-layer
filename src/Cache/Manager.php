@@ -130,7 +130,9 @@ class Manager implements ManagerInterface
             );
         }
 
-        return $this->cache->get($key);
+        $version = $this->cache->get($key);
+
+        return (float) $version;
     }
 
     /**
