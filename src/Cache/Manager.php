@@ -61,12 +61,8 @@ class Manager implements ManagerInterface
     {
         foreach ($collection as $item) {
             $key = $this->normalizeKey($item);
-
             if ($this->cache->has($key)) {
-                $this->cache->getAdapter()->setForever(
-                    $key,
-                    microtime(true),
-                );
+                $this->cache->delete($key);
             }
         }
     }
