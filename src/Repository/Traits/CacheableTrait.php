@@ -61,17 +61,18 @@ trait CacheableTrait
     /**
      * Fetch a column value by query criteria from cache or storage.
      */
-    public function fetchColumn(CriteriaInterface $criteria): mixed
+    public function fetchColumn(CriteriaInterface $criteria): ?array
     {
         $query = $criteria
             ->createBuilder()
             ->getQuery()
+            ->setUniqueRow(true)
         ;
         $this->eventsManager->fire('cache:append', $this, $query);
         $resultset = $query->getSingleResult();
 
-        if ($resultset instanceof Row) {
-            return current($resultset->toArray());
+        if ($resultset instanceof ModelInterface) {
+            return $resultset->toArray();
         }
 
         return null;
